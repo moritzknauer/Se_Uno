@@ -19,9 +19,12 @@ object Uno {
     val cardsRevealed: List[Card] = List()
     val handCards: List[Card] = List(card4, card5)
 
-    val cardsCovered: List[Card] = List(card1, card2)
-    val cardsRevealed: List[Card] = List(card3)
-    val cardsRevealed: List[Card] = List(card3, card2)
-    val cardsCovered: List[Card] = List(card1)
+    //val cardsCovered: List[Card] = List(card1, card2)
+    //val cardsRevealed: List[Card] = List(card3)
+    //val cardsRevealed: List[Card] = List(card3, card2)
+    //val cardsCovered: List[Card] = List(card1)
+
+    printf("Hallo\n")
+    print(handCards)
   }
 }
