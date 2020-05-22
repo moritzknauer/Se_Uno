@@ -24,9 +24,9 @@ object Uno {
     //val cardsRevealed: List[Card] = List(card3, card2)
     //val cardsCovered: List[Card] = List(card1)
 
-    printf("Hallo\n")
     print(handCards)
 
+    printf("\n")
     printf("\n")
     printf("⌜ ‾‾‾‾ ⌝  ⌜ ‾‾‾‾ ⌝  ⌜ ‾‾‾‾ ⌝  ⌜ ‾‾‾‾ ⌝  ⌜ ‾‾‾‾ ⌝  ⌜ ‾‾‾‾ ⌝  ⌜ ‾‾‾‾ ⌝  ⌜ ‾‾‾‾ ⌝\n")
     printf("⎸       ⎹  ⎸      ⎹  ⎸       ⎹  ⎸      ⎹  ⎸       ⎹  ⎸       ⎹  ⎸      ⎹  ⎸       ⎹\n")
