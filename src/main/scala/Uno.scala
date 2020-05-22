@@ -26,5 +26,28 @@ object Uno {
 
     printf("Hallo\n")
     print(handCards)
+
+    printf("\n")
+    printf("⌜ ‾‾‾‾ ⌝  ⌜ ‾‾‾‾ ⌝  ⌜ ‾‾‾‾ ⌝  ⌜ ‾‾‾‾ ⌝  ⌜ ‾‾‾‾ ⌝  ⌜ ‾‾‾‾ ⌝  ⌜ ‾‾‾‾ ⌝  ⌜ ‾‾‾‾ ⌝\n")
+    printf("⎸       ⎹  ⎸      ⎹  ⎸       ⎹  ⎸      ⎹  ⎸       ⎹  ⎸       ⎹  ⎸      ⎹  ⎸       ⎹\n")
+    printf("⎸  Uno  ⎹  ⎸  Uno ⎹  ⎸  Uno  ⎹  ⎸  Uno ⎹  ⎸  Uno  ⎹  ⎸  Uno  ⎹  ⎸  Uno ⎹  ⎸  Uno  ⎹\n")
+    printf("⎸       ⎹  ⎸      ⎹  ⎸       ⎹  ⎸      ⎹  ⎸       ⎹  ⎸       ⎹  ⎸      ⎹  ⎸       ⎹\n")
+    printf("⌞ ____ ⌟  ⌞ ____ ⌟  ⌞ ____ ⌟  ⌞ ____ ⌟  ⌞ ____ ⌟  ⌞ ____ ⌟  ⌞ ____ ⌟  ⌞ ____ ⌟\n")
+    printf("\n")
+    printf("\n")
+    printf("\n")
+    printf("                     ⌜ ‾‾‾‾ ⌝                       ⌜ ‾‾‾‾ ⌝\n")
+    printf("                     ⎸       ⎹                       ⎸      ⎹\n")
+    printf("                     ⎸  UNO  ⎹                       ⎸  R 8 ⎹\n")
+    printf("                     ⎸       ⎹                       ⎸      ⎹\n")
+    printf("                     ⌞ ____ ⌟                       ⌞ ____ ⌟\n")
+    printf("\n")
+    printf("\n")
+    printf("\n")
+    printf("⌜ ‾‾‾‾ ⌝  ⌜ ‾‾‾‾ ⌝  ⌜ ‾‾‾‾ ⌝  ⌜ ‾‾‾‾ ⌝  ⌜ ‾‾‾‾ ⌝  ⌜ ‾‾‾‾ ⌝  ⌜ ‾‾‾‾ ⌝  ⌜ ‾‾‾‾ ⌝\n")
+    printf("⎸       ⎹  ⎸      ⎹  ⎸       ⎹  ⎸      ⎹  ⎸       ⎹  ⎸       ⎹  ⎸      ⎹  ⎸       ⎹\n")
+    printf("⎸  G 6  ⎹  ⎸  B 2 ⎹  ⎸  Y 9  ⎹  ⎸  S+4 ⎹  ⎸  Y+2  ⎹  ⎸  G S  ⎹  ⎸  R D ⎹  ⎸  SCC  ⎹\n")
+    printf("⎸       ⎹  ⎸      ⎹  ⎸       ⎹  ⎸      ⎹  ⎸       ⎹  ⎸       ⎹  ⎸      ⎹  ⎸       ⎹\n")
+    printf("⌞ ____ ⌟  ⌞ ____ ⌟  ⌞ ____ ⌟  ⌞ ____ ⌟  ⌞ ____ ⌟  ⌞ ____ ⌟  ⌞ ____ ⌟  ⌞ ____ ⌟\n")
   }
 }
