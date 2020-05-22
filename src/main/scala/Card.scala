@@ -6,7 +6,7 @@ import CardOptions.Special.Special
 import CardOptions.Black.Black
 
 
-case class Card(color:Color, value:Values){
+case class Card(color:Black, value:Special){
 
 }
 
