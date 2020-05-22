@@ -1,7 +1,5 @@
 package scala
 
-
-
 object CardOptions {
   object Color extends Enumeration {
     type Color = Value
