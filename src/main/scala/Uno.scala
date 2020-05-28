@@ -1,10 +1,14 @@
 package scala
 
 import scala.CardOptions._
+import scala.Player
 
 
 object Uno {
-  def main(args:Array[String]) = {
+  def main(args: Array[String]): Unit = {
+    val student = Player("Your Name")
+    println("Hello, " + student.name)
+
     val card1 = Card(Color.Blue, Value.Seven)
 
     val card2 = Card(Color.Red, Value.Nine)
@@ -17,6 +21,7 @@ object Uno {
 
     val cardsCovered: List[Card] = List()
     val cardsRevealed: List[Card] = List()
+    val enemyCarsd: List[Card] = List()
     val handCards: List[Card] = List(card4, card5)
 
     //val cardsCovered: List[Card] = List(card1, card2)
