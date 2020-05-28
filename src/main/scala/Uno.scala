@@ -1,7 +1,10 @@
 package scala
 
+import scala.CardOptions.Color.Color
+import scala.CardOptions.Value.Values
 import scala.CardOptions._
 import scala.Player
+import scala.collection.mutable.ListBuffer
 
 
 object Uno {
@@ -23,6 +26,20 @@ object Uno {
     val cardsRevealed: List[Card] = List()
     val enemyCarsd: List[Card] = List()
     val handCards: List[Card] = List(card4, card5)
+
+    var cards = new ListBuffer[Card]()
+
+    for (color <- Color.values) {
+      for (value <- Value.values) {
+        if (value == Value.Zero) {
+          cards += Card(color, value)
+        } else {
+          cards += Card(color, value)
+          cards += Card(color, value)
+        }
+      }
+    }
+
 
     //val cardsCovered: List[Card] = List(card1, card2)
     //val cardsRevealed: List[Card] = List(card3)
