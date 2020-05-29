@@ -12,10 +12,10 @@ object Uno {
     val student = Player("Your Name")
     println("Hello, " + student.name)
 
-    val cardsCovered: List[Card] = List()
-    val cardsRevealed: List[Card] = List()
-    val enemyCarsd: List[Card] = List()
-    val handCards: List[Card] = List()
+    var cardsCovered: List[Card] = List()
+    var cardsRevealed: List[Card] = List()
+    var enemyCards: List[Card] = List()
+    var handCards: List[Card] = List()
 
     var cards = new ListBuffer[Card]()
 
