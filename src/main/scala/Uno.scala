@@ -21,11 +21,14 @@ object Uno {
 
     for (color <- Color.values) {
       for (value <- Value.values) {
-        if (value == Value.Zero) {
+        if (value == Value.Zero && color != Color.Black) {
           cards += Card(color, value)
-        } else {
-          cards += Card(color, value)
-          cards += Card(color, value)
+        } else if (color == Color.Black && (value == Value.ColorChange || value == Value.PlusFour)) {
+          for (i <- 0 to 3)
+            cards += Card(color, value)
+        } else if (color != Color.Black) {
+          for (i <- 0 to 1)
+            cards += Card(color, value)
         }
       }
     }
