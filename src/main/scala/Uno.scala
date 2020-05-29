@@ -33,6 +33,8 @@ object Uno {
       }
     }
 
+    println(cards)
+
     printf("\n")
     printf("\n")
     printf("⌜ ‾‾‾‾ ⌝  ⌜ ‾‾‾‾ ⌝  ⌜ ‾‾‾‾ ⌝  ⌜ ‾‾‾‾ ⌝  ⌜ ‾‾‾‾ ⌝  ⌜ ‾‾‾‾ ⌝  ⌜ ‾‾‾‾ ⌝  ⌜ ‾‾‾‾ ⌝\n")
