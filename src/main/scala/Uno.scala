@@ -6,16 +6,15 @@ import scala.CardOptions._
 import scala.Player
 import scala.collection.mutable.ListBuffer
 
-
 object Uno {
   def main(args: Array[String]): Unit = {
     val student = Player("Your Name")
     println("Hello, " + student.name)
 
-    var cardsCovered: List[Card] = List()
-    var cardsRevealed: List[Card] = List()
-    var enemyCards: List[Card] = List()
-    var handCards: List[Card] = List()
+    var cardsCovered = new ListBuffer[Card]()
+    var cardsRevealed = new ListBuffer[Card]()
+    var enemyCards = new ListBuffer[Card]()
+    var handCards = new ListBuffer[Card]()
 
     var cards = new ListBuffer[Card]()
 
@@ -26,7 +25,7 @@ object Uno {
         } else if (color == Color.Black && (value == Value.ColorChange || value == Value.PlusFour)) {
           for (i <- 0 to 3)
             cards += Card(color, value)
-        } else if (color != Color.Black) {
+        } else if (color != Color.Black && (value != Value.PlusFour && value != Value.ColorChange)) {
           for (i <- 0 to 1)
             cards += Card(color, value)
         }
@@ -35,7 +34,51 @@ object Uno {
 
     println(cards)
 
-    var playingField =
+    var cardsMixed = cards
+
+    var n = 108
+    for(i <- 0 to 107) {
+      val r = new scala.util.Random
+      val p = 1 + r.nextInt(n)
+      cardsCovered = cardsMixed.slice(p-1, p) ++ cardsCovered
+      cardsMixed = cardsMixed.take(p-1) ++ cardsMixed.drop(p)
+      n -= 1
+    }
+
+    var m = 7
+    for(i <- 0 to 6) {
+      val r = new scala.util.Random
+      val p = 1 + r.nextInt(m)
+      handCards = cardsCovered.slice(p-1, p) ++ handCards
+      cardsCovered = cardsCovered.take(p-1) ++ cardsCovered.drop(p)
+      m -= 1
+    }
+
+    var o = 7
+    for(i <- 0 to 6) {
+      val r = new scala.util.Random
+      val p = 1 + r.nextInt(o)
+      enemyCards = cardsCovered.slice(p-1, p) ++ enemyCards
+      cardsCovered = cardsCovered.take(p-1) ++ cardsCovered.drop(p)
+      o -= 1
+    }
+
+    var q = 1
+    for(i <- 0 to 0) {
+      val r = new scala.util.Random
+      val p = 1 + r.nextInt(q)
+      cardsRevealed = cardsCovered.slice(p-1, p) ++ cardsRevealed
+      cardsCovered = cardsCovered.take(p-1) ++ cardsCovered.drop(p)
+      q -= 1
+    }
+
+    println(cardsMixed)
+    println(cardsCovered)
+    println(handCards)
+    println(enemyCards)
+    println(cardsRevealed)
+
+    val playingField =
       """
         | ┌-------┐  ┌-------┐  ┌-------┐  ┌-------┐  ┌-------┐  ┌-------┐  ┌-------┐
         | |       |  |       |  |       |  |       |  |       |  |       |  |       |
@@ -56,10 +99,6 @@ object Uno {
         | └-------┘  └-------┘  └-------┘  └-------┘  └-------┘  └-------┘  └-------┘
         |
         |""".stripMargin
-
-    printf(playingField)
-
-    playingField = playingField.replace("R 8", "R 2")
 
     printf(playingField)
 
