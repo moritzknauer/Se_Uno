@@ -35,7 +35,7 @@ object Uno {
 
     println(cards)
 
-    val playingField =
+    var playingField =
       """
         | ┌-------┐  ┌-------┐  ┌-------┐  ┌-------┐  ┌-------┐  ┌-------┐  ┌-------┐
         | |       |  |       |  |       |  |       |  |       |  |       |  |       |
@@ -56,6 +56,10 @@ object Uno {
         | └-------┘  └-------┘  └-------┘  └-------┘  └-------┘  └-------┘  └-------┘
         |
         |""".stripMargin
+
+    printf(playingField)
+
+    playingField = playingField.replace("R 8", "R 2")
 
     printf(playingField)
 
