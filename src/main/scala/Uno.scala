@@ -33,7 +33,7 @@ object Uno {
         |
         |                       ┌-------┐            ┌-------┐
         |                       |       |            |       |
-        |                       |  Uno  |            |  R 8  |
+        |                       |  Uno  |            |  **h  |
         |                       |       |            |       |
         |                       └-------┘            └-------┘
         |
@@ -46,11 +46,12 @@ object Uno {
         |""".stripMargin
 
 
-        for (i <- 0 to 6) {
-          var s = "**" + i
-          playingField = playingField.replace(s, handCards(i).toString)
-        }
+    for (i <- 0 to 6) {
+      var s = "**" + i
+      playingField = playingField.replace(s, handCards(i).toString)
+    }
 
+    playingField = playingField.replace("**h", handCards.head.toString)
     printf(playingField)
   }
 
