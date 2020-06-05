@@ -23,7 +23,7 @@ object Uno {
     println(enemyCards)
     println(cardsRevealed)
 
-    val playingField =
+    var playingField =
       """
         | ┌-------┐  ┌-------┐  ┌-------┐  ┌-------┐  ┌-------┐  ┌-------┐  ┌-------┐
         | |       |  |       |  |       |  |       |  |       |  |       |  |       |
@@ -39,11 +39,17 @@ object Uno {
         |
         | ┌-------┐  ┌-------┐  ┌-------┐  ┌-------┐  ┌-------┐  ┌-------┐  ┌-------┐
         | |       |  |       |  |       |  |       |  |       |  |       |  |       |
-        | |  G 6  |  |  B 2  |  |  Y 9  |  |  B+4  |  |  Y+2  |  |  G S  |  |  R D  |
+        | |  **0  |  |  **1  |  |  **2  |  |  **3  |  |  **4  |  |  **5  |  |  **6  |
         | |       |  |       |  |       |  |       |  |       |  |       |  |       |
         | └-------┘  └-------┘  └-------┘  └-------┘  └-------┘  └-------┘  └-------┘
         |
         |""".stripMargin
+
+
+        for (i <- 0 to 6) {
+          var s = "**" + i
+          playingField = playingField.replace(s, handCards(i).toString)
+        }
 
     printf(playingField)
   }
