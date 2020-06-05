@@ -48,6 +48,5 @@ object Uno {
         |""".stripMargin
 
     printf(playingField)
-
   }
 }

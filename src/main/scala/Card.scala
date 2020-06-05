@@ -79,5 +79,6 @@ case class Card(color:Color, value:Values){
         }
     }
   }
+
 }
 
