@@ -51,7 +51,7 @@ object Uno {
       playingField = playingField.replace(s, handCards(i).toString)
     }
 
-    playingField = playingField.replace("**h", handCards.head.toString)
+    playingField = playingField.replace("**h", cardsRevealed.head.toString)
     printf(playingField)
   }
 
