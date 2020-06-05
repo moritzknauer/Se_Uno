@@ -4,6 +4,7 @@ import scala.CardOptions.Color.Color
 import scala.CardOptions.Value.Values
 import scala.CardOptions._
 import scala.Player
+import scala.Game
 import scala.collection.mutable.ListBuffer
 
 object Uno {
@@ -16,63 +17,9 @@ object Uno {
     var enemyCards = new ListBuffer[Card]()
     var handCards = new ListBuffer[Card]()
 
-    var cards = new ListBuffer[Card]()
+    val game = Game()
+    game.initializeGame(7, cardsCovered, cardsRevealed, enemyCards, handCards)
 
-    for (color <- Color.values) {
-      for (value <- Value.values) {
-        if (value == Value.Zero && color != Color.Black) {
-          cards += Card(color, value)
-        } else if (color == Color.Black && (value == Value.ColorChange || value == Value.PlusFour)) {
-          for (i <- 0 to 3)
-            cards += Card(color, value)
-        } else if (color != Color.Black && (value != Value.PlusFour && value != Value.ColorChange)) {
-          for (i <- 0 to 1)
-            cards += Card(color, value)
-        }
-      }
-    }
-
-    println(cards)
-
-    var cardsMixed = cards
-
-    var n = 108
-    for(i <- 0 to 107) {
-      val r = new scala.util.Random
-      val p = 1 + r.nextInt(n)
-      cardsCovered = cardsMixed.slice(p-1, p) ++ cardsCovered
-      cardsMixed = cardsMixed.take(p-1) ++ cardsMixed.drop(p)
-      n -= 1
-    }
-
-    n = 7
-    for(i <- 0 to 6) {
-      val r = new scala.util.Random
-      val p = 1 + r.nextInt(n)
-      handCards = cardsCovered.slice(p-1, p) ++ handCards
-      cardsCovered = cardsCovered.take(p-1) ++ cardsCovered.drop(p)
-      n -= 1
-    }
-
-    n = 7
-    for(i <- 0 to 6) {
-      val r = new scala.util.Random
-      val p = 1 + r.nextInt(n)
-      enemyCards = cardsCovered.slice(p-1, p) ++ enemyCards
-      cardsCovered = cardsCovered.take(p-1) ++ cardsCovered.drop(p)
-      n -= 1
-    }
-
-    n = 1
-    for(i <- 0 to 0) {
-      val r = new scala.util.Random
-      val p = 1 + r.nextInt(n)
-      cardsRevealed = cardsCovered.slice(p-1, p) ++ cardsRevealed
-      cardsCovered = cardsCovered.take(p-1) ++ cardsCovered.drop(p)
-      n -= 1
-    }
-
-    println(cardsMixed)
     println(cardsCovered)
     println(handCards)
     println(enemyCards)
