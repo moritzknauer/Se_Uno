@@ -45,31 +45,31 @@ object Uno {
       n -= 1
     }
 
-    var m = 7
+    n = 7
     for(i <- 0 to 6) {
       val r = new scala.util.Random
-      val p = 1 + r.nextInt(m)
+      val p = 1 + r.nextInt(n)
       handCards = cardsCovered.slice(p-1, p) ++ handCards
       cardsCovered = cardsCovered.take(p-1) ++ cardsCovered.drop(p)
-      m -= 1
+      n -= 1
     }
 
-    var o = 7
+    n = 7
     for(i <- 0 to 6) {
       val r = new scala.util.Random
-      val p = 1 + r.nextInt(o)
+      val p = 1 + r.nextInt(n)
       enemyCards = cardsCovered.slice(p-1, p) ++ enemyCards
       cardsCovered = cardsCovered.take(p-1) ++ cardsCovered.drop(p)
-      o -= 1
+      n -= 1
     }
 
-    var q = 1
+    n = 1
     for(i <- 0 to 0) {
       val r = new scala.util.Random
-      val p = 1 + r.nextInt(q)
+      val p = 1 + r.nextInt(n)
       cardsRevealed = cardsCovered.slice(p-1, p) ++ cardsRevealed
       cardsCovered = cardsCovered.take(p-1) ++ cardsCovered.drop(p)
-      q -= 1
+      n -= 1
     }
 
     println(cardsMixed)
