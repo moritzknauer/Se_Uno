@@ -28,7 +28,7 @@ object Uno {
 
 
     do {
-      println("Spielfeld : \n" + game.toString)
+      println("Spielfeld: \n" + game.toString)
       input = readLine()
       game = tui processInputLine(input, game)
     } while (input != "q")
