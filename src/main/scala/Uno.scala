@@ -4,113 +4,33 @@ import scala.CardOptions.Color.Color
 import scala.CardOptions.Value.Values
 import scala.CardOptions._
 import scala.Player
+import scala.Game
 import scala.collection.mutable.ListBuffer
+import scala.io.StdIn.readLine
 
 object Uno {
   var cardsCovered = new ListBuffer[Card]()
   var cardsRevealed = new ListBuffer[Card]()
   var enemyCards = new ListBuffer[Card]()
   var handCards = new ListBuffer[Card]()
+  val tui = new Tui
 
   def main(args: Array[String]): Unit = {
-    val student = Player("Your Name")
-    println("Hello, " + student.name)
+    var input: String = ""
 
-    initializeGame(7)
-
-    println(cardsCovered)
-    println(handCards)
-    println(enemyCards)
-    println(cardsRevealed)
-
-    var playingField =
-      """
-        | ┌-------┐  ┌-------┐  ┌-------┐  ┌-------┐  ┌-------┐  ┌-------┐  ┌-------┐
-        | |       |  |       |  |       |  |       |  |       |  |       |  |       |
-        | |  Uno  |  |  Uno  |  |  Uno  |  |  Uno  |  |  Uno  |  |  Uno  |  |  Uno  |
-        | |       |  |       |  |       |  |       |  |       |  |       |  |       |
-        | └-------┘  └-------┘  └-------┘  └-------┘  └-------┘  └-------┘  └-------┘
-        |
-        |                       ┌-------┐            ┌-------┐
-        |                       |       |            |       |
-        |                       |  Uno  |            |  **h  |
-        |                       |       |            |       |
-        |                       └-------┘            └-------┘
-        |
-        | ┌-------┐  ┌-------┐  ┌-------┐  ┌-------┐  ┌-------┐  ┌-------┐  ┌-------┐
-        | |       |  |       |  |       |  |       |  |       |  |       |  |       |
-        | |  **0  |  |  **1  |  |  **2  |  |  **3  |  |  **4  |  |  **5  |  |  **6  |
-        | |       |  |       |  |       |  |       |  |       |  |       |  |       |
-        | └-------┘  └-------┘  └-------┘  └-------┘  └-------┘  └-------┘  └-------┘
-        |
-        |""".stripMargin
+    println("Vornamen eingeben:")
+    input = readLine()
+    val student = Player(input)
+    println("Hallo " + student.name)
+    println("Gewünschte Anzahl Karten pro Spieler eingeben:")
+    input = readLine()
+    var game = Game(input.toInt)
 
 
-    for (i <- 0 to 6) {
-      var s = "**" + i
-      playingField = playingField.replace(s, handCards(i).toString)
-    }
-
-    playingField = playingField.replace("**h", cardsRevealed.head.toString)
-    printf(playingField)
-  }
-
-  def initializeGame(numOfPlayerCards: Int): Boolean = {
-    var cards = new ListBuffer[Card]()
-
-    for (color <- Color.values) {
-      for (value <- Value.values) {
-        if (value == Value.Zero && color != Color.Black) {
-          cards += Card(color, value)
-        } else if (color == Color.Black && (value == Value.ColorChange || value == Value.PlusFour)) {
-          for (i <- 0 to 3)
-            cards += Card(color, value)
-        } else if (color != Color.Black && (value != Value.PlusFour && value != Value.ColorChange)) {
-          for (i <- 0 to 1)
-            cards += Card(color, value)
-        }
-      }
-    }
-
-    println(cards)
-
-    var cardsMixed = cards
-
-    var n = 108
-    for (i <- 0 to 107) {
-      val r = new scala.util.Random
-      val p = 1 + r.nextInt(n)
-      cardsCovered = cardsMixed.slice(p - 1, p) ++ cardsCovered
-      cardsMixed = cardsMixed.take(p - 1) ++ cardsMixed.drop(p)
-      n -= 1
-    }
-
-    n = numOfPlayerCards
-    for (i <- 1 to numOfPlayerCards) {
-      val r = new scala.util.Random
-      val p = 1 + r.nextInt(n)
-      handCards = cardsCovered.slice(p - 1, p) ++ handCards
-      cardsCovered = cardsCovered.take(p - 1) ++ cardsCovered.drop(p)
-      n -= 1
-    }
-
-    n = numOfPlayerCards
-    for (i <- 1 to numOfPlayerCards) {
-      val r = new scala.util.Random
-      val p = 1 + r.nextInt(n)
-      enemyCards = cardsCovered.slice(p - 1, p) ++ enemyCards
-      cardsCovered = cardsCovered.take(p - 1) ++ cardsCovered.drop(p)
-      n -= 1
-    }
-
-    n = 1
-    for (i <- 0 to 0) {
-      val r = new scala.util.Random
-      val p = 1 + r.nextInt(n)
-      cardsRevealed = cardsCovered.slice(p - 1, p) ++ cardsRevealed
-      cardsCovered = cardsCovered.take(p - 1) ++ cardsCovered.drop(p)
-      n -= 1
-    }
-    true
+    do {
+      println("Spielfeld : \n" + game.toString)
+      input = readLine()
+      game = tui processInputLine(input, game)
+    } while (input != "q")
   }
 }
