@@ -121,4 +121,106 @@ case class Game(numOfCards: Int = 7) {
     //println(enemyCards)
     //println("")
   }
+
+  def pushable(card: Card) : Boolean = {
+    if (card.color == cardsRevealed.head.color) {
+      return true
+    } else if (card.value == cardsRevealed.head.value) {
+      return true
+    } else if (card.value == Value.PlusFour) {
+      for (i <- 1 to handCards.length) {
+        if (handCards(i - 1).color == cardsRevealed.head.color) {
+          false
+        }
+      }
+      return true
+    } else if (card.value == Value.ColorChange) {
+      return true
+    } else if (cardsRevealed.head.color == Color.Black) {
+      return true
+    }
+    false
+  }
+
+  def pushCard(card: Card) : Game = {
+    var c = 0
+    for (i <- 2 to handCards.length) {
+      if (handCards(i - 2).color == card.color && handCards(i - 2).value == card.value && c == 0) {
+          cardsRevealed = handCards.slice(i - 2, i-1) ++ cardsRevealed
+          handCards = handCards.take(i - 2) ++ handCards.drop(i-1)
+        c += 1
+      }
+    }
+    if (c == 0) {
+      cardsRevealed = handCards.drop(handCards.length-1) ++ cardsRevealed
+      handCards = handCards.take(handCards.length - 1)
+    }
+    this
+  }
+
+  def pullable() : Boolean = {
+    for (i <- 1 to handCards.length) {
+      if(pushable(handCards(i-1))) {
+        return false
+      }
+    }
+    true
+  }
+
+  def pull() : Game = {
+    handCards += Card(cardsCovered.head.color, cardsCovered.head.value)
+    cardsCovered = cardsCovered.drop(1)
+    this
+  }
+
+  def pullEnemy() : Game = {
+    enemyCards += Card(cardsCovered.head.color, cardsCovered.head.value)
+    cardsCovered = cardsCovered.drop(1)
+    this
+  }
+
+  def enemy() : Game = {
+    for (i <- 1 to enemyCards.length) {
+      if(pushableEnemy(enemyCards(i-1))) {
+        return pushCardEnemy(enemyCards(i-1))
+      }
+    }
+    pullEnemy()
+  }
+
+  def pushableEnemy(card: Card) : Boolean = {
+    if (card.color == cardsRevealed.head.color) {
+      return true
+    } else if (card.value == cardsRevealed.head.value) {
+      return true
+    } else if (card.value == Value.PlusFour) {
+      for (i <- 1 to enemyCards.length) {
+        if (enemyCards(i - 1).color == cardsRevealed.head.color) {
+          false
+        }
+      }
+      return true
+    } else if (card.value == Value.ColorChange) {
+      return true
+    } else if (cardsRevealed.head.color == Color.Black) {
+      return true
+    }
+    false
+  }
+
+  def pushCardEnemy(card: Card) : Game = {
+    var c = 0
+    for (i <- 2 to handCards.length) {
+      if (enemyCards(i - 2).color == card.color && enemyCards(i - 2).value == card.value && c == 0) {
+        cardsRevealed = enemyCards.slice(i - 2, i-1) ++ cardsRevealed
+        enemyCards = enemyCards.take(i - 2) ++ enemyCards.drop(i-1)
+        c += 1
+      }
+    }
+    if (c == 0) {
+      cardsRevealed = enemyCards.drop(enemyCards.length-1) ++ cardsRevealed
+      enemyCards = enemyCards.take(enemyCards.length - 1)
+    }
+    this
+  }
 }

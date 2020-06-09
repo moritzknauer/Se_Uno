@@ -1,5 +1,7 @@
 package scala
 
+import controller.Controller
+
 import scala.CardOptions.Color.Color
 import scala.CardOptions.Value.Values
 import scala.CardOptions._
@@ -13,7 +15,9 @@ object Uno {
   var cardsRevealed = new ListBuffer[Card]()
   var enemyCards = new ListBuffer[Card]()
   var handCards = new ListBuffer[Card]()
-  val tui = new Tui
+  val controller = new Controller(Game())
+  val tui = new Tui(controller)
+  controller.notifyObservers
 
   def main(args: Array[String]): Unit = {
     var input: String = ""
@@ -22,15 +26,10 @@ object Uno {
     input = readLine()
     val student = Player(input)
     println("Hallo " + student.name)
-    println("Gewünschte Anzahl Karten pro Spieler eingeben:")
-    input = readLine()
-    var game = Game(input.toInt)
-
 
     do {
-      println("Spielfeld: \n" + game.toString)
       input = readLine()
-      game = tui processInputLine(input, game)
+      tui.processInputLine(input)
     } while (input != "q")
   }
 }
