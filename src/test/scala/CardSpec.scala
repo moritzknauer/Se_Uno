@@ -1,6 +1,7 @@
 import org.scalatest._
 import Matchers._
-import scala.CardOptions._
+import model.Card
+import model.CardOptions._
 
 class CardSpec extends WordSpec {
 

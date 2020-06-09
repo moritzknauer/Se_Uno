@@ -1,13 +1,16 @@
-package scala
+package scala.model
 
-import scala.CardOptions.{Color, Value}
-import scala.Uno.{cardsCovered, cardsRevealed, enemyCards, handCards}
 import scala.collection.mutable.ListBuffer
+import scala.model.CardOptions.{Color, Value}
 
 case class Game(numOfCards: Int = 7) {
+  var cardsCovered = new ListBuffer[Card]()
+  var cardsRevealed = new ListBuffer[Card]()
+  var enemyCards = new ListBuffer[Card]()
+  var handCards = new ListBuffer[Card]()
   initializeGame(numOfCards)
 
-  override def toString() : String = {
+  override def toString: String = {
     val a = "┌-------┐  "
     val b = "|       |  "
     val c = "|  Uno  |  "
@@ -25,7 +28,7 @@ case class Game(numOfCards: Int = 7) {
     var o = ""
     var p = ""
 
-    for (i <- 1 to enemyCards.length) {
+    for (_ <- 1 to enemyCards.length) {
       e = e.concat(a)
       f = f.concat(b)
       g = g.concat(c)
@@ -66,24 +69,22 @@ case class Game(numOfCards: Int = 7) {
 
     for (color <- Color.values) {
       for (value <- Value.values) {
-        if (value == Value.Zero && color != Color.Black) {
+        if (value == Value.Zero && color != Color.Schwarz) {
           cards += Card(color, value)
-        } else if (color == Color.Black && (value == Value.ColorChange || value == Value.PlusFour)) {
-          for (i <- 0 to 3)
+        } else if (color == Color.Schwarz && (value == Value.ColorChange || value == Value.PlusFour)) {
+          for (_ <- 0 to 3)
             cards += Card(color, value)
-        } else if (color != Color.Black && (value != Value.PlusFour && value != Value.ColorChange)) {
-          for (i <- 0 to 1)
+        } else if (color != Color.Schwarz && (value != Value.PlusFour && value != Value.ColorChange)) {
+          for (_ <- 0 to 1)
             cards += Card(color, value)
         }
       }
     }
 
-    //println(cards)
-
     var cardsMixed = cards
 
     var n = 108
-    for (i <- 0 to 107) {
+    for (_ <- 0 to 107) {
       val r = new scala.util.Random
       val p = 1 + r.nextInt(n)
       cardsCovered = cardsMixed.slice(p - 1, p) ++ cardsCovered
@@ -92,7 +93,7 @@ case class Game(numOfCards: Int = 7) {
     }
 
     n = numOfPlayerCards
-    for (i <- 1 to numOfPlayerCards) {
+    for (_ <- 1 to numOfPlayerCards) {
       val r = new scala.util.Random
       val p = 1 + r.nextInt(n)
       handCards = cardsCovered.slice(p - 1, p) ++ handCards
@@ -101,7 +102,7 @@ case class Game(numOfCards: Int = 7) {
     }
 
     n = numOfPlayerCards
-    for (i <- 1 to numOfPlayerCards) {
+    for (_ <- 1 to numOfPlayerCards) {
       val r = new scala.util.Random
       val p = 1 + r.nextInt(n)
       enemyCards = cardsCovered.slice(p - 1, p) ++ enemyCards
@@ -110,16 +111,13 @@ case class Game(numOfCards: Int = 7) {
     }
 
     n = 1
-    for (i <- 0 to 0) {
+    for (_ <- 0 to 0) {
       val r = new scala.util.Random
       val p = 1 + r.nextInt(n)
       cardsRevealed = cardsCovered.slice(p - 1, p) ++ cardsRevealed
       cardsCovered = cardsCovered.take(p - 1) ++ cardsCovered.drop(p)
       n -= 1
     }
-    //println(cardsCovered)
-    //println(enemyCards)
-    //println("")
   }
 
   def pushable(card: Card) : Boolean = {
@@ -136,7 +134,7 @@ case class Game(numOfCards: Int = 7) {
       return true
     } else if (card.value == Value.ColorChange) {
       return true
-    } else if (cardsRevealed.head.color == Color.Black) {
+    } else if (cardsRevealed.head.color == Color.Schwarz) {
       return true
     }
     false
@@ -202,7 +200,7 @@ case class Game(numOfCards: Int = 7) {
       return true
     } else if (card.value == Value.ColorChange) {
       return true
-    } else if (cardsRevealed.head.color == Color.Black) {
+    } else if (cardsRevealed.head.color == Color.Schwarz) {
       return true
     }
     false
@@ -210,7 +208,7 @@ case class Game(numOfCards: Int = 7) {
 
   def pushCardEnemy(card: Card) : Game = {
     var c = 0
-    for (i <- 2 to handCards.length) {
+    for (i <- 2 to enemyCards.length) {
       if (enemyCards(i - 2).color == card.color && enemyCards(i - 2).value == card.value && c == 0) {
         cardsRevealed = enemyCards.slice(i - 2, i-1) ++ cardsRevealed
         enemyCards = enemyCards.take(i - 2) ++ enemyCards.drop(i-1)
@@ -222,5 +220,24 @@ case class Game(numOfCards: Int = 7) {
       enemyCards = enemyCards.take(enemyCards.length - 1)
     }
     this
+  }
+
+  def equalsCard(s: String): Boolean = {
+    for (i <- 1 to handCards.length) {
+      if (s.equals(handCards(i - 1).toString)) {
+        return true
+      }
+    }
+    false
+  }
+
+  def getCard(s: String): Card = {
+    var c = 0
+    for (i <- 1 to handCards.length) {
+      if (s.equals(handCards(i - 1).toString)) {
+        c = i-1
+      }
+    }
+    handCards(c)
   }
 }

@@ -1,10 +1,12 @@
-package controller
+package scala.controller
+
+import model.{Card, Game}
 
 import util.Observable
 
 class Controller(var game:Game) extends Observable {
   def createGame(size: Int = 7):Unit = {
-    game = Game(size)
+    game = new Game(size)
     notifyObservers
   }
 
@@ -45,5 +47,13 @@ class Controller(var game:Game) extends Observable {
   def pull():Unit = {
     game = game.pull()
     notifyObservers
+  }
+
+  def equalsCard(s: String):Boolean = {
+    game.equalsCard(s)
+  }
+
+  def getCard(s: String):Card = {
+    game.getCard(s)
   }
 }

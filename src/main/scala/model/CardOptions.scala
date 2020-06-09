@@ -1,9 +1,9 @@
-package scala
+package scala.model
 
 object CardOptions {
   object Color extends Enumeration {
     type Color = Value
-    val Red, Yellow, Green, Blue, Black = Value
+    val Red, Yellow, Green, Blue, Schwarz = Value
   }
 
   object Value extends Enumeration {

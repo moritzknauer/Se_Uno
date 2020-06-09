@@ -1,3 +1,4 @@
+import model.Player
 import org.scalatest._
 
 class PlayerSpec extends WordSpec with Matchers {
