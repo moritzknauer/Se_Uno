@@ -1,6 +1,6 @@
 package scala.model
 
-import scala.model.CardOptions.{Color, Value}
+import scala.model.CardOptions.Value
 import scala.model.CardOptions.Color.Color
 import scala.model.CardOptions.Value.Values
 
