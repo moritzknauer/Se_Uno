@@ -13,32 +13,18 @@ class Tui(controller: Controller) extends Observer {
       case "n" => controller.createGame()
       case "q" =>
       case "s" => {
-        if (wf.length == 3 ) {
-          val s = (wf(1) + " " + wf(2))
-          if (controller.equalsCard(s)) {
-            val card = controller.getCard(s)
-            if(controller.pushable(card)) {
-              controller.pushCard(card)
-              println("Gegner ist an der Reihe")
-              controller.enemy()
-            } else {
-              println("Du kannst diese Karte nicht legen")
-            }
-          } else {
-            println("Die zu legende Karte ist nicht auf deiner Hand :(")
-          }
+        var s = ""
+        if (wf.length == 3) {
+          s = wf(1) + " " + wf(2)
         } else {
-          if (controller.equalsCard(wf(1))) {
-            val card = controller.getCard(wf(1))
-            if(controller.pushable(card)) {
-              controller.pushCard(card)
-              println("Gegner ist an der Reihe")
-              return controller.enemy()
-            } else {
-              println("Du kannst diese Karte nicht legen")
-            }
-          }
-          println("Die zu legende Karte ist nicht auf deiner Hand :(")
+          s = wf(1)
+        }
+        if (controller.pushable(s)) {
+          controller.pushCard(s)
+          println("Gegner ist an der Reihe")
+          controller.enemy()
+        } else {
+          println("Du kannst diese Karte nicht legen")
         }
       }
       case "g" => {
@@ -49,11 +35,9 @@ class Tui(controller: Controller) extends Observer {
         }
         println("Du kannst keine Karte ziehen, da du eine Karte legen kannst")
       }
-      case _ => {
-        println("Eingegebener Befehl nicht bekannt. Mögliche Befehle: q, s [Karte], g \n")
-      }
+      case _ => println("Befehl nicht bekannt")
     }
   }
 
-  override def update: Unit = println(controller.gameToString)
+  override def update: Boolean = {println(controller.gameToString);true}
 }
