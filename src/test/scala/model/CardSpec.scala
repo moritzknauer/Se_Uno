@@ -1,7 +1,9 @@
+package model
+
+import org.scalatest.Matchers._
 import org.scalatest._
-import Matchers._
-import model.Card
-import model.CardOptions._
+
+import scala.model.Card
 
 class CardSpec extends WordSpec {
 
@@ -13,6 +15,9 @@ class CardSpec extends WordSpec {
       }
       "have value Zero" in {
         newCard.value should be(Value.Zero)
+      }
+      "have a nice String representation" in{
+        newCard.toString should be("B 0")
       }
     }
   }
