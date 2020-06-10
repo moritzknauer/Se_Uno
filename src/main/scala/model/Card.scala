@@ -1,8 +1,8 @@
 package scala.model
 
-import scala.model.CardOptions.Value
-import scala.model.CardOptions.Color.Color
-import scala.model.CardOptions.Value.Values
+import model.{Value, Color}
+import model.Value.Values
+import model.Color.Color
 
 case class Card(color:Color, value:Values){
   override def toString:String = {
@@ -19,7 +19,7 @@ case class Card(color:Color, value:Values){
       case Value.Nine => color.toString.charAt(0) + " 9"
       case Value.Suspend => color.toString.charAt(0) + " S"
       case Value.DirectionChange => color.toString.charAt(0) + " D"
-      case Value.DirectionChange => color.toString.charAt(0) + " C"
+      case Value.ColorChange => color.toString.charAt(0) + " C"
       case Value.PlusTwo => color.toString.charAt(0) + "+2"
       case Value.PlusFour => color.toString.charAt(0) + "+4"
     }
