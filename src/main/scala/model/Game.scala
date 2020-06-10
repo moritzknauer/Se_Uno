@@ -1,7 +1,7 @@
 package scala.model
 
 import scala.collection.mutable.ListBuffer
-import scala.model.CardOptions.{Color, Value}
+import model.{Color, Value}
 
 case class Game(numOfCards: Int = 7) {
   var cardsCovered = new ListBuffer[Card]()
@@ -15,18 +15,7 @@ case class Game(numOfCards: Int = 7) {
     val b = "|       |  "
     val c = "|  Uno  |  "
     val d = "└-------┘  "
-    var e = ""
-    var f = ""
-    var g = ""
-    var h = ""
-    var i = ""
-    var j = ""
-    var k = ""
-    var l = ""
-    var m = ""
-    var n = ""
-    var o = ""
-    var p = ""
+    var e, f, g, h, i, j, k, l, m, n, o, p = ""
 
     for (_ <- 1 to enemyCards.length) {
       e = e.concat(a)
@@ -34,33 +23,19 @@ case class Game(numOfCards: Int = 7) {
       g = g.concat(c)
       h = h.concat(d)
     }
-    e = e + "\n"
-    f = f + "\n"
-    g = g + "\n"
-    h = h + "\n\n"
-
-    i = i.concat(a).concat("           ┌-------┐") + "\n"
-    j = j.concat(b).concat("           |       |") + "\n"
-    k = k.concat(c).concat("           |  " + cardsRevealed.head.toString + "  |  ") + "\n"
-    l = l.concat(d).concat("           └-------┘") + "\n\n"
-
     for (i <- 1 to handCards.length) {
       m = m.concat(a)
       n = n.concat(b)
       o = o.concat("|  " + handCards(i-1).toString + "  |  ")
       p = p.concat(d)
     }
-    m = m + "\n"
-    n = n + "\n"
-    o = o + "\n"
-    p = p + "\n"
+    i = i.concat(a).concat("           ┌-------┐") + "\n"
+    j = j.concat(b).concat("           |       |") + "\n"
+    k = k.concat(c).concat("           |  " + cardsRevealed.head.toString + "  |") + "\n"
+    l = l.concat(d).concat("           └-------┘") + "\n\n"
 
-    val enemyPlayingField = e + f + g + f + h
-    val middlePlayingField = i + j + k + j + l
-    val playerPlayingField = m + n + o + n + p
-
-    val playingField = enemyPlayingField + middlePlayingField + playerPlayingField
-
+    val playingField = e + "\n" + f + "\n" + g + "\n" + f + "\n" + h + "\n\n" + i + j + k + j + l + m + "\n" + n +
+                        "\n" + o + "\n" + n + "\n" + p
     playingField
   }
 
@@ -81,49 +56,45 @@ case class Game(numOfCards: Int = 7) {
       }
     }
 
-    var cardsMixed = cards
-
     var n = 108
     for (_ <- 0 to 107) {
       val r = new scala.util.Random
       val p = 1 + r.nextInt(n)
-      cardsCovered = cardsMixed.slice(p - 1, p) ++ cardsCovered
-      cardsMixed = cardsMixed.take(p - 1) ++ cardsMixed.drop(p)
+      cardsCovered = cards(p - 1) +: cardsCovered
+      cards = cards.take(p - 1) ++ cards.drop(p)
       n -= 1
     }
 
-    n = numOfPlayerCards
-    for (_ <- 1 to numOfPlayerCards) {
-      val r = new scala.util.Random
-      val p = 1 + r.nextInt(n)
-      handCards = cardsCovered.slice(p - 1, p) ++ handCards
-      cardsCovered = cardsCovered.take(p - 1) ++ cardsCovered.drop(p)
-      n -= 1
+    for (i <- 1 to numOfPlayerCards) {
+      handCards = cardsCovered(0) +: handCards
+      cardsCovered = cardsCovered.drop(1)
+      enemyCards = cardsCovered(0) +: enemyCards
+      cardsCovered = cardsCovered.drop(1)
     }
 
-    n = numOfPlayerCards
-    for (_ <- 1 to numOfPlayerCards) {
-      val r = new scala.util.Random
-      val p = 1 + r.nextInt(n)
-      enemyCards = cardsCovered.slice(p - 1, p) ++ enemyCards
-      cardsCovered = cardsCovered.take(p - 1) ++ cardsCovered.drop(p)
-      n -= 1
-    }
+    cardsRevealed = cardsCovered(0) +: cardsRevealed
+    cardsCovered = cardsCovered.drop(1)
+  }
 
-    n = 1
-    for (_ <- 0 to 0) {
-      val r = new scala.util.Random
-      val p = 1 + r.nextInt(n)
-      cardsRevealed = cardsCovered.slice(p - 1, p) ++ cardsRevealed
-      cardsCovered = cardsCovered.take(p - 1) ++ cardsCovered.drop(p)
-      n -= 1
+  def pushCard(card: Card) : Game = {
+    var c = 0
+    for (i <- 2 to handCards.length) {
+      if (handCards(i - 2).color == card.color && handCards(i - 2).value == card.value && c == 0) {
+        cardsRevealed = handCards(i - 2) +: cardsRevealed
+        handCards = handCards.take(i - 2) ++ handCards.drop(i-1)
+        c += 1
+      }
     }
+    if (c == 0) {
+      cardsRevealed = handCards(handCards.length-1) +: cardsRevealed
+      handCards = handCards.take(handCards.length - 1)
+    }
+    this
   }
 
   def pushable(card: Card) : Boolean = {
-    if (card.color == cardsRevealed.head.color) {
-      return true
-    } else if (card.value == cardsRevealed.head.value) {
+    if (card.color == cardsRevealed.head.color || card.value == cardsRevealed.head.value
+          || card.value == Value.ColorChange || cardsRevealed.head.color == Color.Schwarz) {
       return true
     } else if (card.value == Value.PlusFour) {
       for (i <- 1 to handCards.length) {
@@ -132,28 +103,8 @@ case class Game(numOfCards: Int = 7) {
         }
       }
       return true
-    } else if (card.value == Value.ColorChange) {
-      return true
-    } else if (cardsRevealed.head.color == Color.Schwarz) {
-      return true
     }
     false
-  }
-
-  def pushCard(card: Card) : Game = {
-    var c = 0
-    for (i <- 2 to handCards.length) {
-      if (handCards(i - 2).color == card.color && handCards(i - 2).value == card.value && c == 0) {
-          cardsRevealed = handCards.slice(i - 2, i-1) ++ cardsRevealed
-          handCards = handCards.take(i - 2) ++ handCards.drop(i-1)
-        c += 1
-      }
-    }
-    if (c == 0) {
-      cardsRevealed = handCards.drop(handCards.length-1) ++ cardsRevealed
-      handCards = handCards.take(handCards.length - 1)
-    }
-    this
   }
 
   def pullable() : Boolean = {
@@ -168,6 +119,22 @@ case class Game(numOfCards: Int = 7) {
   def pull() : Game = {
     handCards += Card(cardsCovered.head.color, cardsCovered.head.value)
     cardsCovered = cardsCovered.drop(1)
+    this
+  }
+
+  def pushCardEnemy(card: Card) : Game = {
+    var c = 0
+    for (i <- 2 to enemyCards.length) {
+      if (enemyCards(i - 2).color == card.color && enemyCards(i - 2).value == card.value && c == 0) {
+        cardsRevealed = enemyCards(i - 2) +: cardsRevealed
+        enemyCards = enemyCards.take(i - 2) ++ enemyCards.drop(i-1)
+        c += 1
+      }
+    }
+    if (c == 0) {
+      cardsRevealed = enemyCards(enemyCards.length - 1) +: cardsRevealed
+      enemyCards = enemyCards.take(enemyCards.length - 1)
+    }
     this
   }
 
@@ -187,9 +154,8 @@ case class Game(numOfCards: Int = 7) {
   }
 
   def pushableEnemy(card: Card) : Boolean = {
-    if (card.color == cardsRevealed.head.color) {
-      return true
-    } else if (card.value == cardsRevealed.head.value) {
+    if (card.color == cardsRevealed.head.color || card.value == cardsRevealed.head.value
+          || card.value == Value.ColorChange || cardsRevealed.head.color == Color.Schwarz) {
       return true
     } else if (card.value == Value.PlusFour) {
       for (i <- 1 to enemyCards.length) {
@@ -198,28 +164,8 @@ case class Game(numOfCards: Int = 7) {
         }
       }
       return true
-    } else if (card.value == Value.ColorChange) {
-      return true
-    } else if (cardsRevealed.head.color == Color.Schwarz) {
-      return true
     }
     false
-  }
-
-  def pushCardEnemy(card: Card) : Game = {
-    var c = 0
-    for (i <- 2 to enemyCards.length) {
-      if (enemyCards(i - 2).color == card.color && enemyCards(i - 2).value == card.value && c == 0) {
-        cardsRevealed = enemyCards.slice(i - 2, i-1) ++ cardsRevealed
-        enemyCards = enemyCards.take(i - 2) ++ enemyCards.drop(i-1)
-        c += 1
-      }
-    }
-    if (c == 0) {
-      cardsRevealed = enemyCards.drop(enemyCards.length-1) ++ cardsRevealed
-      enemyCards = enemyCards.take(enemyCards.length - 1)
-    }
-    this
   }
 
   def equalsCard(s: String): Boolean = {
