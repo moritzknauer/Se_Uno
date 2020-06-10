@@ -1,7 +1,7 @@
 package scala.util
 
 trait Observer {
-  def update: Unit
+  def update: Boolean
 }
 
 class Observable {
