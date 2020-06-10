@@ -1,32 +1,28 @@
 package scala.controller
 
-import model.{Card, Game}
-
+import scala.model.{Card, Game}
 import util.Observable
 
 class Controller(var game:Game) extends Observable {
   def createGame(size: Int = 7):Unit = {
-    game = new Game(size)
+    game = Game(size)
     notifyObservers
   }
 
   def gameToString: String = game.toString
 
-  def pushCard(card : Card):Unit = {
+  def pushable(s: String):Boolean = {
+    if (game.equalsCard(s)) {
+      val card = game.getCard(s)
+      game.pushable(card)
+    } else {
+      false
+    }
+  }
+
+  def pushCard(s: String):Unit = {
+    val card = game.getCard(s)
     game = game.pushCard(card)
-    notifyObservers
-  }
-
-  def pushable(card : Card):Boolean = {
-    game.pushable(card)
-  }
-
-  def pushableEnemy(card: Card): Boolean = {
-    game.pushableEnemy(card)
-  }
-
-  def pushCardEnemy(card : Card):Unit = {
-    game = game.pushCardEnemy(card)
     notifyObservers
   }
 
@@ -34,8 +30,8 @@ class Controller(var game:Game) extends Observable {
     game.pullable()
   }
 
-  def pullEnemy():Unit = {
-    game = game.pullEnemy()
+  def pull():Unit = {
+    game = game.pull()
     notifyObservers
   }
 
@@ -44,16 +40,4 @@ class Controller(var game:Game) extends Observable {
     notifyObservers
   }
 
-  def pull():Unit = {
-    game = game.pull()
-    notifyObservers
-  }
-
-  def equalsCard(s: String):Boolean = {
-    game.equalsCard(s)
-  }
-
-  def getCard(s: String):Card = {
-    game.getCard(s)
-  }
 }
