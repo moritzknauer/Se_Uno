@@ -2,9 +2,8 @@ package scala
 
 import aview.Tui
 import controller.Controller
-
-import model.Game
 import scala.io.StdIn.readLine
+import scala.model.Game
 
 object Uno {
   val controller = new Controller(Game())
