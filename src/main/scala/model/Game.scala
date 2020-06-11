@@ -93,15 +93,15 @@ case class Game(numOfCards: Int = 7) {
   }
 
   def pushable(card: Card) : Boolean = {
-    if (card.color == cardsRevealed.head.color || card.value == cardsRevealed.head.value
-          || card.value == Value.ColorChange || cardsRevealed.head.color == Color.Schwarz) {
-      return true
-    } else if (card.value == Value.PlusFour) {
+    if (card.value == Value.PlusFour) {
       for (i <- 1 to handCards.length) {
         if (handCards(i - 1).color == cardsRevealed.head.color) {
-          false
+          return false
         }
       }
+      return true
+    } else if (card.color == cardsRevealed.head.color || card.value == cardsRevealed.head.value
+      || card.value == Value.ColorChange || cardsRevealed.head.color == Color.Schwarz) {
       return true
     }
     false
@@ -154,18 +154,20 @@ case class Game(numOfCards: Int = 7) {
   }
 
   def pushableEnemy(card: Card) : Boolean = {
-    if (card.color == cardsRevealed.head.color || card.value == cardsRevealed.head.value
-          || card.value == Value.ColorChange || cardsRevealed.head.color == Color.Schwarz) {
-      return true
-    } else if (card.value == Value.PlusFour) {
+    if (card.value == Value.PlusFour) {
       for (i <- 1 to enemyCards.length) {
         if (enemyCards(i - 1).color == cardsRevealed.head.color) {
-          false
+          return false
         }
       }
       return true
+    } else if (card.color == cardsRevealed.head.color || card.value == cardsRevealed.head.value
+      || card.value == Value.ColorChange || cardsRevealed.head.color == Color.Schwarz) {
+      return true
     }
     false
+
+
   }
 
   def equalsCard(s: String): Boolean = {
