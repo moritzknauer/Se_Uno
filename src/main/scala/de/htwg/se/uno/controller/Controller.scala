@@ -1,7 +1,8 @@
-package scala.controller
+package de.htwg.se.uno.controller
 
-import scala.model.{Card, Game}
-import util.Observable
+import de.htwg.se.uno.model.Game
+import de.htwg.se.uno.util.Observable
+
 
 class Controller(var game:Game) extends Observable {
   def createGame(size: Int = 7):Unit = {

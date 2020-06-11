@@ -1,10 +1,9 @@
-package aview
+package de.htwg.se.uno.aview
 
+import de.htwg.se.uno.controller.Controller
+import de.htwg.se.uno.model.Game
+import de.htwg.se.uno.aview.Tui
 import org.scalatest.{Matchers, WordSpec}
-
-import scala.aview.Tui
-import scala.controller.Controller
-import scala.model.Game
 
 class TuiSpec extends WordSpec with Matchers{
 

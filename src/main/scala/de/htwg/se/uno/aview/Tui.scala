@@ -1,7 +1,8 @@
-package scala.aview
+package de.htwg.se.uno.aview
 
-import scala.controller.Controller
-import scala.util.Observer
+import de.htwg.se.uno.controller.Controller
+import de.htwg.se.uno.util.Observer
+
 
 class Tui(controller: Controller) extends Observer {
   controller.add(this)

@@ -1,9 +1,10 @@
-package scala
+package de.htwg.se.uno
 
-import aview.Tui
-import controller.Controller
+import de.htwg.se.uno.aview.Tui
+import de.htwg.se.uno.controller.Controller
+import de.htwg.se.uno.model.Game
+
 import scala.io.StdIn.readLine
-import scala.model.Game
 
 object Uno {
   val controller = new Controller(Game())

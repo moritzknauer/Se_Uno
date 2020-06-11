@@ -1,4 +1,4 @@
-package scala.model
+package de.htwg.se.uno.model
 
 case class Player(name: String) {
   override def toString:String = name

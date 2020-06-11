@@ -1,8 +1,8 @@
-package util
+package de.htwg.se.uno.util
 
 import org.scalatest.{Matchers, WordSpec}
 
-import scala.util.{Observable, Observer}
+import de.htwg.se.uno.util.{Observable, Observer}
 
 class ObservableSpec extends WordSpec with Matchers {
   "An Observable" should {

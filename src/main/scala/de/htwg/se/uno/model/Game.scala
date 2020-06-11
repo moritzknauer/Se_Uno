@@ -1,7 +1,7 @@
-package scala.model
+package de.htwg.se.uno.model
 
 import scala.collection.mutable.ListBuffer
-import model.{Color, Value}
+import de.htwg.se.uno.model.{Color, Value}
 
 case class Game(numOfCards: Int = 7) {
   var cardsCovered = new ListBuffer[Card]()

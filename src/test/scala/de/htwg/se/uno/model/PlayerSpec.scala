@@ -1,8 +1,6 @@
-package model
+package de.htwg.se.uno.model
 
 import org.scalatest._
-
-import scala.model.Player
 
 class PlayerSpec extends WordSpec with Matchers {
   "A Player" when {

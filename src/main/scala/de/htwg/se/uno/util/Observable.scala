@@ -1,4 +1,4 @@
-package scala.util
+package de.htwg.se.uno.util
 
 trait Observer {
   def update: Boolean

@@ -1,11 +1,10 @@
-package de.htwg.se.sudoku.controller
+package de.htwg.se.uno.controller
 
-import scala.language.reflectiveCalls
+import de.htwg.se.uno.model.Game
+import de.htwg.se.uno.util.Observer
 import org.scalatest.{Matchers, WordSpec}
 
-import scala.controller.Controller
-import scala.model.Game
-import scala.util.Observer
+import scala.language.reflectiveCalls
 
 class ControllerSpec extends WordSpec with Matchers {
 

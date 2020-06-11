@@ -1,4 +1,4 @@
-package model
+package de.htwg.se.uno.model
 
 object Color extends Enumeration {
   type Color = Value

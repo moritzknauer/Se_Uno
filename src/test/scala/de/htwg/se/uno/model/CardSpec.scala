@@ -1,9 +1,7 @@
-package model
+package de.htwg.se.uno.model
 
 import org.scalatest.Matchers._
 import org.scalatest._
-
-import scala.model.Card
 
 class CardSpec extends WordSpec {
 

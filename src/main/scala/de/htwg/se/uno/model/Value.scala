@@ -1,4 +1,4 @@
-package model
+package de.htwg.se.uno.model
 
 object Value extends Enumeration {
   type Values = Value

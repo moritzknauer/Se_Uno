@@ -1,8 +1,8 @@
-package scala.model
+package de.htwg.se.uno.model
 
-import model.{Value, Color}
-import model.Value.Values
-import model.Color.Color
+import de.htwg.se.uno.model.{Value, Color}
+import de.htwg.se.uno.model.Value.Values
+import de.htwg.se.uno.model.Color.Color
 
 case class Card(color:Color, value:Values){
   override def toString:String = {
