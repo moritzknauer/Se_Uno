@@ -1,5 +1,5 @@
 # SE_Uno
-===================================================
+========================================================================================================================
 ## A Version of the Game Uno implemented in Scala for Software Engineering
 
 [![Build Status](https://travis-ci.com/moritzknauer/Se_Uno.svg?branch=master)](https://travis-ci.com/moritzknauer/Se_Uno)
