@@ -11,7 +11,13 @@ class Tui(controller: Controller) extends Observer {
   def processInputLine(input: String): Unit = {
     val wf:Array[String] = input.split("[^a-z^A-Z^ß^ä^ö^ü^Ä^Ö^Ü^0-9/+]+")
     wf(0) match {
-      case "n" => controller.createGame()
+      case "n" => {
+        if (wf.length == 2) {
+          controller.createGame(wf(1).toInt)
+        } else {
+          controller.createGame()
+        }
+      }
       case "q" =>
       case "s" => {
         var s = ""
