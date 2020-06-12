@@ -72,7 +72,7 @@ case class Game(numOfCards: Int = 7) {
     cardsCovered = cardsCovered.drop(1)
   }
 
-  def initializeTestGame(){
+  def initializeTestGame(): Game = {
     cardsCovered = new ListBuffer[Card]()
     cardsRevealed = new ListBuffer[Card]()
     enemyCards = new ListBuffer[Card]()
@@ -91,32 +91,34 @@ case class Game(numOfCards: Int = 7) {
         }
       }
     }
-    for (i <- 1 to 108) {
-      cardsCovered = cards(i - 1) +: cardsCovered
-      cards = cards.take(i - 1) ++ cards.drop(i)
+    for (_ <- 1 to 108) {
+      cardsCovered = cardsCovered :+ cards(0)
+      cards = cards.take(0) ++ cards.drop(1)
     }
+
     cardsRevealed = cardsCovered(0) +: cardsRevealed
     cardsCovered = cardsCovered.drop(1)
-    handCards = cardsCovered(0) +: handCards
+    handCards =  handCards :+ cardsCovered(0)
     cardsCovered = cardsCovered.drop(1)
-    enemyCards = cardsCovered(0) +: enemyCards
+    enemyCards = enemyCards :+ cardsCovered(0)
     cardsCovered = cardsCovered.drop(1)
-    handCards = cardsCovered(23) +: handCards
-    cardsCovered =cardsCovered.take(23) ++ cardsCovered.drop(24)
-    enemyCards = cardsCovered(23) +: enemyCards
+    handCards = handCards :+ cardsCovered(23)
     cardsCovered = cardsCovered.take(23) ++ cardsCovered.drop(24)
-    handCards = cardsCovered(23) +: handCards
+    enemyCards = enemyCards :+ cardsCovered(23)
     cardsCovered = cardsCovered.take(23) ++ cardsCovered.drop(24)
-    enemyCards = cardsCovered(23) +: enemyCards
-    cardsCovered = cardsCovered.take(23) ++ cardsCovered.drop(24)
-    handCards = cardsCovered(99) +: handCards
+    handCards = handCards :+ cardsCovered(46)
+    cardsCovered = cardsCovered.take(46) ++ cardsCovered.drop(47)
+    enemyCards = enemyCards :+ cardsCovered(46)
+    cardsCovered = cardsCovered.take(46) ++ cardsCovered.drop(47)
+    handCards = handCards :+ cardsCovered(99)
     cardsCovered = cardsCovered.take(99) ++ cardsCovered.drop(100)
-    enemyCards = cardsCovered(99) +: enemyCards
+    enemyCards = enemyCards :+ cardsCovered(99)
     cardsCovered = cardsCovered.take(99)
-    handCards = cardsCovered(95) +: handCards
+    handCards = handCards :+ cardsCovered(95)
     cardsCovered = cardsCovered.take(95) ++ cardsCovered.drop(96)
-    enemyCards = cardsCovered(95) +: enemyCards
+    enemyCards = enemyCards :+ cardsCovered(95)
     cardsCovered = cardsCovered.take(95) ++ cardsCovered.drop(96)
+    this
   }
 
   def pushCard(card: Card) : Game = {
