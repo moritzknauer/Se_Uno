@@ -32,17 +32,18 @@ class ControllerSpec extends WordSpec with Matchers {
         controller.gameToString should be (controller.game.toString)
       }
       "Should be able to check if a String is Pushable" in {
-        controller.pushable(controller.game.handCards.head.toString) should be (controller.game.pushable(controller.game.handCards.head))
+        controller.pushable(controller.game.player.handCards.head.toString) should be
+        (controller.game.player.pushable(controller.game.player.handCards.head, controller.game))
       }
       "Should be able to check if a String is not Pushable" in {
         controller.pushable("Hallo") should be (false)
       }
       "Should be able to push a Card" in {
-        controller.pushCard(controller.game.handCards.head.toString)
+        controller.pushCard(controller.game.player.handCards.head.toString)
         observer.updated should be(true)
       }
       "Should be able to check if a Card can be pulled" in {
-        controller.pullable() should be (controller.game.pullable())
+        controller.pullable() should be (controller.game.player.pullable(controller.game))
       }
       "Should be able to pull a Card" in {
         controller.pull()
