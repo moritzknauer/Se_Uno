@@ -29,103 +29,126 @@ class GameSpec extends WordSpec {
           "└-------┘             └-------┘\n\n┌-------┐  \n|       |  \n|  " +
           newGame.handCards(0).toString + "  |  \n|       |  \n└-------┘  ")
       }
-      "be able to check if a Card can be pushed" in{
-        newGame.pushable(Card(newGame.cardsRevealed.head.color, newGame.cardsRevealed.head.value)) should be (true)
+
+      "be able to initialize the Lists for the Test Cases" in {
+        newGame.initializeTestGame() should be(newGame)
       }
-      "be able to check if a second Card can be pushed" in{
-        newGame.pushable(Card(Color.Blue, Value.Zero)) should be {
-          if (newGame.cardsRevealed.head.color == Color.Blue || newGame.cardsRevealed.head.value == Value.Zero
-                || newGame.cardsRevealed.head.color == Color.Schwarz) {
-            true
-          } else {
-            false
-          }
-        }
+
+
+      "Have a new List of Hand Cards" in {
+        newGame.handCards.size should be(5)
       }
-      "be able to check if a third Card can be pushed" in{
-        newGame.pushable(Card(Color.Red, Value.One)) should be {
-          if (newGame.cardsRevealed.head.color == Color.Red || newGame.cardsRevealed.head.value == Value.One
-            || newGame.cardsRevealed.head.color == Color.Schwarz) {
-            true
-          } else {
-            false
-          }
-        }
+      "Have a new List of Enemy Cards" in {
+        newGame.enemyCards.size should be (5)
       }
-      "be able to check if a fourth Card can be pushed" in{
-        newGame.pushable(Card(Color.Yellow, Value.Three)) should be {
-          if (newGame.cardsRevealed.head.color == Color.Yellow || newGame.cardsRevealed.head.value == Value.Three
-                || newGame.cardsRevealed.head.color == Color.Schwarz
-               ) {
-            true
-          } else {
-            false
-          }
-        }
+      "Have a new List of Revealed Cards" in {
+        newGame.cardsRevealed.size should be (1)
       }
-      "be able to check if a fifth Card can be pushed" in{
-        newGame.pushable(Card(Color.Schwarz, Value.ColorChange)) should be (true)
+      "Have a new List of Covered Cards" in {
+        newGame.cardsCovered.size should be (97)
       }
-      "be able to push a Card" in{
+
+
+      "be able to check if a Card of the Players Card List can be pushed" in{
+        newGame.pushable(Card(newGame.handCards(4).color, newGame.handCards(4).value)) should be (false)
+      }
+      "be able to check if a Card of the Enemys Card List can be pushed" in{
+        newGame.pushableEnemy(Card(newGame.enemyCards(4).color, newGame.enemyCards(4).value)) should be (false)
+      }
+      "be able to check if a second Card of the Players Card List can be pushed" in{
+        newGame.pushable(Card(newGame.handCards(1).color, newGame.handCards(1).value)) should be (false)
+      }
+      "be able to check if a second Card of the Enemys Card List can be pushed" in{
+        newGame.pushableEnemy(Card(newGame.enemyCards(1).color, newGame.enemyCards(1).value)) should be (false)
+      }
+
+
+      "be able to check if a third Card of the Players Card List can be pushed" in{
+        newGame.pushable(Card(newGame.handCards(0).color, newGame.handCards(0).value)) should be (true)
+      }
+      "be able to check if a third Card of the Enemys Card List can be pushed" in{
+        newGame.pushableEnemy(Card(newGame.enemyCards(0).color, newGame.enemyCards(0).value)) should be (true)
+      }
+      "be able to push a Card of the Players Card List" in{
         newGame.pushCard(Card(newGame.handCards.head.color, newGame.handCards.head.value)) should be(newGame)
       }
-      "be able to check if a sixth Card can be pushed" in{
-        newGame.pushable(Card(Color.Schwarz, Value.PlusFour)) should be (true)
+      "be able to push a Card of the Enemys Card List" in{
+        newGame.pushCardEnemy(Card(newGame.enemyCards.head.color, newGame.enemyCards.head.value)) should be(newGame)
       }
-      "be able to check if a Card can be pulled" in{
-        newGame.pullable() should be (true)
+
+
+      "be able to check if a fourth Card of the Players Card List can be pushed" in{
+        newGame.pushable(Card(newGame.handCards(0).color, newGame.handCards(0).value)) should be (true)
       }
-      "be able to pull a Card" in{
-        newGame.pull() should be (newGame)
+      "be able to check if a fourth Card of the Enemys Card List can be pushed" in{
+        newGame.pushableEnemy(Card(newGame.enemyCards(0).color, newGame.enemyCards(0).value)) should be (true)
       }
-      "be able to pull another Card" in{
-        newGame.pull() should be (newGame)
-      }
-      "be able to pull a third Card" in{
-        newGame.pull() should be (newGame)
-      }
-      "be able to pull a forth Card" in{
-        newGame.pull() should be (newGame)
-      }
-      "be able to pull a fifth Card" in{
-        newGame.pull() should be (newGame)
-      }
-      "be able to pull a sixth Card" in{
-        newGame.pull() should be (newGame)
-      }
-      "be able to pull a seventh Card" in{
-        newGame.pull() should be (newGame)
-      }
-      "be able to pull a eighth Card" in{
-        newGame.pull() should be (newGame)
-      }
-      "be able to pull a ninth Card" in{
-        newGame.pull() should be (newGame)
-      }
-      "be able to pull a tenth Card" in{
-        newGame.pull() should be (newGame)
-      }
-      "be able to check if a seventh Card can be pushed" in{
-        newGame.pushable(Card(Color.Schwarz, Value.PlusFour)) should be {
-          var j = 0
-          for(i <- 1 to newGame.handCards.length) {
-            if (newGame.handCards(i-1).color == newGame.cardsRevealed.head.color) {
-              j += 1
-            }
-          }
-          if(j != 0) {
-            false
-          } else {
-            true
-          }
-        }
-      }
-      "be able to push another Card" in{
+      "be able to push a second Card of the Players Card List" in{
         newGame.pushCard(Card(newGame.handCards.head.color, newGame.handCards.head.value)) should be(newGame)
       }
-      "be able to check if another Card can be pulled" in{
+      "be able to push a second Card of the Enemys Card List" in{
+        newGame.pushCardEnemy(Card(newGame.enemyCards.head.color, newGame.enemyCards.head.value)) should be(newGame)
+      }
+
+
+      "be able to check if a fifth Card of the Players Card List can be pushed" in{
+        newGame.pushable(Card(newGame.handCards(1).color, newGame.handCards(1).value)) should be (true)
+      }
+      "be able to check if a fifth Card of the Enemys Card List can be pushed" in{
+        newGame.pushableEnemy(Card(newGame.enemyCards(1).color, newGame.enemyCards(1).value)) should be (true)
+      }
+      "be able to push a third Card of the Players Card List" in{
+        newGame.pushCard(Card(newGame.handCards(1).color, newGame.handCards(1).value)) should be(newGame)
+      }
+      "be able to push a third Card of the Enemys Card List" in{
+        newGame.pushCardEnemy(Card(newGame.enemyCards(1).color, newGame.enemyCards(1).value)) should be(newGame)
+      }
+
+
+      "be able to check if a sixth Card of the Players Card List can be pushed" in{
+        newGame.pushable(Card(newGame.handCards(0).color, newGame.handCards(0).value)) should be (true)
+      }
+      "be able to check if a sixth Card of the Enemys Card List can be pushed" in{
+        newGame.pushableEnemy(Card(newGame.enemyCards(0).color, newGame.enemyCards(0).value)) should be (true)
+      }
+      "be able to push a fourth Card of the Players Card List" in{
+        newGame.pushCard(Card(newGame.handCards(0).color, newGame.handCards(0).value)) should be(newGame)
+      }
+      "be able to push a fourth Card of the Enemys Card List" in{
+        newGame.pushCardEnemy(Card(newGame.enemyCards(0).color, newGame.enemyCards(0).value)) should be(newGame)
+      }
+
+
+      "be able to check if a Card of the Players Card List can be pulled" in{
         newGame.pullable() should be (false)
       }
+
+
+      "be able to check if a seventh Card of the Players Card List can be pushed" in{
+        newGame.pushable(Card(newGame.handCards.head.color, newGame.handCards.head.value)) should be (true)
+      }
+      "be able to check if a seventh Card of the Enemys Card List can be pushed" in{
+        newGame.pushableEnemy(Card(newGame.enemyCards.head.color, newGame.enemyCards.head.value)) should be (true)
+      }
+      "be able to push a fifth Card of the Players Card List" in{
+        newGame.pushCard(Card(newGame.handCards.head.color, newGame.handCards.head.value)) should be(newGame)
+      }
+      "be able to push a fifth Card of the Enemys Card List" in{
+        newGame.pushCardEnemy(Card(newGame.enemyCards.head.color, newGame.enemyCards.head.value)) should be(newGame)
+      }
+
+
+      "be able to check if a second Card of the Players Card List can be pulled" in{
+        newGame.pullable() should be (true)
+      }
+      "be able to pull a Card to the Players Card List" in{
+        newGame.pull() should be (newGame)
+      }
+      "be able to pull a Card to the Enemys Card List" in{
+        newGame.pullEnemy() should be (newGame)
+      }
+
+
       "be able to Check if a String equals a Card of the List of Hand Cards" in{
         newGame.equalsCard(newGame.handCards(0).toString) should be (true)
       }
@@ -137,92 +160,8 @@ class GameSpec extends WordSpec {
       }
 
 
-      "be able to check if a Card of the Enemys Card List can be pushed" in{
-        newGame.pushableEnemy(Card(newGame.cardsRevealed.head.color, newGame.cardsRevealed.head.value)) should be (true)
-      }
-      "be able to check if a second Card of the Enemys Card List can be pushed" in{
-        newGame.pushableEnemy(Card(Color.Blue, Value.Zero)) should be {
-          if (newGame.cardsRevealed.head.color == Color.Blue || newGame.cardsRevealed.head.value == Value.Zero
-            || newGame.cardsRevealed.head.color == Color.Schwarz) {
-            true
-          } else {
-            false
-          }
-        }
-      }
-      "be able to check if a third Card of the Enemys Card List can be pushed" in{
-        newGame.pushableEnemy(Card(Color.Red, Value.One)) should be {
-          if (newGame.cardsRevealed.head.color == Color.Red || newGame.cardsRevealed.head.value == Value.One
-            || newGame.cardsRevealed.head.color == Color.Schwarz) {
-            true
-          } else {
-            false
-          }
-        }
-      }
-      "be able to check if a fourth Card of the Enemys Card List can be pushed" in{
-        newGame.pushableEnemy(Card(Color.Yellow, Value.Three)) should be {
-          if (newGame.cardsRevealed.head.color == Color.Yellow || newGame.cardsRevealed.head.value == Value.Three
-            || newGame.cardsRevealed.head.color == Color.Schwarz) {
-            true
-          } else {
-            false
-          }
-        }
-      }
-      "be able to check if a fifth Card of the Enemys Card List can be pushed" in{
-        newGame.pushableEnemy(Card(Color.Schwarz, Value.ColorChange)) should be (true)
-      }
-      "be able to push a Card of the Enemys Cards" in{
-        newGame.pushCardEnemy(Card(newGame.enemyCards.head.color, newGame.enemyCards.head.value)) should be(newGame)
-      }
-      "be able to check if a sixth Card of the Enemys Card List can be pushed" in{
-        newGame.pushableEnemy(Card(Color.Schwarz, Value.PlusFour)) should be (true)
-      }
       "be able to do the Enemys Run" in{
         newGame.enemy() should be (newGame)
-      }
-      "be able to pull a Card to the Enemys Cards" in{
-        newGame.pullEnemy() should be (newGame)
-      }
-      "be able to pull another Card to the Enemys Cards" in{
-        newGame.pullEnemy() should be (newGame)
-      }
-      "be able to pull a third Card to the Enemys Cards" in{
-        newGame.pullEnemy() should be (newGame)
-      }
-      "be able to pull a forth Card to the Enemys Cards" in{
-        newGame.pullEnemy() should be (newGame)
-      }
-      "be able to pull a fifth Card to the Enemys Cards" in{
-        newGame.pullEnemy() should be (newGame)
-      }
-      "be able to pull a sixth Card to the Enemys Cards" in{
-        newGame.pullEnemy() should be (newGame)
-      }
-      "be able to pull a seventh Card to the Enemys Cards" in{
-        newGame.pullEnemy() should be (newGame)
-      }
-      "be able to pull a eighth Card to the Enemys Cards" in{
-        newGame.pullEnemy() should be (newGame)
-      }
-      "be able to check if a seventh Card of the Enemys Card List can be pushed" in{
-        newGame.pushableEnemy(Card(Color.Schwarz, Value.PlusFour)) should be {
-          var j = 0
-          for(i <- 1 to newGame.enemyCards.length) {
-            if (newGame.enemyCards(i-1).color == newGame.cardsRevealed.head.color) {
-              j += 1
-            }
-          }
-          if(j != 0) {
-            false
-          } else {
-            true
-          }
-        }
-      }
-      "be able to push another Card of the Enemys Cards" in{
-        newGame.pushCardEnemy(Card(newGame.enemyCards.head.color, newGame.enemyCards.head.value)) should be(newGame)
       }
       "be able to do the Enemys Run again" in{
         newGame.enemy() should be (newGame)
