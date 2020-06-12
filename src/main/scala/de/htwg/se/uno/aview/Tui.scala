@@ -1,12 +1,13 @@
 package de.htwg.se.uno.aview
 
+import java.awt.Event
+
 import de.htwg.se.uno.controller.Controller
 import de.htwg.se.uno.util.Observer
 
 
 class Tui(controller: Controller) extends Observer {
   controller.add(this)
-
 
   def processInputLine(input: String): Unit = {
     val wf:Array[String] = input.split("[^a-z^A-Z^ß^ä^ö^ü^Ä^Ö^Ü^0-9/+]+")
@@ -42,6 +43,8 @@ class Tui(controller: Controller) extends Observer {
         }
         println("Du kannst keine Karte ziehen, da du eine Karte legen kannst")
       }
+      case "z" => controller.undo
+      case "y" => controller.redo
       case _ => println("Befehl nicht bekannt")
     }
   }
