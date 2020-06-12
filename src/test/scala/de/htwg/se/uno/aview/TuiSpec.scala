@@ -6,7 +6,6 @@ import de.htwg.se.uno.aview.Tui
 import org.scalatest.{Matchers, WordSpec}
 
 class TuiSpec extends WordSpec with Matchers{
-
   "A Game Tui" should {
     val controller = new Controller(Game(20))
     val tui = new Tui(controller)

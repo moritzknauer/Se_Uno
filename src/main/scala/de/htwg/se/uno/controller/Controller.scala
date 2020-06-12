@@ -13,32 +13,31 @@ class Controller(var game:Game) extends Observable {
   def gameToString: String = game.toString
 
   def pushable(s: String):Boolean = {
-    if (game.equalsCard(s)) {
-      val card = game.getCard(s)
-      game.pushable(card)
+    if (game.player.equalsCard(s)) {
+      val card = game.player.getCard(s)
+      game.player.pushable(card, game)
     } else {
       false
     }
   }
 
   def pushCard(s: String):Unit = {
-    val card = game.getCard(s)
-    game = game.pushCard(card)
+    val card = game.player.getCard(s)
+    game.player = game.player.pushCard(card, game)
     notifyObservers
   }
 
   def pullable():Boolean = {
-    game.pullable()
+    game.player.pullable(game)
   }
 
   def pull():Unit = {
-    game = game.pull()
+    game.player = game.player.pull(game)
     notifyObservers
   }
 
   def enemy():Unit = {
-    game = game.enemy()
+    game.enemy = game.enemy.enemy(game)
     notifyObservers
   }
-
 }
