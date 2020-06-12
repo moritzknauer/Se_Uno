@@ -73,11 +73,11 @@ case class Game(numOfCards: Int = 7) {
     cardsCovered = cardsCovered.drop(1)
   }
 
-  def initializeTestGame(){
+  def initializeTestGame(): Game = {
     cardsCovered = new ListBuffer[Card]()
     cardsRevealed = new ListBuffer[Card]()
-    enemyCards = new ListBuffer[Card]()
-    handCards = new ListBuffer[Card]()
+    enemy.enemyCards = new ListBuffer[Card]()
+    player.handCards = new ListBuffer[Card]()
     var cards = new ListBuffer[Card]()
     for (color <- Color.values) {
       for (value <- Value.values) {
@@ -92,31 +92,33 @@ case class Game(numOfCards: Int = 7) {
         }
       }
     }
-    for (i <- 1 to 108) {
-      cardsCovered = cards(i - 1) +: cardsCovered
-      cards = cards.take(i - 1) ++ cards.drop(i)
+    for (_ <- 1 to 108) {
+      cardsCovered = cardsCovered :+ cards(0)
+        cards = cards.take(0) ++ cards.drop(1)
     }
-    cardsRevealed = cardsCovered(0) +: cardsRevealed
+    cardsRevealed = cardsRevealed :+ cardsCovered(0)
     cardsCovered = cardsCovered.drop(1)
-    handCards = cardsCovered(0) +: handCards
+    player.handCards = player.handCards :+ cardsCovered(0)
     cardsCovered = cardsCovered.drop(1)
-    enemyCards = cardsCovered(0) +: enemyCards
+    enemy.enemyCards = enemy.enemyCards :+ cardsCovered(0)
     cardsCovered = cardsCovered.drop(1)
-    handCards = cardsCovered(23) +: handCards
-    cardsCovered =cardsCovered.take(23) ++ cardsCovered.drop(24)
-    enemyCards = cardsCovered(23) +: enemyCards
+    player.handCards = player.handCards :+ cardsCovered(23)
     cardsCovered = cardsCovered.take(23) ++ cardsCovered.drop(24)
-    handCards = cardsCovered(23) +: handCards
+    enemy.enemyCards = enemy.enemyCards :+ cardsCovered(23)
     cardsCovered = cardsCovered.take(23) ++ cardsCovered.drop(24)
-    enemyCards = cardsCovered(23) +: enemyCards
+    player.handCards = player.handCards :+ cardsCovered(23)
     cardsCovered = cardsCovered.take(23) ++ cardsCovered.drop(24)
-    handCards = cardsCovered(99) +: handCards
+    enemy.enemyCards = enemy.enemyCards :+ cardsCovered(23)
+    cardsCovered = cardsCovered.take(23) ++ cardsCovered.drop(24)
+    player.handCards = player.handCards :+ cardsCovered(99)
     cardsCovered = cardsCovered.take(99) ++ cardsCovered.drop(100)
-    enemyCards = cardsCovered(99) +: enemyCards
+    enemy.enemyCards = enemy.enemyCards :+ cardsCovered(99)
     cardsCovered = cardsCovered.take(99)
-    handCards = cardsCovered(95) +: handCards
+    player.handCards = player.handCards :+ cardsCovered(95)
     cardsCovered = cardsCovered.take(95) ++ cardsCovered.drop(96)
-    enemyCards = cardsCovered(95) +: enemyCards
+    enemy.enemyCards = enemy.enemyCards :+ cardsCovered(95)
     cardsCovered = cardsCovered.take(95) ++ cardsCovered.drop(96)
+
+    this
   }
 }
