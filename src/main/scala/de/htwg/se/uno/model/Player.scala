@@ -2,7 +2,7 @@ package de.htwg.se.uno.model
 
 import scala.collection.mutable.ListBuffer
 
-case class Player() {
+class Player() {
   var handCards = new ListBuffer[Card]()
 
   def pushCard(card: Card, game: Game) : Player = {
