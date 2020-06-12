@@ -41,7 +41,6 @@ case class Game(numOfCards: Int = 7) {
 
   def initializeGame(numOfPlayerCards: Int){
     var cards = new ListBuffer[Card]()
-
     for (color <- Color.values) {
       for (value <- Value.values) {
         if (value == Value.Zero && color != Color.Schwarz) {
@@ -55,7 +54,6 @@ case class Game(numOfCards: Int = 7) {
         }
       }
     }
-
     var n = 108
     for (_ <- 0 to 107) {
       val r = new scala.util.Random
@@ -64,16 +62,61 @@ case class Game(numOfCards: Int = 7) {
       cards = cards.take(p - 1) ++ cards.drop(p)
       n -= 1
     }
-
     for (i <- 1 to numOfPlayerCards) {
       handCards = cardsCovered(0) +: handCards
       cardsCovered = cardsCovered.drop(1)
       enemyCards = cardsCovered(0) +: enemyCards
       cardsCovered = cardsCovered.drop(1)
     }
-
     cardsRevealed = cardsCovered(0) +: cardsRevealed
     cardsCovered = cardsCovered.drop(1)
+  }
+
+  def initializeTestGame(){
+    cardsCovered = new ListBuffer[Card]()
+    cardsRevealed = new ListBuffer[Card]()
+    enemyCards = new ListBuffer[Card]()
+    handCards = new ListBuffer[Card]()
+    var cards = new ListBuffer[Card]()
+    for (color <- Color.values) {
+      for (value <- Value.values) {
+        if (value == Value.Zero && color != Color.Schwarz) {
+          cards += Card(color, value)
+        } else if (color == Color.Schwarz && (value == Value.ColorChange || value == Value.PlusFour)) {
+          for (_ <- 0 to 3)
+            cards += Card(color, value)
+        } else if (color != Color.Schwarz && (value != Value.PlusFour && value != Value.ColorChange)) {
+          for (_ <- 0 to 1)
+            cards += Card(color, value)
+        }
+      }
+    }
+    for (i <- 1 to 108) {
+      cardsCovered = cards(i - 1) +: cardsCovered
+      cards = cards.take(i - 1) ++ cards.drop(i)
+    }
+    cardsRevealed = cardsCovered(0) +: cardsRevealed
+    cardsCovered = cardsCovered.drop(1)
+    handCards = cardsCovered(0) +: handCards
+    cardsCovered = cardsCovered.drop(1)
+    enemyCards = cardsCovered(0) +: enemyCards
+    cardsCovered = cardsCovered.drop(1)
+    handCards = cardsCovered(23) +: handCards
+    cardsCovered =cardsCovered.take(23) ++ cardsCovered.drop(24)
+    enemyCards = cardsCovered(23) +: enemyCards
+    cardsCovered = cardsCovered.take(23) ++ cardsCovered.drop(24)
+    handCards = cardsCovered(23) +: handCards
+    cardsCovered = cardsCovered.take(23) ++ cardsCovered.drop(24)
+    enemyCards = cardsCovered(23) +: enemyCards
+    cardsCovered = cardsCovered.take(23) ++ cardsCovered.drop(24)
+    handCards = cardsCovered(99) +: handCards
+    cardsCovered = cardsCovered.take(99) ++ cardsCovered.drop(100)
+    enemyCards = cardsCovered(99) +: enemyCards
+    cardsCovered = cardsCovered.take(99)
+    handCards = cardsCovered(95) +: handCards
+    cardsCovered = cardsCovered.take(95) ++ cardsCovered.drop(96)
+    enemyCards = cardsCovered(95) +: enemyCards
+    cardsCovered = cardsCovered.take(95) ++ cardsCovered.drop(96)
   }
 
   def pushCard(card: Card) : Game = {
