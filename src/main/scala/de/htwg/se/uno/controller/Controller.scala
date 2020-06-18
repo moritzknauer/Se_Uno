@@ -1,11 +1,12 @@
 package de.htwg.se.uno.controller
 
+import de.htwg.se.uno.controller.GameStatus.GameStatus
 import de.htwg.se.uno.model.Game
 import de.htwg.se.uno.util.{Observable, UndoManager}
 
 
 class Controller(var game:Game) extends Observable {
-  var gameStatus: GameStatus = IDLE
+  var gameStatus: GameStatus = GameStatus.IDLE
   private val undoManager = new UndoManager
 
   def createGame(size: Int = 7):Unit = {
@@ -16,8 +17,25 @@ class Controller(var game:Game) extends Observable {
   def gameToString: String = game.toString
 
   def set(string:String): Unit = {
-    val s = string.substring(2)
-    undoManager.doStep(new SetCommand(s, this))
+    val s = gameToString
+    undoManager.doStep(new PushCommand(string, this))
+    if(!s.equals(gameToString)) {
+      notifyObservers
+      enemy()
+    }
+  }
+
+  def get(): Unit = {
+    val s = gameToString
+    undoManager.doStep(new PullCommand(this))
+    if(!s.equals(gameToString)) {
+      notifyObservers
+      enemy()
+    }
+  }
+
+  def enemy(): Unit = {
+    undoManager.doStep(new EnemyCommand(this))
     notifyObservers
   }
 

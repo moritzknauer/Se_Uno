@@ -1,57 +1,43 @@
 package de.htwg.se.uno.model
 
 import scala.collection.mutable.ListBuffer
+import scala.collection.mutable.Stack
 
 class Player() {
   var handCards = new ListBuffer[Card]()
-  var pulled = ""
+  var stack1 = Stack[String]("")
+  var stack2 = Stack[Integer](-1)
 
-  def doS(string: String, game: Game) : Player = {
-    string match {
-      case "g" => {
-        if (pullable(game)) {
-          pulled = game.cardsCovered.head.toString
-          pull(game)
-        } else {
-          this
-        }
-      }
-      case "s" => {
-        if (string.length >= 2) {
-          val s = string.substring(2)
-          if(equalsCard(s)) {
-            val card = getCard(s)
-            if(pushable(card, game)) {
-              pulled = ""
-              return pushCard(card, game)
-            }
-          }
-        }
-        this
-      }
-      case "_" => {
-        player(game)
+
+  def pushMove(string:String, game: Game) : Player = {
+    if(equalsCard(string)) {
+      val card = getCard(string)
+      if (pushable(card, game)) {
+        stack1.push(" ")
+        return pushCard(card, game)
       }
     }
+    this
   }
 
-  def player(game: Game) : Player = {
-    for (i <- 1 to handCards.length) {
-      if(pushable(handCards(i-1), game)) {
-        pulled = ""
-        return pushCard(handCards(i-1), game)
-      }
+  def pullMove(game:Game) : Player = {
+    if (pullable(game)) {
+      stack1.push(game.cardsCovered.head.toString)
+      stack2.push(-1)
+      pull(game)
+    } else {
+      this
     }
-    pulled = game.cardsCovered.head.toString
-    pull(game)
   }
 
   def undo(game: Game) : Player = {
-    if(pulled.equals("")) {
-      handCards = game.cardsRevealed.head +: handCards
+    if(stack1.top.equals(" ")) {
+      handCards = handCards.take(stack2.top) ++ game.cardsRevealed.take(1) ++ handCards.drop(stack2.top)
       game.cardsRevealed = game.cardsRevealed.drop(1)
+      stack1.pop()
+      stack2.pop()
     } else {
-      val card = getCard(pulled)
+      val card = getCard(stack1.top)
       game.cardsCovered = card +: game.cardsCovered
       var c = 0
       for (i <- 2 to handCards.length) {
@@ -63,6 +49,8 @@ class Player() {
       if (c==0) {
         handCards = handCards.take(handCards.length - 1)
       }
+      stack1.pop()
+      stack2.pop()
     }
     this
   }
@@ -73,12 +61,14 @@ class Player() {
       if (handCards(i - 2).color == card.color && handCards(i - 2).value == card.value && c == 0) {
         game.cardsRevealed = handCards(i - 2) +: game.cardsRevealed
         handCards = handCards.take(i - 2) ++ handCards.drop(i-1)
+        stack2.push(i-2)
         c += 1
       }
     }
     if (c == 0) {
       game.cardsRevealed = handCards(handCards.length-1) +: game.cardsRevealed
       handCards = handCards.take(handCards.length - 1)
+      stack2.push(handCards.length-1)
     }
     this
   }

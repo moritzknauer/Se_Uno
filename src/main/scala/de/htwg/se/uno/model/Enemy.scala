@@ -1,23 +1,30 @@
 package de.htwg.se.uno.model
 
+import java.util
+
+import scala.collection.mutable
 import scala.collection.mutable.ListBuffer
+import scala.collection.mutable.Stack
 
 class Enemy() {
   var enemyCards = new ListBuffer[Card]()
-  var pulled = ""
+  var stack1 = Stack[String](" ")
+  var stack2 = Stack[Integer](-1)
 
   def undo(game: Game) : Enemy = {
-    if(pulled.equals("")) {
-      enemyCards = game.cardsRevealed.head +: enemyCards
+    if(stack1.top.equals("")) {
+      enemyCards = enemyCards.take(stack2.top) ++ game.cardsRevealed.take(1) ++ enemyCards.drop(stack2.top)
       game.cardsRevealed = game.cardsRevealed.drop(1)
+      stack1.pop()
+      stack2.pop()
     } else {
       var c = 0
       for(i <- 1 to enemyCards.length) {
-        if(enemyCards(i - 1).toString.equals(pulled) && c == 0) {
+        if(enemyCards(i - 1).toString.equals(stack1.top) && c == 0) {
           c = i-1
         }
       }
-      var card = enemyCards(c-1)
+      val card = enemyCards(c-1)
       game.cardsCovered = card +: game.cardsCovered
       for (i <- 2 to enemyCards.length) {
         if (enemyCards(i - 2).color == card.color && enemyCards(i - 2).value == card.value && c == 1) {
@@ -28,6 +35,8 @@ class Enemy() {
       if (c==1) {
         enemyCards = enemyCards.take(enemyCards.length - 1)
       }
+      stack1.pop()
+      stack2.pop()
     }
     this
   }
@@ -57,11 +66,13 @@ class Enemy() {
   def enemy(game: Game) : Enemy = {
     for (i <- 1 to enemyCards.length) {
       if(pushableEnemy(enemyCards(i-1), game)) {
-        pulled = ""
+        stack1.push("")
+        stack2.push(i-2)
         return pushCardEnemy(enemyCards(i-1), game)
       }
     }
-    pulled = game.cardsCovered.head.toString
+    stack1.push(game.cardsCovered.head.toString)
+    stack2.push(-1)
     pullEnemy(game)
   }
 

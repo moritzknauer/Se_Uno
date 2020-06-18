@@ -31,27 +31,27 @@ class ControllerSpec extends WordSpec with Matchers {
       "Should Have a String Representation of the game" in {
         controller.gameToString should be (controller.game.toString)
       }
-      "Should be able to check if a String is Pushable" in {
-        controller.pushable(controller.game.player.handCards.head.toString) should be
-        (controller.game.player.pushable(controller.game.player.handCards.head, controller.game))
-      }
-      "Should be able to check if a String is not Pushable" in {
-        controller.pushable("Hallo") should be (false)
+      "Should be able to initialize a Test Game" in {
+        controller.game = controller.game.initializeTestGame()
       }
       "Should be able to push a Card" in {
-        controller.pushCard(controller.game.player.handCards.head.toString)
+        controller.set(controller.game.player.handCards.head.toString)
         observer.updated should be(true)
       }
-      "Should be able to check if a Card can be pulled" in {
-        controller.pullable() should be (controller.game.player.pullable(controller.game))
-      }
       "Should be able to pull a Card" in {
-        controller.pull()
+        controller.get()
         observer.updated should be(true)
       }
       "Should be able to let the enemy run" in{
         controller.enemy()
         observer.updated should be(true)
+      }
+      "Should be able to undo a Step" in {
+        controller.undo
+        observer.updated should be(true)
+      }
+      "Should be able to redo a Step" in{
+        observer.updated should be (true)
       }
     }
   }

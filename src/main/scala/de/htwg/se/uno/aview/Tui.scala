@@ -1,6 +1,6 @@
 package de.htwg.se.uno.aview
 
-import de.htwg.se.uno.controller.Controller
+import de.htwg.se.uno.controller.{Controller, GameStatus}
 import de.htwg.se.uno.util.Observer
 
 
@@ -20,17 +20,19 @@ class Tui(controller: Controller) extends Observer {
       }
       case "q" =>
       case "s" => {
-        var s = ""
-        if (wf.length == 3) {
-          s = wf(1) + " " + wf(2)
-        } else {
-          s = wf(1)
-        }
-        controller.set(s)
+        controller.set(input.substring(2))
       }
-      case "g" => controller.set("")
-      case "r" => controller.redo
-      case "u" => controller.undo
+      case "g" => {
+        controller.get()
+      }
+      case "r" => {
+        controller.redo
+        controller.redo
+      }
+      case "u" => {
+        controller.undo
+        controller.undo
+      }
       case _ => println("Befehl nicht bekannt")
     }
   }
