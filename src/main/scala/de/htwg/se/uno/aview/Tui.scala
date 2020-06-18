@@ -26,25 +26,18 @@ class Tui(controller: Controller) extends Observer {
         } else {
           s = wf(1)
         }
-        if (controller.pushable(s)) {
-          controller.pushCard(s)
-          println("Gegner ist an der Reihe")
-          controller.enemy()
-        } else {
-          println("Du kannst diese Karte nicht legen")
-        }
+        controller.set(s)
       }
-      case "g" => {
-        if(controller.pullable()) {
-          controller.pull()
-          println("Gegner ist an der Reihe")
-          return controller.enemy()
-        }
-        println("Du kannst keine Karte ziehen, da du eine Karte legen kannst")
-      }
+      case "g" => controller.set("")
+      case "r" => controller.redo
+      case "u" => controller.undo
       case _ => println("Befehl nicht bekannt")
     }
   }
 
-  override def update: Boolean = {println(controller.gameToString);true}
+  override def update: Boolean = {
+    println(controller.gameToString)
+    println(GameStatus.message(controller.gameStatus))
+    controller.gameStatus=GameStatus.IDLE
+    true}
 }

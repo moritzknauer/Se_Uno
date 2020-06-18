@@ -4,6 +4,33 @@ import scala.collection.mutable.ListBuffer
 
 class Enemy() {
   var enemyCards = new ListBuffer[Card]()
+  var pulled = ""
+
+  def undo(game: Game) : Enemy = {
+    if(pulled.equals("")) {
+      enemyCards = game.cardsRevealed.head +: enemyCards
+      game.cardsRevealed = game.cardsRevealed.drop(1)
+    } else {
+      var c = 0
+      for(i <- 1 to enemyCards.length) {
+        if(enemyCards(i - 1).toString.equals(pulled) && c == 0) {
+          c = i-1
+        }
+      }
+      var card = enemyCards(c-1)
+      game.cardsCovered = card +: game.cardsCovered
+      for (i <- 2 to enemyCards.length) {
+        if (enemyCards(i - 2).color == card.color && enemyCards(i - 2).value == card.value && c == 1) {
+          enemyCards = enemyCards.take(i - 2) ++ enemyCards.drop(i - 1)
+          c = 2
+        }
+      }
+      if (c==1) {
+        enemyCards = enemyCards.take(enemyCards.length - 1)
+      }
+    }
+    this
+  }
 
   def pushCardEnemy(card: Card, game: Game) : Enemy = {
     var c = 0
@@ -30,9 +57,11 @@ class Enemy() {
   def enemy(game: Game) : Enemy = {
     for (i <- 1 to enemyCards.length) {
       if(pushableEnemy(enemyCards(i-1), game)) {
+        pulled = ""
         return pushCardEnemy(enemyCards(i-1), game)
       }
     }
+    pulled = game.cardsCovered.head.toString
     pullEnemy(game)
   }
 
