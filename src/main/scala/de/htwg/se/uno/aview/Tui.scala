@@ -1,7 +1,8 @@
 package de.htwg.se.uno.aview
 
+
 import de.htwg.se.uno.controller.Controller
-import de.htwg.se.uno.util.Observer
+import de.htwg.se.uno.util.{Observer, State, pullCardNotAllowedEvent, pushCardNotAllowedEvent, enemyTurnEvent, unknownCommandEvent}
 
 
 class Tui(controller: Controller) extends Observer {
@@ -28,21 +29,26 @@ class Tui(controller: Controller) extends Observer {
         }
         if (controller.pushable(s)) {
           controller.pushCard(s)
-          println("Gegner ist an der Reihe")
+          //println("Gegner ist an der Reihe")
+          State.handle(enemyTurnEvent())
           controller.enemy()
         } else {
-          println("Du kannst diese Karte nicht legen")
+          //println("Du kannst diese Karte nicht legen")
+          State.handle(pushCardNotAllowedEvent())
         }
       }
       case "g" => {
         if(controller.pullable()) {
           controller.pull()
-          println("Gegner ist an der Reihe")
+          //println("Gegner ist an der Reihe")
+          State.handle(enemyTurnEvent())
           return controller.enemy()
         }
-        println("Du kannst keine Karte ziehen, da du eine Karte legen kannst")
+        //println("Du kannst keine Karte ziehen, da du eine Karte legen kannst")
+        State.handle(pullCardNotAllowedEvent())
       }
-      case _ => println("Befehl nicht bekannt")
+      case _ => State.handle(unknownCommandEvent())    //println("Befehl nicht bekannt")
+
     }
   }
 
