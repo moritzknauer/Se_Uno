@@ -24,15 +24,16 @@ class Enemy() {
           c = i-1
         }
       }
-      val card = enemyCards(c-1)
+      val card = enemyCards(c)
+      c = 0
       game.cardsCovered = card +: game.cardsCovered
       for (i <- 2 to enemyCards.length) {
-        if (enemyCards(i - 2).color == card.color && enemyCards(i - 2).value == card.value && c == 1) {
+        if (enemyCards(i - 2).color == card.color && enemyCards(i - 2).value == card.value && c == 0) {
           enemyCards = enemyCards.take(i - 2) ++ enemyCards.drop(i - 1)
-          c = 2
+          c = 1
         }
       }
-      if (c==1) {
+      if (c==0) {
         enemyCards = enemyCards.take(enemyCards.length - 1)
       }
       stack1.pop()
@@ -48,16 +49,21 @@ class Enemy() {
         game.cardsRevealed = enemyCards(i - 2) +: game.cardsRevealed
         enemyCards = enemyCards.take(i - 2) ++ enemyCards.drop(i-1)
         c += 1
+        stack2.push(i-2)
       }
     }
     if (c == 0) {
       game.cardsRevealed = enemyCards(enemyCards.length - 1) +: game.cardsRevealed
       enemyCards = enemyCards.take(enemyCards.length - 1)
+      stack2.push(enemyCards.length - 1)
     }
+    stack1.push("")
     this
   }
 
   def pullEnemy(game: Game) : Enemy = {
+    stack1.push(game.cardsCovered.head.toString)
+    stack2.push(-1)
     enemyCards += Card(game.cardsCovered.head.color, game.cardsCovered.head.value)
     game.cardsCovered = game.cardsCovered.drop(1)
     this
@@ -66,13 +72,9 @@ class Enemy() {
   def enemy(game: Game) : Enemy = {
     for (i <- 1 to enemyCards.length) {
       if(pushableEnemy(enemyCards(i-1), game)) {
-        stack1.push("")
-        stack2.push(i-2)
         return pushCardEnemy(enemyCards(i-1), game)
       }
     }
-    stack1.push(game.cardsCovered.head.toString)
-    stack2.push(-1)
     pullEnemy(game)
   }
 
