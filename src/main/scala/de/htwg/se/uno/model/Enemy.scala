@@ -15,16 +15,14 @@ class Enemy() {
     if(stack1.top.equals("")) {
       enemyCards = enemyCards.take(stack2.top) ++ game.cardsRevealed.take(1) ++ enemyCards.drop(stack2.top)
       game.cardsRevealed = game.cardsRevealed.drop(1)
-      stack1.pop()
-      stack2.pop()
     } else {
       var c = 0
       for(i <- 1 to enemyCards.length) {
         if(enemyCards(i - 1).toString.equals(stack1.top) && c == 0) {
-          c = i-1
+          c = i
         }
       }
-      val card = enemyCards(c)
+      val card = enemyCards(c-1)
       c = 0
       game.cardsCovered = card +: game.cardsCovered
       for (i <- 2 to enemyCards.length) {
@@ -33,12 +31,12 @@ class Enemy() {
           c = 1
         }
       }
-      if (c==0) {
+      if (c == 0) {
         enemyCards = enemyCards.take(enemyCards.length - 1)
       }
-      stack1.pop()
-      stack2.pop()
     }
+    stack1.pop()
+    stack2.pop()
     this
   }
 

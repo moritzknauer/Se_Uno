@@ -56,14 +56,13 @@ class EnemySpec extends WordSpec {
       }
 
 
-
-
       "be able to do the Enemys Run" in{
         newGame.enemy.enemy(newGame) should be (newGame.enemy)
       }
       "be able to do the Enemys Run again" in{
         newGame.enemy.enemy(newGame) should be (newGame.enemy)
       }
+
 
       "be able to Undo a Step" in {
         newGame.enemy.undo(newGame) should be (newGame.enemy)
@@ -78,6 +77,12 @@ class EnemySpec extends WordSpec {
         newGame.enemy.undo(newGame) should be (newGame.enemy)
       }
       "be able to Undo a fifth Step" in {
+        newGame.enemy.undo(newGame) should be (newGame.enemy)
+      }
+      "be able to Undo a sixth Step" in {
+        newGame.enemy.undo(newGame) should be (newGame.enemy)
+      }
+      "be able to Undo a seventh Step" in {
         newGame.enemy.undo(newGame) should be (newGame.enemy)
       }
     }

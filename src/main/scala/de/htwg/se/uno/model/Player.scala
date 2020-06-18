@@ -5,7 +5,7 @@ import scala.collection.mutable.Stack
 
 class Player() {
   var handCards = new ListBuffer[Card]()
-  var stack1 = Stack[String]("")
+  var stack1 = Stack[String](" ")
   var stack2 = Stack[Integer](-1)
 
 
@@ -13,7 +13,6 @@ class Player() {
     if(equalsCard(string)) {
       val card = getCard(string)
       if (pushable(card, game)) {
-        stack1.push(" ")
         return pushCard(card, game)
       }
     }
@@ -22,8 +21,6 @@ class Player() {
 
   def pullMove(game:Game) : Player = {
     if (pullable(game)) {
-      stack1.push(game.cardsCovered.head.toString)
-      stack2.push(-1)
       pull(game)
     } else {
       this
@@ -31,11 +28,9 @@ class Player() {
   }
 
   def undo(game: Game) : Player = {
-    if(stack1.top.equals(" ")) {
+    if(stack1.top.equals("")) {
       handCards = handCards.take(stack2.top) ++ game.cardsRevealed.take(1) ++ handCards.drop(stack2.top)
       game.cardsRevealed = game.cardsRevealed.drop(1)
-      stack1.pop()
-      stack2.pop()
     } else {
       val card = getCard(stack1.top)
       game.cardsCovered = card +: game.cardsCovered
@@ -49,9 +44,9 @@ class Player() {
       if (c==0) {
         handCards = handCards.take(handCards.length - 1)
       }
-      stack1.pop()
-      stack2.pop()
     }
+    stack1.pop()
+    stack2.pop()
     this
   }
 
@@ -70,6 +65,7 @@ class Player() {
       handCards = handCards.take(handCards.length - 1)
       stack2.push(handCards.length-1)
     }
+    stack1.push("")
     this
   }
 
@@ -98,6 +94,8 @@ class Player() {
   }
 
   def pull(game: Game) : Player = {
+    stack1.push(game.cardsCovered.head.toString)
+    stack2.push(-1)
     handCards += Card(game.cardsCovered.head.color, game.cardsCovered.head.value)
     game.cardsCovered = game.cardsCovered.drop(1)
     this
