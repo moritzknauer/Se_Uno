@@ -61,6 +61,14 @@ class PlayerSpec extends WordSpec {
       }
 
 
+      "be able to undo a Step" in {
+        newGame.player.undo(newGame) should be(newGame.player)
+      }
+      "be able to push a sixth Card of the Players Card List" in{
+        newGame.player.pushCard(Card(newGame.player.handCards.head.color, newGame.player.handCards.head.value), newGame) should be(newGame.player)
+      }
+
+
       "be able to check if a second Card of the Players Card List can be pulled" in{
         newGame.player.pullable(newGame) should be (true)
       }

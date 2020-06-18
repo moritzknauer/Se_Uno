@@ -63,7 +63,15 @@ class EnemySpec extends WordSpec {
         newGame.enemy.enemy(newGame) should be (newGame.enemy)
       }
 
-
+      "be able to pull a Card to the Enemys Card List" in {
+        newGame.enemy.pullEnemy(newGame) should be(newGame.enemy)
+      }
+      "be able to pull another Card to the Enemys Card List" in {
+        newGame.enemy.pullEnemy(newGame) should be(newGame.enemy)
+      }
+      "be able to pull a third Card to the Enemys Card List" in {
+        newGame.enemy.pullEnemy(newGame) should be(newGame.enemy)
+      }
       "be able to Undo a Step" in {
         newGame.enemy.undo(newGame) should be (newGame.enemy)
       }
