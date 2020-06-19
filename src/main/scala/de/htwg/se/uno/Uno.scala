@@ -15,7 +15,7 @@ object Uno {
     var input: String = ""
 
     do {
-      println("Mögliche Befehle: q, n, s [Karte], g")
+      println("Mögliche Befehle: q, n, s [Karte], g, u, r")
       input = readLine()
       tui.processInputLine(input)
     } while (input != "q")
