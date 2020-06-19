@@ -11,6 +11,12 @@ class UndoManagerSpec extends WordSpec with Matchers { {
       val game = new Game()
       val controller = new Controller(game)
       val command = new PullCommand(controller)
+      "Not be able to undo a Step" in {
+        undoManager.undoStep
+      }
+      "Not be able to redo a Step" in {
+        undoManager.redoStep
+      }
       "be able to do a Step" in {
         undoManager.doStep(command)
       }
