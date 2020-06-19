@@ -1,7 +1,7 @@
 package de.htwg.se.uno.controller
 
 import de.htwg.se.uno.model.Game
-import de.htwg.se.uno.util.{Observer, State, enemyTurnEvent, yourTurnEvent}
+import de.htwg.se.uno.util.{Observer, State, enemyTurnEvent, pullCardNotAllowedEvent, pushCardNotAllowedEvent, unknownCommandEvent, yourTurnEvent}
 import org.scalatest.{Matchers, WordSpec}
 
 import scala.language.reflectiveCalls
@@ -60,6 +60,18 @@ class ControllerSpec extends WordSpec with Matchers {
       "Should be able to update the state to enemys turn" in {
         State.handle(enemyTurnEvent())
         State.state should be(State.enemyTurn)
+      }
+      "Should be able to update the state to pushCardNotAllowed Event" in {
+        State.handle(pushCardNotAllowedEvent())
+        State.state should be(State.pushCardNotAllowed)
+      }
+      "Should be able to update the state to pullCardNotAllowed Event" in {
+        State.handle(pullCardNotAllowedEvent())
+        State.state should be(State.pullCardNotAllowed)
+      }
+      "Should be able to update the state to unknownCommand Event" in {
+        State.handle(unknownCommandEvent())
+        State.state should be(State.unknownCommand)
       }
     }
   }
