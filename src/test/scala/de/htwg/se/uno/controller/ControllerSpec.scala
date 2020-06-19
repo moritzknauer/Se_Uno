@@ -1,7 +1,7 @@
 package de.htwg.se.uno.controller
 
 import de.htwg.se.uno.model.Game
-import de.htwg.se.uno.util.{Observer, State, enemyTurnEvent}
+import de.htwg.se.uno.util.{Observer, State, enemyTurnEvent, yourTurnEvent}
 import org.scalatest.{Matchers, WordSpec}
 
 import scala.language.reflectiveCalls
@@ -53,9 +53,13 @@ class ControllerSpec extends WordSpec with Matchers {
       "Should be able to redo a Step" in{
         observer.updated should be (true)
       }
+      "Should be able to update the state to your turn" in {
+        State.handle(yourTurnEvent())
+        State.state should be(State.yourTurn)
+      }
       "Should be able to update the state to enemys turn" in {
         State.handle(enemyTurnEvent())
-        State.state should be(State.state)
+        State.state should be(State.enemyTurn)
       }
     }
   }
