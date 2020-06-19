@@ -9,6 +9,7 @@ class InitializeTestGameStrategy extends InitializeGameStrategy {
     enemy.enemyCards = new ListBuffer[Card]()
     player.handCards = new ListBuffer[Card]()
     var cards = new ListBuffer[Card]()
+    /*
     for (color <- Color.values) {
       for (value <- Value.values) {
         if (value == Value.Zero && color != Color.Schwarz) {
@@ -21,7 +22,18 @@ class InitializeTestGameStrategy extends InitializeGameStrategy {
             cards += Card(color, value)
         }
       }
+    }*/
+
+    for (i <- 0 to 53) {
+      if (i == 0 || i == 13 || i == 26 || i == 39) {
+        cards += Card(i)
+      } else if (i == 52 || i == 53) {
+        for (_ <- 0 to 3) cards += Card(i)
+      } else {
+        for (_ <- 0 to 1) cards += Card(i)
+      }
     }
+
     for (_ <- 1 to 108) {
       cardsCovered = cardsCovered :+ cards(0)
       cards = cards.take(0) ++ cards.drop(1)

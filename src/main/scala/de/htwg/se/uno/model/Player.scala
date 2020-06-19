@@ -70,7 +70,7 @@ class Player() {
   }
 
   def pushable(card: Card, game: Game) : Boolean = {
-    if (card.value == Value.PlusFour) {
+    if (card.value == Special.PlusFour) {
       for (i <- 1 to handCards.length) {
         if (handCards(i - 1).color == game.init.cardsRevealed.head.color) {
           return false
@@ -78,7 +78,7 @@ class Player() {
       }
       return true
     } else if (card.color == game.init.cardsRevealed.head.color || card.value == game.init.cardsRevealed.head.value
-      || card.value == Value.ColorChange || game.init.cardsRevealed.head.color == Color.Schwarz) {
+      || card.value == Special.ColorChange || game.init.cardsRevealed.head.color == Color.Schwarz) {
       return true
     }
     false

@@ -5,6 +5,7 @@ import scala.collection.mutable.ListBuffer
 class InitializeRandomGameStrategy extends InitializeGameStrategy {
   override def initializeGame(numOfPlayerCards: Int): InitializeRandomGameStrategy = {
       var cards = new ListBuffer[Card]()
+    /*
       for (color <- Color.values) {
         for (value <- Value.values) {
           if (value == Value.Zero && color != Color.Schwarz) {
@@ -17,7 +18,18 @@ class InitializeRandomGameStrategy extends InitializeGameStrategy {
               cards += Card(color, value)
           }
         }
+      }*/
+
+      for (i <- 0 to 53) {
+        if (i == 0 || i == 13 || i == 26 || i == 39) {
+          cards += Card(i)
+        } else if (i == 52 || i == 53) {
+          for (_ <- 0 to 3) cards += Card(i)
+        } else {
+          for (_ <- 0 to 1) cards += Card(i)
+        }
       }
+
       var n = 108
       for (_ <- 0 to 107) {
         val r = new scala.util.Random
