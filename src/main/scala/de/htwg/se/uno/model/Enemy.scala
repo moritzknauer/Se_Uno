@@ -13,8 +13,8 @@ class Enemy() {
 
   def undo(game: Game) : Enemy = {
     if(stack1.top.equals("")) {
-      enemyCards = enemyCards.take(stack2.top) ++ game.cardsRevealed.take(1) ++ enemyCards.drop(stack2.top)
-      game.cardsRevealed = game.cardsRevealed.drop(1)
+      enemyCards = enemyCards.take(stack2.top) ++ game.init.cardsRevealed.take(1) ++ enemyCards.drop(stack2.top)
+      game.init.cardsRevealed = game.init.cardsRevealed.drop(1)
     } else {
       var c = 0
       for(i <- 1 to enemyCards.length) {
@@ -24,7 +24,7 @@ class Enemy() {
       }
       val card = enemyCards(c-1)
       c = 0
-      game.cardsCovered = card +: game.cardsCovered
+      game.init.cardsCovered = card +: game.init.cardsCovered
       for (i <- 2 to enemyCards.length) {
         if (enemyCards(i - 2).color == card.color && enemyCards(i - 2).value == card.value && c == 0) {
           enemyCards = enemyCards.take(i - 2) ++ enemyCards.drop(i - 1)
@@ -44,14 +44,14 @@ class Enemy() {
     var c = 0
     for (i <- 2 to enemyCards.length) {
       if (enemyCards(i - 2).color == card.color && enemyCards(i - 2).value == card.value && c == 0) {
-        game.cardsRevealed = enemyCards(i - 2) +: game.cardsRevealed
+        game.init.cardsRevealed = enemyCards(i - 2) +: game.init.cardsRevealed
         enemyCards = enemyCards.take(i - 2) ++ enemyCards.drop(i-1)
         c += 1
         stack2.push(i-2)
       }
     }
     if (c == 0) {
-      game.cardsRevealed = enemyCards(enemyCards.length - 1) +: game.cardsRevealed
+      game.init.cardsRevealed = enemyCards(enemyCards.length - 1) +: game.init.cardsRevealed
       enemyCards = enemyCards.take(enemyCards.length - 1)
       stack2.push(enemyCards.length - 1)
     }
@@ -60,10 +60,10 @@ class Enemy() {
   }
 
   def pullEnemy(game: Game) : Enemy = {
-    stack1.push(game.cardsCovered.head.toString)
+    stack1.push(game.init.cardsCovered.head.toString)
     stack2.push(-1)
-    enemyCards += Card(game.cardsCovered.head.color, game.cardsCovered.head.value)
-    game.cardsCovered = game.cardsCovered.drop(1)
+    enemyCards += Card(game.init.cardsCovered.head.color, game.init.cardsCovered.head.value)
+    game.init.cardsCovered = game.init.cardsCovered.drop(1)
     this
   }
 
@@ -79,13 +79,13 @@ class Enemy() {
   def pushableEnemy(card: Card, game: Game) : Boolean = {
     if (card.value == Value.PlusFour) {
       for (i <- 1 to enemyCards.length) {
-        if (enemyCards(i - 1).color == game.cardsRevealed.head.color) {
+        if (enemyCards(i - 1).color == game.init.cardsRevealed.head.color) {
           return false
         }
       }
       return true
-    } else if (card.color == game.cardsRevealed.head.color || card.value == game.cardsRevealed.head.value
-      || card.value == Value.ColorChange || game.cardsRevealed.head.color == Color.Schwarz) {
+    } else if (card.color == game.init.cardsRevealed.head.color || card.value == game.init.cardsRevealed.head.value
+      || card.value == Value.ColorChange || game.init.cardsRevealed.head.color == Color.Schwarz) {
       return true
     }
     false

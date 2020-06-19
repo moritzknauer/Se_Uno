@@ -29,11 +29,11 @@ class Player() {
 
   def undo(game: Game) : Player = {
     if(stack1.top.equals("")) {
-      handCards = handCards.take(stack2.top) ++ game.cardsRevealed.take(1) ++ handCards.drop(stack2.top)
-      game.cardsRevealed = game.cardsRevealed.drop(1)
+      handCards = handCards.take(stack2.top) ++ game.init.cardsRevealed.take(1) ++ handCards.drop(stack2.top)
+      game.init.cardsRevealed = game.init.cardsRevealed.drop(1)
     } else {
       val card = getCard(stack1.top)
-      game.cardsCovered = card +: game.cardsCovered
+      game.init.cardsCovered = card +: game.init.cardsCovered
       var c = 0
       for (i <- 2 to handCards.length) {
         if (handCards(i - 2).color == card.color && handCards(i - 2).value == card.value && c == 0) {
@@ -54,14 +54,14 @@ class Player() {
     var c = 0
     for (i <- 2 to handCards.length) {
       if (handCards(i - 2).color == card.color && handCards(i - 2).value == card.value && c == 0) {
-        game.cardsRevealed = handCards(i - 2) +: game.cardsRevealed
+        game.init.cardsRevealed = handCards(i - 2) +: game.init.cardsRevealed
         handCards = handCards.take(i - 2) ++ handCards.drop(i-1)
         stack2.push(i-2)
         c += 1
       }
     }
     if (c == 0) {
-      game.cardsRevealed = handCards(handCards.length-1) +: game.cardsRevealed
+      game.init.cardsRevealed = handCards(handCards.length-1) +: game.init.cardsRevealed
       handCards = handCards.take(handCards.length - 1)
       stack2.push(handCards.length-1)
     }
@@ -72,13 +72,13 @@ class Player() {
   def pushable(card: Card, game: Game) : Boolean = {
     if (card.value == Value.PlusFour) {
       for (i <- 1 to handCards.length) {
-        if (handCards(i - 1).color == game.cardsRevealed.head.color) {
+        if (handCards(i - 1).color == game.init.cardsRevealed.head.color) {
           return false
         }
       }
       return true
-    } else if (card.color == game.cardsRevealed.head.color || card.value == game.cardsRevealed.head.value
-      || card.value == Value.ColorChange || game.cardsRevealed.head.color == Color.Schwarz) {
+    } else if (card.color == game.init.cardsRevealed.head.color || card.value == game.init.cardsRevealed.head.value
+      || card.value == Value.ColorChange || game.init.cardsRevealed.head.color == Color.Schwarz) {
       return true
     }
     false
@@ -94,10 +94,10 @@ class Player() {
   }
 
   def pull(game: Game) : Player = {
-    stack1.push(game.cardsCovered.head.toString)
+    stack1.push(game.init.cardsCovered.head.toString)
     stack2.push(-1)
-    handCards += Card(game.cardsCovered.head.color, game.cardsCovered.head.value)
-    game.cardsCovered = game.cardsCovered.drop(1)
+    handCards += Card(game.init.cardsCovered.head.color, game.init.cardsCovered.head.value)
+    game.init.cardsCovered = game.init.cardsCovered.drop(1)
     this
   }
 
