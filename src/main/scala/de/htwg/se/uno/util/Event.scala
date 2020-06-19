@@ -9,3 +9,5 @@ case class enemyTurnEvent() extends Event
 case class pullCardNotAllowedEvent() extends Event
 
 case class unknownCommandEvent() extends Event
+
+case class yourTurnEvent() extends Event

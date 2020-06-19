@@ -1,7 +1,7 @@
 package de.htwg.se.uno.aview
 
 import de.htwg.se.uno.controller.{Controller, GameStatus}
-import de.htwg.se.uno.util.Observer
+import de.htwg.se.uno.util.{Observer, State, unknownCommandEvent}
 
 
 class Tui(controller: Controller) extends Observer {
@@ -33,7 +33,7 @@ class Tui(controller: Controller) extends Observer {
         controller.undo
         controller.undo
       }
-      case _ => println("Befehl nicht bekannt")
+      case _ => State.handle(unknownCommandEvent())
     }
   }
 

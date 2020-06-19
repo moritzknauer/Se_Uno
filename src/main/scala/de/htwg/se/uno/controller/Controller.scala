@@ -2,7 +2,7 @@ package de.htwg.se.uno.controller
 
 import de.htwg.se.uno.controller.GameStatus.GameStatus
 import de.htwg.se.uno.model.Game
-import de.htwg.se.uno.util.{Observable, UndoManager}
+import de.htwg.se.uno.util.{Observable, State, UndoManager, enemyTurnEvent, pullCardNotAllowedEvent, pushCardNotAllowedEvent}
 
 
 class Controller(var game:Game) extends Observable {
@@ -21,7 +21,10 @@ class Controller(var game:Game) extends Observable {
     undoManager.doStep(new PushCommand(string, this))
     if(!s.equals(gameToString)) {
       notifyObservers
+      State.handle(enemyTurnEvent())
       enemy()
+    } else {
+      State.handle(pushCardNotAllowedEvent())
     }
   }
 
@@ -30,7 +33,10 @@ class Controller(var game:Game) extends Observable {
     undoManager.doStep(new PullCommand(this))
     if(!s.equals(gameToString)) {
       notifyObservers
+      State.handle(enemyTurnEvent())
       enemy()
+    } else {
+      State.handle(pullCardNotAllowedEvent())
     }
   }
 
