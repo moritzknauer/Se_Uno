@@ -76,6 +76,9 @@ class PlayerSpec extends WordSpec {
       "be able to pull a Card to the Players Card List" in{
         newGame.init.player.pull(newGame) should be (newGame.init.player)
       }
+      "be able to pull another Card to the Players Card List" in {
+        newGame.init.player.pull(newGame) should be (newGame.init.player)
+      }
 
       "be able to Check if a String equals a Card of the List of Hand Cards" in{
         newGame.init.player.equalsCard(newGame.init.player.handCards(0).toString) should be (true)
@@ -86,12 +89,18 @@ class PlayerSpec extends WordSpec {
       "be able to return a Card of the List of Hand Cards that equals the String" in{
         newGame.init.player.getCard(newGame.init.player.handCards(0).toString) should be (newGame.init.player.handCards(0))
       }
+
       "be able to undo another step" in {
         newGame.init.player.undo(newGame) should be(newGame.init.player)
       }
       "be able to undo a third step" in {
         newGame.init.player.undo(newGame) should be(newGame.init.player)
       }
+      "be able to undo a fourth step" in {
+        newGame.init.player.undo(newGame) should be(newGame.init.player)
+      }
+
+
       "be able to do a push move" in {
         newGame.init.player.pushMove(newGame.init.player.handCards.head.toString, newGame) should be(newGame.init.player)
       }

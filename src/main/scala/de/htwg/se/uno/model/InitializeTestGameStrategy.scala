@@ -26,6 +26,7 @@ class InitializeTestGameStrategy extends InitializeGameStrategy {
       cardsCovered = cardsCovered :+ cards(0)
       cards = cards.take(0) ++ cards.drop(1)
     }
+
     cardsRevealed = cardsRevealed :+ cardsCovered(0)
     cardsCovered = cardsCovered.drop(1)
     player.handCards = player.handCards :+ cardsCovered(0)

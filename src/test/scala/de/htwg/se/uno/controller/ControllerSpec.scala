@@ -1,7 +1,7 @@
 package de.htwg.se.uno.controller
 
 import de.htwg.se.uno.model.{Game, InitializeGameStrategy}
-import de.htwg.se.uno.util.{Observer, State, enemyTurnEvent, pullCardNotAllowedEvent, pushCardNotAllowedEvent, unknownCommandEvent, yourTurnEvent}
+import de.htwg.se.uno.util.{Observer, State, enemyTurnEvent, gameStartEvent, pullCardNotAllowedEvent, pushCardNotAllowedEvent, unknownCommandEvent, yourTurnEvent}
 import org.scalatest.{Matchers, WordSpec}
 
 import scala.language.reflectiveCalls
@@ -40,6 +40,10 @@ class ControllerSpec extends WordSpec with Matchers {
         observer.updated should be(true)
       }
       "Should be able to pull a Card" in {
+        controller.set(controller.game.init.player.handCards.head.toString)
+        controller.set(controller.game.init.player.handCards(1).toString)
+        controller.set(controller.game.init.player.handCards.head.toString)
+        controller.set(controller.game.init.player.handCards.head.toString)
         controller.get()
         observer.updated should be(true)
       }
@@ -56,23 +60,27 @@ class ControllerSpec extends WordSpec with Matchers {
       }
       "Should be able to update the state to your turn" in {
         State.handle(yourTurnEvent())
-        State.state should be(State.yourTurn)
+        State.state should be(yourTurnEvent().yourTurn)
       }
       "Should be able to update the state to enemys turn" in {
         State.handle(enemyTurnEvent())
-        State.state should be(State.enemyTurn)
+        State.state should be(enemyTurnEvent().enemyTurn)
       }
       "Should be able to update the state to pushCardNotAllowed Event" in {
         State.handle(pushCardNotAllowedEvent())
-        State.state should be(State.pushCardNotAllowed)
+        State.state should be(pushCardNotAllowedEvent().pushCardNotAllowed)
       }
       "Should be able to update the state to pullCardNotAllowed Event" in {
         State.handle(pullCardNotAllowedEvent())
-        State.state should be(State.pullCardNotAllowed)
+        State.state should be(pullCardNotAllowedEvent().pullCardNotAllowed)
       }
       "Should be able to update the state to unknownCommand Event" in {
         State.handle(unknownCommandEvent())
-        State.state should be(State.unknownCommand)
+        State.state should be(unknownCommandEvent().unknownCommand)
+      }
+      "Should be able to update the state to gameStart Event" in {
+        State.handle(gameStartEvent())
+        State.state should be(gameStartEvent().gameStart)
       }
     }
   }

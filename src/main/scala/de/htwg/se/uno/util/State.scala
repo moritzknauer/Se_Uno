@@ -1,22 +1,16 @@
 package de.htwg.se.uno.util
 
 object State {
-  var state = yourTurn
+  var state = gameStartEvent().gameStart
   def handle(e: Event) = {
     e match {
-      case a: pushCardNotAllowedEvent => state = pushCardNotAllowed
-      case b: enemyTurnEvent => state = enemyTurn
-      case c: pullCardNotAllowedEvent => state = pullCardNotAllowed
-      case d: unknownCommandEvent => state = unknownCommand
-      case f: yourTurnEvent => state = yourTurn
+      case a: pushCardNotAllowedEvent => state = pushCardNotAllowedEvent().pushCardNotAllowed
+      case b: enemyTurnEvent => state = enemyTurnEvent().enemyTurn
+      case c: pullCardNotAllowedEvent => state = pullCardNotAllowedEvent().pullCardNotAllowed
+      case d: unknownCommandEvent => state = unknownCommandEvent().unknownCommand
+      case f: yourTurnEvent => state = yourTurnEvent().yourTurn
+      case g: gameStartEvent => state = gameStartEvent().gameStart
     }
     state
   }
-
-  def yourTurn: Unit = println("Du bist dran. Mögliche Befehle: q, n, s [Karte], g, u, r")
-  def pushCardNotAllowed = println("Du kannst diese Karte nicht legen")
-  def enemyTurn = println("Gegner ist an der Reihe")
-  def pullCardNotAllowed = println("Du kannst keine Karte ziehen, da du eine Karte legen kannst")
-  def unknownCommand = println("Befehl nicht bekannt")
-
 }
