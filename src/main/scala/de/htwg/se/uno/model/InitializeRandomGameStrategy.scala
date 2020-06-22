@@ -3,7 +3,7 @@ package de.htwg.se.uno.model
 import scala.collection.mutable.ListBuffer
 
 class InitializeRandomGameStrategy extends InitializeGameStrategy {
-  override def initializeGame(numOfPlayerCards: Int): InitializeRandomGameStrategy = {
+  override def initializeGame(numOfPlayerCards: Int = 7): InitializeRandomGameStrategy = {
       var cards = new ListBuffer[Card]()
       for (color <- Color.values) {
         for (value <- Value.values) {

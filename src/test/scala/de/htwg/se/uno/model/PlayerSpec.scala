@@ -7,95 +7,96 @@ class PlayerSpec extends WordSpec {
   "A Player" when{
     "new" should{
       var newGame = Game()
-      newGame = newGame.initializeTestGame()
+      newGame.init = InitializeGameStrategy(1)
+      newGame.init = newGame.init.initializeGame()
       "be able to check if a Card of the Players Card List can be pushed" in{
-        newGame.player.pushable(Card(newGame.player.handCards(4).color, newGame.player.handCards(4).value), newGame) should be (false)
+        newGame.init.player.pushable(Card(newGame.init.player.handCards(4).color, newGame.init.player.handCards(4).value), newGame) should be (false)
       }
       "be able to check if a second Card of the Players Card List can be pushed" in{
-        newGame.player.pushable(Card(newGame.player.handCards(1).color, newGame.player.handCards(1).value), newGame) should be (false)
+        newGame.init.player.pushable(Card(newGame.init.player.handCards(1).color, newGame.init.player.handCards(1).value), newGame) should be (false)
       }
 
 
       "be able to check if a third Card of the Players Card List can be pushed" in{
-        newGame.player.pushable(Card(newGame.player.handCards(0).color, newGame.player.handCards(0).value), newGame) should be (true)
+        newGame.init.player.pushable(Card(newGame.init.player.handCards(0).color, newGame.init.player.handCards(0).value), newGame) should be (true)
       }
       "be able to push a Card of the Players Card List" in{
-        newGame.player.pushCard(Card(newGame.player.handCards.head.color, newGame.player.handCards.head.value), newGame) should be(newGame.player)
+        newGame.init.player.pushCard(Card(newGame.init.player.handCards.head.color, newGame.init.player.handCards.head.value), newGame) should be(newGame.init.player)
       }
 
 
       "be able to check if a fourth Card of the Players Card List can be pushed" in{
-        newGame.player.pushable(Card(newGame.player.handCards(0).color, newGame.player.handCards(0).value), newGame) should be (true)
+        newGame.init.player.pushable(Card(newGame.init.player.handCards(0).color, newGame.init.player.handCards(0).value), newGame) should be (true)
       }
       "be able to push a second Card of the Players Card List" in{
-        newGame.player.pushCard(Card(newGame.player.handCards.head.color, newGame.player.handCards.head.value), newGame) should be(newGame.player)
+        newGame.init.player.pushCard(Card(newGame.init.player.handCards.head.color, newGame.init.player.handCards.head.value), newGame) should be(newGame.init.player)
       }
 
 
       "be able to check if a fifth Card of the Players Card List can be pushed" in{
-        newGame.player.pushable(Card(newGame.player.handCards(1).color, newGame.player.handCards(1).value), newGame) should be (true)
+        newGame.init.player.pushable(Card(newGame.init.player.handCards(1).color, newGame.init.player.handCards(1).value), newGame) should be (true)
       }
       "be able to push a third Card of the Players Card List" in{
-        newGame.player.pushCard(Card(newGame.player.handCards(1).color, newGame.player.handCards(1).value), newGame) should be(newGame.player)
+        newGame.init.player.pushCard(Card(newGame.init.player.handCards(1).color, newGame.init.player.handCards(1).value), newGame) should be(newGame.init.player)
       }
 
 
       "be able to check if a sixth Card of the Players Card List can be pushed" in{
-        newGame.player.pushable(Card(newGame.player.handCards(0).color, newGame.player.handCards(0).value), newGame) should be (true)
+        newGame.init.player.pushable(Card(newGame.init.player.handCards(0).color, newGame.init.player.handCards(0).value), newGame) should be (true)
       }
       "be able to push a fourth Card of the Players Card List" in{
-        newGame.player.pushCard(Card(newGame.player.handCards(0).color, newGame.player.handCards(0).value), newGame) should be(newGame.player)
+        newGame.init.player.pushCard(Card(newGame.init.player.handCards(0).color, newGame.init.player.handCards(0).value), newGame) should be(newGame.init.player)
       }
 
 
       "be able to check if a Card of the Players Card List can be pulled" in{
-        newGame.player.pullable(newGame) should be (false)
+        newGame.init.player.pullable(newGame) should be (false)
       }
 
 
       "be able to check if a seventh Card of the Players Card List can be pushed" in{
-        newGame.player.pushable(Card(newGame.player.handCards.head.color, newGame.player.handCards.head.value), newGame) should be (true)
+        newGame.init.player.pushable(Card(newGame.init.player.handCards.head.color, newGame.init.player.handCards.head.value), newGame) should be (true)
       }
       "be able to push a fifth Card of the Players Card List" in{
-        newGame.player.pushCard(Card(newGame.player.handCards.head.color, newGame.player.handCards.head.value), newGame) should be(newGame.player)
+        newGame.init.player.pushCard(Card(newGame.init.player.handCards.head.color, newGame.init.player.handCards.head.value), newGame) should be(newGame.init.player)
       }
 
 
       "be able to undo a Step" in {
-        newGame.player.undo(newGame) should be(newGame.player)
+        newGame.init.player.undo(newGame) should be(newGame.init.player)
       }
       "be able to push a sixth Card of the Players Card List" in{
-        newGame.player.pushCard(Card(newGame.player.handCards.head.color, newGame.player.handCards.head.value), newGame) should be(newGame.player)
+        newGame.init.player.pushCard(Card(newGame.init.player.handCards.head.color, newGame.init.player.handCards.head.value), newGame) should be(newGame.init.player)
       }
 
 
       "be able to check if a second Card of the Players Card List can be pulled" in{
-        newGame.player.pullable(newGame) should be (true)
+        newGame.init.player.pullable(newGame) should be (true)
       }
       "be able to pull a Card to the Players Card List" in{
-        newGame.player.pull(newGame) should be (newGame.player)
+        newGame.init.player.pull(newGame) should be (newGame.init.player)
       }
 
       "be able to Check if a String equals a Card of the List of Hand Cards" in{
-        newGame.player.equalsCard(newGame.player.handCards(0).toString) should be (true)
+        newGame.init.player.equalsCard(newGame.init.player.handCards(0).toString) should be (true)
       }
       "be able to Check if another String equals a Card of the List of Hand Cards" in{
-        newGame.player.equalsCard("Hallo") should be (false)
+        newGame.init.player.equalsCard("Hallo") should be (false)
       }
       "be able to return a Card of the List of Hand Cards that equals the String" in{
-        newGame.player.getCard(newGame.player.handCards(0).toString) should be (newGame.player.handCards(0))
+        newGame.init.player.getCard(newGame.init.player.handCards(0).toString) should be (newGame.init.player.handCards(0))
       }
       "be able to undo another step" in {
-        newGame.player.undo(newGame) should be(newGame.player)
+        newGame.init.player.undo(newGame) should be(newGame.init.player)
       }
       "be able to undo a third step" in {
-        newGame.player.undo(newGame) should be(newGame.player)
+        newGame.init.player.undo(newGame) should be(newGame.init.player)
       }
       "be able to do a push move" in {
-        newGame.player.pushMove(newGame.player.handCards.head.toString, newGame) should be(newGame.player)
+        newGame.init.player.pushMove(newGame.init.player.handCards.head.toString, newGame) should be(newGame.init.player)
       }
       "be able to do a pull Move" in {
-        newGame.player.pullMove(newGame) should be(newGame.player)
+        newGame.init.player.pullMove(newGame) should be(newGame.init.player)
       }
     }
   }

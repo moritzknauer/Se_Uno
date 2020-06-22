@@ -8,5 +8,12 @@ trait InitializeGameStrategy {
   var player = new Player
   var enemy = new Enemy
 
-  def initializeGame(numOfPlayerCards: Int): InitializeGameStrategy
+  def initializeGame(numOfPlayerCards: Int = 7): InitializeGameStrategy
+}
+
+object InitializeGameStrategy {
+  def apply(kind: Int = 0): InitializeGameStrategy = kind match{
+    case 0 => new InitializeRandomGameStrategy
+    case 1 => new InitializeTestGameStrategy
+  }
 }

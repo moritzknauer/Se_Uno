@@ -28,26 +28,30 @@ class Player() {
   }
 
   def undo(game: Game) : Player = {
-    if(stack1.top.equals("")) {
-      handCards = handCards.take(stack2.top) ++ game.init.cardsRevealed.take(1) ++ handCards.drop(stack2.top)
-      game.init.cardsRevealed = game.init.cardsRevealed.drop(1)
-    } else {
-      val card = getCard(stack1.top)
-      game.init.cardsCovered = card +: game.init.cardsCovered
-      var c = 0
-      for (i <- 2 to handCards.length) {
-        if (handCards(i - 2).color == card.color && handCards(i - 2).value == card.value && c == 0) {
-          handCards = handCards.take(i - 2) ++ handCards.drop(i - 1)
-          c = 1
+    if (stack1.size != 0 && stack2.size != 0) {
+      if (stack1.top.equals("")) {
+        handCards = handCards.take(stack2.top) ++ game.init.cardsRevealed.take(1) ++ handCards.drop(stack2.top)
+        game.init.cardsRevealed = game.init.cardsRevealed.drop(1)
+      } else {
+        val card = getCard(stack1.top)
+        game.init.cardsCovered = card +: game.init.cardsCovered
+        var c = 0
+        for (i <- 2 to handCards.length) {
+          if (handCards(i - 2).color == card.color && handCards(i - 2).value == card.value && c == 0) {
+            handCards = handCards.take(i - 2) ++ handCards.drop(i - 1)
+            c = 1
+          }
+        }
+        if (c == 0) {
+          handCards = handCards.take(handCards.length - 1)
         }
       }
-      if (c==0) {
-        handCards = handCards.take(handCards.length - 1)
-      }
+      stack1.pop()
+      stack2.pop()
+      this
+    } else {
+      this
     }
-    stack1.pop()
-    stack2.pop()
-    this
   }
 
   def pushCard(card: Card, game: Game) : Player = {

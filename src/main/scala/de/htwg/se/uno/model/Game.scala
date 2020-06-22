@@ -4,7 +4,7 @@ import scala.collection.mutable.ListBuffer
 import de.htwg.se.uno.model.{Color, Value}
 
 case class Game(numOfCards: Int = 7) {
-  var init = new InitializeRandomGameStrategy
+  var init = InitializeGameStrategy()
 
   init.initializeGame(numOfCards)
 

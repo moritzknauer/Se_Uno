@@ -1,6 +1,6 @@
 package de.htwg.se.uno.controller
 
-import de.htwg.se.uno.model.Game
+import de.htwg.se.uno.model.{Game, InitializeGameStrategy}
 import de.htwg.se.uno.util.{Observer, State, enemyTurnEvent, pullCardNotAllowedEvent, pushCardNotAllowedEvent, unknownCommandEvent, yourTurnEvent}
 import org.scalatest.{Matchers, WordSpec}
 
@@ -32,10 +32,11 @@ class ControllerSpec extends WordSpec with Matchers {
         controller.gameToString should be (controller.game.toString)
       }
       "Should be able to initialize a Test Game" in {
-        controller.game = controller.game.initializeTestGame()
+        controller.game.init = InitializeGameStrategy(1)
+        controller.game.init = controller.game.init.initializeGame()
       }
       "Should be able to push a Card" in {
-        controller.set(controller.game.player.handCards.head.toString)
+        controller.set(controller.game.init.player.handCards.head.toString)
         observer.updated should be(true)
       }
       "Should be able to pull a Card" in {
