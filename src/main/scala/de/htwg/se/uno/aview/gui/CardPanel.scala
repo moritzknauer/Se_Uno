@@ -4,7 +4,7 @@ import de.htwg.se.uno.controller.Controller
 
 import scala.swing._
 
-class CardPanel (index: Int, controller: Controller) extends FlowPanel {
+class CardPanel (list: Int, index: Int, controller: Controller) extends FlowPanel {
 
   val coveredColor = new Color(0,0,0)
   val specialColor = new Color(128,128,128)

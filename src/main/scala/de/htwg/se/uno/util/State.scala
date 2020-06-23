@@ -1,7 +1,7 @@
 package de.htwg.se.uno.util
 
 object State {
-  var state = gameStartEvent().gameStart
+  var state = String
   def handle(e: Status) = {
     e match {
       case a: pushCardNotAllowedEvent => state = pushCardNotAllowedEvent().pushCardNotAllowed
@@ -9,7 +9,6 @@ object State {
       case c: pullCardNotAllowedEvent => state = pullCardNotAllowedEvent().pullCardNotAllowed
       case d: unknownCommandEvent => state = unknownCommandEvent().unknownCommand
       case f: yourTurnEvent => state = yourTurnEvent().yourTurn
-      case g: gameStartEvent => state = gameStartEvent().gameStart
     }
     state
   }

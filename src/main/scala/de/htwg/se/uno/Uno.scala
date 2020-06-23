@@ -18,7 +18,7 @@ object Uno {
     var input: String = ""
 
     do {
-      State.handle(yourTurnEvent())
+      println(State.handle(yourTurnEvent()))
       input = readLine()
       tui.processInputLine(input)
     } while (input != "q")

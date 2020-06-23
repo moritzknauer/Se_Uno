@@ -49,5 +49,6 @@ class Tui(controller: Controller) extends Reactor {
     println(controller.gameToString)
     println(GameStatus.message(controller.gameStatus))
     controller.gameStatus = GameStatus.IDLE
+    println(State)
   }
 }
