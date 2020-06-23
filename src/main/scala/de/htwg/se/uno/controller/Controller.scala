@@ -55,4 +55,6 @@ class Controller(var game:Game) extends Publisher {
     undoManager.redoStep
     publish(new GameChanged)
   }
+
+  def statusText:String = GameStatus.message((gameStatus))
 }

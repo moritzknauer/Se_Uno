@@ -1,11 +1,14 @@
 package de.htwg.se.uno.aview
 
 import de.htwg.se.uno.controller.{Controller, GameChanged, GameSizeChanged, GameStatus}
-import de.htwg.se.uno.util.{Observer, State, unknownCommandEvent}
+import de.htwg.se.uno.util.{State, unknownCommandEvent}
+
+import scala.swing.Reactor
 
 
 class Tui(controller: Controller) extends Reactor {
-  controller.add(this)
+  listenTo(controller)
+  def size = controller.game.numOfCards
 
 
   def processInputLine(input: String): Unit = {
@@ -38,8 +41,8 @@ class Tui(controller: Controller) extends Reactor {
   }
 
   reactions += {
-      case events: GameSizeChanged => printTui
-      case events: GameChanged => printTui
+      case event: GameSizeChanged => printTui
+      case event: GameChanged => printTui
   }
 
   def printTui: Unit = {

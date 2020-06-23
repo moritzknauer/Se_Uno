@@ -2,7 +2,7 @@ package de.htwg.se.uno.util
 
 object State {
   var state = gameStartEvent().gameStart
-  def handle(e: Event) = {
+  def handle(e: Status) = {
     e match {
       case a: pushCardNotAllowedEvent => state = pushCardNotAllowedEvent().pushCardNotAllowed
       case b: enemyTurnEvent => state = enemyTurnEvent().enemyTurn
