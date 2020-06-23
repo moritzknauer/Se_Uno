@@ -1,10 +1,10 @@
 package de.htwg.se.uno.aview
 
-import de.htwg.se.uno.controller.{Controller, GameStatus}
+import de.htwg.se.uno.controller.{Controller, GameChanged, GameSizeChanged, GameStatus}
 import de.htwg.se.uno.util.{Observer, State, unknownCommandEvent}
 
 
-class Tui(controller: Controller) extends Observer {
+class Tui(controller: Controller) extends Reactor {
   controller.add(this)
 
 
@@ -37,9 +37,14 @@ class Tui(controller: Controller) extends Observer {
     }
   }
 
-  override def update: Boolean = {
+  reactions += {
+      case events: GameSizeChanged => printTui
+      case events: GameChanged => printTui
+  }
+
+  def printTui: Unit = {
     println(controller.gameToString)
     println(GameStatus.message(controller.gameStatus))
-    controller.gameStatus=GameStatus.IDLE
-    true}
+    controller.gameStatus = GameStatus.IDLE
+  }
 }
