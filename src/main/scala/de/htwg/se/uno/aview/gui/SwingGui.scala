@@ -1,14 +1,11 @@
 package de.htwg.se.uno.aview.gui
 
-import de.htwg.se.uno.controller.{Controller, GameChanged, GameSizeChanged}
-import de.htwg.se.uno.util.State
+import de.htwg.se.uno.controller.{Controller, GameChanged, GameNotChanged, GameSizeChanged, State}
 
 import scala.swing.BorderPanel.Position
 import scala.swing._
-import scala.swing.event.{Event, Key, MouseClicked}
+import scala.swing.event.Key
 import scala.swing.Swing.LineBorder
-
-class CardClicked(val index: Int) extends Event
 
 class SwingGui(controller: Controller) extends Frame {
 
@@ -26,12 +23,11 @@ class SwingGui(controller: Controller) extends Frame {
       contents += button
       listenTo(button)
     }
-
   }
 
   def gamePanel = new GridPanel(3, 1) {
     contents += new GridPanel(1, controller.game.init.enemy.enemyCards.length) {
-      border = LineBorder(java.awt.Color.BLACK, 2)
+      border = LineBorder(java.awt.Color.WHITE, 20)
       background = java.awt.Color.WHITE
       for (enemy <- 1 to controller.game.init.enemy.enemyCards.length) {
         val cardPanel = new CardPanel(0, enemy - 1, controller)
@@ -40,6 +36,8 @@ class SwingGui(controller: Controller) extends Frame {
       }
     }
     contents += new GridPanel(1, 2) {
+      border = LineBorder(java.awt.Color.WHITE, 20)
+      background = java.awt.Color.WHITE
       for (i <- 0 to 1) {
         val cardPanel = new CardPanel(1, i, controller)
         contents += cardPanel.card
@@ -47,6 +45,8 @@ class SwingGui(controller: Controller) extends Frame {
       }
     }
     contents += new GridPanel(1, controller.game.init.player.handCards.length) {
+      border = LineBorder(java.awt.Color.WHITE, 20)
+      background = java.awt.Color.WHITE
       for (player <- 1 to controller.game.init.player.handCards.length) {
         val cardPanel = new CardPanel(2, player - 1, controller)
         contents += cardPanel.card
@@ -55,7 +55,11 @@ class SwingGui(controller: Controller) extends Frame {
     }
   }
 
-  val statusline = new TextField(State.state,90)
+  var statusline = new TextField(State.state,30) {
+    preferredSize = new Dimension(1,100)
+    font = new Font("Verdana", 5, 36)
+    background = java.awt.Color.WHITE
+  }
 
   contents = new BorderPanel {
     add(pushpanel, BorderPanel.Position.North)
@@ -91,9 +95,11 @@ class SwingGui(controller: Controller) extends Frame {
   reactions += {
     case event: GameSizeChanged => redraw
     case event: GameChanged => redraw
+    case event: GameNotChanged => statusline.text = State.state
   }
 
   def redraw = {
+    statusline.text = State.state
     contents = new BorderPanel {
       add(pushpanel, BorderPanel.Position.North)
       add(gamePanel, BorderPanel.Position.Center)

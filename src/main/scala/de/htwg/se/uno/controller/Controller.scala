@@ -2,7 +2,7 @@ package de.htwg.se.uno.controller
 
 import scala.swing.Publisher
 import de.htwg.se.uno.model.{Game, InitializeTestGameStrategy}
-import de.htwg.se.uno.util.{State, UndoManager, enemyTurnEvent, idleEvent, lostEvent, notPushableEvent, pullCardNotAllowedEvent, pushCardNotAllowedEvent, pushableEvent, wonEvent, yourTurnEvent}
+import de.htwg.se.uno.util.UndoManager
 
 
 class Controller(var game:Game) extends Publisher {
@@ -33,7 +33,7 @@ class Controller(var game:Game) extends Publisher {
       enemy()
     } else {
       State.handle(pushCardNotAllowedEvent())
-      publish(new GameChanged)
+      publish(new GameNotChanged)
     }
   }
 
@@ -46,7 +46,7 @@ class Controller(var game:Game) extends Publisher {
       enemy()
     } else {
       State.handle(pullCardNotAllowedEvent())
-      publish(new GameChanged)
+      publish(new GameNotChanged)
     }
   }
 
@@ -70,10 +70,14 @@ class Controller(var game:Game) extends Publisher {
   def won: Unit = {
     if(game.init.player.handCards.length == 0) {
       State.handle(wonEvent())
+      publish(new GameNotChanged)
+      System.exit(0)
     } else if(game.init.enemy.enemyCards.length == 0) {
       State.handle(lostEvent())
+      publish(new GameNotChanged)
+      System.exit(0)
     } else {
-      State.handle(idleEvent())
+      State.state = State.state
     }
   }
 

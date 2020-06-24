@@ -1,7 +1,6 @@
 package de.htwg.se.uno.controller
 
 import de.htwg.se.uno.model.{Game, InitializeGameStrategy}
-import de.htwg.se.uno.util.{State, enemyTurnEvent, gameStartEvent, pullCardNotAllowedEvent, pushCardNotAllowedEvent, unknownCommandEvent, yourTurnEvent}
 import org.scalatest.{Matchers, WordSpec}
 
 import scala.language.reflectiveCalls

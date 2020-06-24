@@ -1,4 +1,4 @@
-package de.htwg.se.uno.util
+package de.htwg.se.uno.controller
 
 trait Status
 
@@ -19,15 +19,11 @@ case class unknownCommandEvent() extends Status {
 }
 
 case class yourTurnEvent() extends Status {
-  def yourTurn = "Du bist dran. Mögliche Befehle: q, n, s [Karte], g, u, r"
+  def yourTurn = "Du bist dran. Mögliche Befehle: q, n, t, s [Karte], g, u, r"
 }
 
 case class gameStartEvent() extends Status {
   def gameStart = "Willkommen zu unserem Uno Spiel"
-}
-
-case class idleEvent() extends Status {
-  def idle = ""
 }
 
 case class pushableEvent() extends Status {

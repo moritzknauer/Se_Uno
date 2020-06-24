@@ -4,7 +4,6 @@ import de.htwg.se.uno.aview.Tui
 import de.htwg.se.uno.aview.gui.SwingGui
 import de.htwg.se.uno.controller.{Controller, GameSizeChanged}
 import de.htwg.se.uno.model.Game
-import de.htwg.se.uno.util.{State, yourTurnEvent}
 
 import scala.io.StdIn.readLine
 
@@ -18,7 +17,6 @@ object Uno {
     var input: String = ""
 
     gui.open()
-    println(State.state)
 
     do {
       input = readLine()

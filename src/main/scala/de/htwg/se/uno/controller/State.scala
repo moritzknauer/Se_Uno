@@ -1,4 +1,4 @@
-package de.htwg.se.uno.util
+package de.htwg.se.uno.controller
 
 object State {
   var state = yourTurnEvent().yourTurn
@@ -9,7 +9,6 @@ object State {
       case c: pullCardNotAllowedEvent => state = pullCardNotAllowedEvent().pullCardNotAllowed
       case d: unknownCommandEvent => state = unknownCommandEvent().unknownCommand
       case f: yourTurnEvent => state = yourTurnEvent().yourTurn
-      case g: idleEvent => state = idleEvent().idle
       case h: pushableEvent => state = pushableEvent().pushable
       case i: notPushableEvent => state = notPushableEvent().notPushable
       case j: wonEvent => state = wonEvent().won

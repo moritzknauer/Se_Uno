@@ -1,8 +1,9 @@
 package de.htwg.se.uno.aview.gui
 
-import de.htwg.se.uno.controller.{Controller, GameChanged}
+import de.htwg.se.uno.controller.Controller
 import de.htwg.se.uno.model.Card
 
+import scala.swing.Swing.LineBorder
 import scala.swing._
 import scala.swing.event.MouseClicked
 
@@ -70,7 +71,7 @@ class CardPanel (list: Int, index: Int, controller: Controller) extends FlowPane
     contents += label
     preferredSize = new Dimension(100, 180)
     background = cardColor(list: Int, index:Int)
-    border = Swing.BeveledBorder(Swing.Raised)
+    border = LineBorder(java.awt.Color.WHITE, 20)
     listenTo(mouse.clicks)
     listenTo(controller)
     reactions += {
@@ -80,8 +81,4 @@ class CardPanel (list: Int, index: Int, controller: Controller) extends FlowPane
       }
     }
   }
-
-
-
-  def redraw = {}
 }

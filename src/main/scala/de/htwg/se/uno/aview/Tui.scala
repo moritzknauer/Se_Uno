@@ -1,15 +1,13 @@
 package de.htwg.se.uno.aview
 
-import de.htwg.se.uno.controller.{Controller, GameChanged, GameSizeChanged}
-import de.htwg.se.uno.util.{State, idleEvent, unknownCommandEvent}
+import de.htwg.se.uno.controller.{Controller, GameChanged, GameNotChanged, GameSizeChanged, State, unknownCommandEvent}
+import de.htwg.se.uno.model.InitializeTestGameStrategy
 
 import scala.swing.Reactor
 
 
 class Tui(controller: Controller) extends Reactor {
   listenTo(controller)
-  def size = controller.game.numOfCards
-
 
   def processInputLine(input: String): Unit = {
     val wf:Array[String] = input.split("[^a-z^A-Z^ß^ä^ö^ü^Ä^Ö^Ü^0-9/+]+")
@@ -22,6 +20,9 @@ class Tui(controller: Controller) extends Reactor {
         }
       }
       case "q" =>
+      case "t" => {
+        controller.createTestGame()
+      }
       case "s" => {
         controller.set(input.substring(2))
       }
@@ -43,6 +44,7 @@ class Tui(controller: Controller) extends Reactor {
   reactions += {
       case event: GameSizeChanged => printTui
       case event: GameChanged => printTui
+      case event: GameNotChanged => println(State.state)
   }
 
   def printTui: Unit = {
