@@ -12,5 +12,5 @@ class CardPanel (list: Int, index: Int, controller: Controller) extends FlowPane
   val greenColor = new Color(0,255,0)
   val yellowColor = new Color(255,0,0)
 
-
+  def redraw = {}
 }

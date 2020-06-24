@@ -1,10 +1,10 @@
 package de.htwg.se.uno.aview.gui
 
-import de.htwg.se.uno.controller.Controller
+import de.htwg.se.uno.controller.{Controller, GameChanged, GameSizeChanged}
 import de.htwg.se.uno.util.State
 
 import scala.swing._
-import scala.swing.event.Event
+import scala.swing.event.{Event, Key}
 import scala.swing.Swing.LineBorder
 import scala.io.Source._
 
@@ -15,7 +15,7 @@ class SwingGui(controller: Controller) extends Frame {
   listenTo(controller)
 
   title = "HTWG Uno"
-  var cards = Array.ofDim[CardPanel](3, controller.game.numOfCards)
+  var cards = Array.ofDim[CardPanel](3, controller.maxSize)
 
   def pushpanel = new FlowPanel {
     contents += new Label("HandCards:")
@@ -72,6 +72,51 @@ class SwingGui(controller: Controller) extends Frame {
     add(statusline, BorderPanel.Position.South)
   }
 
+  menuBar = new MenuBar {
+    contents += new Menu("File") {
+      mnemonic = Key.F
+      contents += new MenuItem(Action("Test") {controller.createTestGame()})
+      contents += new MenuItem(Action("Random") {controller.createGame()})
+      contents += new MenuItem(Action("Quit") {System.exit(0)})
+    }
+    contents += new Menu("Edit") {
+      mnemonic = Key.E
+      contents += new MenuItem(Action("Undo") {controller.undo})
+      contents += new MenuItem(Action("Redo") {controller.redo})
+    }
+    contents += new Menu("Get") {
+      mnemonic = Key.G
+      contents += new MenuItem(Action("Get") {controller.get()})
+    }
+    contents += new Menu("Set") {
+      mnemonic = Key.S
+      for(i <- 1 to controller.game.init.player.handCards.length) {
+        contents += new MenuItem(Action(controller.game.init.player.handCards(i-1).toString) {
+          controller.set(controller.game.init.player.handCards(i-1).toString)
+        })
+      }
+    }
+  }
 
+  visible = true
+  redraw
 
+  reactions += {
+    case event: GameSizeChanged => redraw
+    case event: GameChanged => redraw
+  }
+
+  def redraw = {
+    for {
+      enemy <- 0 until controller.game.init.enemy.enemyCards.length
+    } cards(0)(enemy).redraw
+    for {
+      i <- 0 to 1
+    } cards(1)(i).redraw
+    for {
+      player <- 0 until controller.game.init.player.handCards.length
+    } cards(2)(player).redraw
+    statusline.text = controller.statusText + State
+    repaint
+  }
 }
