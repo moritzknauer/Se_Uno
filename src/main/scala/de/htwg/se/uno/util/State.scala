@@ -1,7 +1,7 @@
 package de.htwg.se.uno.util
 
 object State {
-  var state = String
+  var state = yourTurnEvent().yourTurn
   def handle(e: Status) = {
     e match {
       case a: pushCardNotAllowedEvent => state = pushCardNotAllowedEvent().pushCardNotAllowed

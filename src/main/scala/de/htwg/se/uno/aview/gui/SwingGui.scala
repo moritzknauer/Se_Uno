@@ -3,8 +3,9 @@ package de.htwg.se.uno.aview.gui
 import de.htwg.se.uno.controller.{Controller, GameChanged, GameSizeChanged}
 import de.htwg.se.uno.util.State
 
+import scala.swing.BorderPanel.Position
 import scala.swing._
-import scala.swing.event.{Event, Key}
+import scala.swing.event.{Event, Key, MouseClicked}
 import scala.swing.Swing.LineBorder
 
 class CardClicked(val index: Int) extends Event
@@ -14,59 +15,51 @@ class SwingGui(controller: Controller) extends Frame {
   listenTo(controller)
 
   title = "HTWG Uno"
-  //var cards = Array.ofDim[CardPanel](3, controller.maxSize)
 
   def pushpanel = new FlowPanel {
     contents += new Label("HandCards:")
-    for {index <- 0 to controller.game.init.player.handCards.size} {
-        val button = new Button(if (index == 0) "Get" else controller.game.init.player.handCards(index-1).toString) {
-          if(index == 0)
-            controller.get()
-          else
-            controller.set(controller.game.init.player.handCards(index-1).toString)
+    for {index <- 1 to controller.game.init.player.handCards.length} {
+        val button = Button(if (index == 0) "Get" else controller.game.init.player.handCards(index-1).toString) {
+          controller.pushNext(controller.game.init.player.handCards(index-1).toString)
       }
-      button.preferredSize_=(new Dimension(30,30))
+      button.preferredSize_=(new Dimension(90,90))
       contents += button
       listenTo(button)
     }
 
   }
 
-  def gamePanel = new FlowPanel {
-    contents += new FlowPanel()
-    border = LineBorder(java.awt.Color.BLACK, 2)
-    background = java.awt.Color.WHITE
-    for (enemy <- 1 to controller.game.init.enemy.enemyCards.length) {
-      val cardPanel = new CardPanel(0, enemy-1, controller)
-      //cards(0)(enemy) = cardPanel
-      contents += cardPanel
-      listenTo(cardPanel)
+  def gamePanel = new GridPanel(3, 1) {
+    contents += new GridPanel(1, controller.game.init.enemy.enemyCards.length) {
+      border = LineBorder(java.awt.Color.BLACK, 2)
+      background = java.awt.Color.WHITE
+      for (enemy <- 1 to controller.game.init.enemy.enemyCards.length) {
+        val cardPanel = new CardPanel(0, enemy - 1, controller)
+        contents += cardPanel.card
+        listenTo(cardPanel)
+      }
     }
-    contents += new FlowPanel()
-    border = LineBorder(java.awt.Color.BLACK, 2)
-    background = java.awt.Color.WHITE
-    for (i <- 0 to 1) {
-      val cardPanel = new CardPanel(1, i, controller)
-      //cards(1)(i) = cardPanel
-      contents += cardPanel
-      listenTo(cardPanel)
+    contents += new GridPanel(1, 2) {
+      for (i <- 0 to 1) {
+        val cardPanel = new CardPanel(1, i, controller)
+        contents += cardPanel.card
+        listenTo(cardPanel)
+      }
     }
-    contents += new FlowPanel()
-    border = LineBorder(java.awt.Color.BLACK, 2)
-    background = java.awt.Color.WHITE
-    for (player <- 1 to controller.game.init.player.handCards.length) {
-      val cardPanel = new CardPanel(2, player - 1, controller)
-      //cards(2)(player) = cardPanel
-      contents += cardPanel
-      listenTo(cardPanel)
+    contents += new GridPanel(1, controller.game.init.player.handCards.length) {
+      for (player <- 1 to controller.game.init.player.handCards.length) {
+        val cardPanel = new CardPanel(2, player - 1, controller)
+        contents += cardPanel.card
+        listenTo(cardPanel)
+      }
     }
   }
 
-  val statusline = new TextField(State.state, 20)
+  val statusline = new TextField(State.state,90)
 
   contents = new BorderPanel {
     add(pushpanel, BorderPanel.Position.North)
-    add(gamePanel, BorderPanel.Position.Center)
+    add(gamePanel, Position.Center)
     add(statusline, BorderPanel.Position.South)
   }
 
@@ -88,11 +81,7 @@ class SwingGui(controller: Controller) extends Frame {
     }
     contents += new Menu("Set") {
       mnemonic = Key.S
-      for(i <- 0 to controller.game.init.player.handCards.length) {
-        contents += new MenuItem(Action(controller.game.init.player.handCards(i - 1).toString) {
-          controller.set(controller.game.init.player.handCards(i - 1).toString)
-        })
-      }
+      contents += new MenuItem(Action("Set") {controller.set(controller.s)})
     }
   }
 
@@ -105,22 +94,11 @@ class SwingGui(controller: Controller) extends Frame {
   }
 
   def redraw = {
-    /*for (enemy <- 0 to controller.game.init.enemy.enemyCards.length) {
-      cards(0)(enemy).redraw
-    }
-    for (i <- 0 to 1) {
-      cards(1)(i).redraw
-    }
-    for (player <- 0 until controller.game.init.player.handCards.length) {
-      cards(2)(player).redraw
-    }
-    statusline.text = controller.statusText + State.state
-    repaint*/
     contents = new BorderPanel {
       add(pushpanel, BorderPanel.Position.North)
       add(gamePanel, BorderPanel.Position.Center)
       add(statusline, BorderPanel.Position.South)
     }
-
+    repaint
   }
 }

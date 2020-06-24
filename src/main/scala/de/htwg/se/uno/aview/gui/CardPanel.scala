@@ -38,16 +38,22 @@ class CardPanel (list: Int, index: Int, controller: Controller) extends FlowPane
     }
   }
 
+  def cardTextColor(list: Int, index: Int) : Char = {
+    val s = cardText(list, index)
+    val c = s.charAt(0)
+    c
+  }
+
   def cardColor(list: Int, index: Int) : Color = {
-    if (cardText(list, index).equals("Uno")) {
+    if (cardTextColor(list, index) == 'U') {
       coveredColor
-    } else if (cardText(list, index).charAt(0).equals("R")) {
+    } else if (cardTextColor(list, index) == 'R') {
       redColor
-    } else if (cardText(list, index).charAt(0).equals("Y")) {
+    } else if (cardTextColor(list, index) == 'Y') {
       yellowColor
-    } else if (cardText(list, index).charAt(0).equals("G")) {
+    } else if (cardTextColor(list, index) == 'G') {
       greenColor
-    } else if (cardText(list, index).charAt(0).equals("B")) {
+    } else if (cardTextColor(list, index) == 'B') {
       blueColor
     } else {
       specialColor
@@ -60,18 +66,14 @@ class CardPanel (list: Int, index: Int, controller: Controller) extends FlowPane
       font = new Font("Verdana", 1, 36)
     }
 
-  val cell = new BoxPanel(Orientation.Vertical) {
+  val card = new BoxPanel(Orientation.Vertical) {
     contents += label
-    preferredSize = new Dimension(20, 50)
+    preferredSize = new Dimension(100, 180)
     background = cardColor(list: Int, index:Int)
     border = Swing.BeveledBorder(Swing.Raised)
     listenTo(mouse.clicks)
     listenTo(controller)
     reactions += {
-      case e: GameChanged => {
-        label.text = cardText(list, index)
-        repaint
-      }
       case MouseClicked(src, pt, mod, clicks, pops) => {
         controller.showPushable(list, index)
         repaint

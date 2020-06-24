@@ -48,6 +48,5 @@ class Tui(controller: Controller) extends Reactor {
   def printTui: Unit = {
     println(controller.gameToString)
     println(State.state)
-    State.handle(idleEvent())
   }
 }

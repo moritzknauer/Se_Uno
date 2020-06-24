@@ -17,8 +17,10 @@ object Uno {
   def main(args: Array[String]): Unit = {
     var input: String = ""
 
+    gui.open()
+    println(State.state)
+
     do {
-      println(State.handle(yourTurnEvent()))
       input = readLine()
       tui.processInputLine(input)
     } while (input != "q")
