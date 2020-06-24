@@ -1,7 +1,7 @@
 package de.htwg.se.uno.aview
 
-import de.htwg.se.uno.controller.{Controller, GameChanged, GameSizeChanged, GameStatus}
-import de.htwg.se.uno.util.{State, unknownCommandEvent}
+import de.htwg.se.uno.controller.{Controller, GameChanged, GameSizeChanged}
+import de.htwg.se.uno.util.{State, idleEvent, unknownCommandEvent}
 
 import scala.swing.Reactor
 
@@ -47,8 +47,7 @@ class Tui(controller: Controller) extends Reactor {
 
   def printTui: Unit = {
     println(controller.gameToString)
-    println(GameStatus.message(controller.gameStatus))
-    controller.gameStatus = GameStatus.IDLE
-    println(State)
+    println(State.state)
+    State.handle(idleEvent())
   }
 }

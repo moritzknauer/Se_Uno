@@ -9,6 +9,11 @@ object State {
       case c: pullCardNotAllowedEvent => state = pullCardNotAllowedEvent().pullCardNotAllowed
       case d: unknownCommandEvent => state = unknownCommandEvent().unknownCommand
       case f: yourTurnEvent => state = yourTurnEvent().yourTurn
+      case g: idleEvent => state = idleEvent().idle
+      case h: pushableEvent => state = pushableEvent().pushable
+      case i: notPushableEvent => state = notPushableEvent().notPushable
+      case j: wonEvent => state = wonEvent().won
+      case k: lostEvent => state = lostEvent().lost
     }
     state
   }

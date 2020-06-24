@@ -25,3 +25,23 @@ case class yourTurnEvent() extends Status {
 case class gameStartEvent() extends Status {
   def gameStart = "Willkommen zu unserem Uno Spiel"
 }
+
+case class idleEvent() extends Status {
+  def idle = ""
+}
+
+case class pushableEvent() extends Status {
+  def pushable = "Card is pushable"
+}
+
+case class notPushableEvent() extends Status {
+  def notPushable = "Card is not pushable"
+}
+
+case class wonEvent() extends Status {
+  def won = "Game won"
+}
+
+case class lostEvent() extends Status {
+  def lost = "Game lost"
+}
