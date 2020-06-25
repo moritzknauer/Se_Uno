@@ -84,13 +84,26 @@ class Controller(var game:Game) extends Publisher {
   def showPushable(list: Int, index: Int) : Unit = {
     if(list != 2) {
       State.handle(notPushableEvent())
+      publish(new GameNotChanged)
     } else {
       if (game.init.player.pushable(game.init.player.handCards(index), game)) {
         State.handle(pushableEvent())
+        publish(new GameNotChanged)
       } else {
-        State.state = State.state
+        State.handle(notPushableEvent())
+        publish(new GameNotChanged)
       }
     }
+  }
+
+  def getIndex(string: String): Int = {
+    var c = -1
+    for(i <- 0 to game.init.player.handCards.length-1) {
+      if(game.init.player.handCards(i).toString.equals(string)) {
+        c = i
+      }
+    }
+    c
   }
 
   def pushNext(string:String): Unit = {

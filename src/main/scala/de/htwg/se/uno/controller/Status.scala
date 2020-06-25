@@ -19,7 +19,7 @@ case class unknownCommandEvent() extends Status {
 }
 
 case class yourTurnEvent() extends Status {
-  def yourTurn = "Du bist dran. Mögliche Befehle: q, n, t, s [Karte], g, u, r"
+  def yourTurn = "Du bist dran. Mögliche Befehle: q, n, t, s [Karte], p [Karte], g, u, r"
 }
 
 case class gameStartEvent() extends Status {
@@ -27,17 +27,17 @@ case class gameStartEvent() extends Status {
 }
 
 case class pushableEvent() extends Status {
-  def pushable = "Card is pushable"
+  def pushable = "Diese Karte kannst du legen"
 }
 
 case class notPushableEvent() extends Status {
-  def notPushable = "Card is not pushable"
+  def notPushable = "Diese Karte kannst du nicht legen"
 }
 
 case class wonEvent() extends Status {
-  def won = "Game won"
+  def won = "Glückwunsch du hast gewonnen"
 }
 
 case class lostEvent() extends Status {
-  def lost = "Game lost"
+  def lost = "Du hast leider verloren"
 }

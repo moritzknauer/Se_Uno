@@ -1,43 +1,56 @@
 package de.htwg.se.uno.aview
 
 import de.htwg.se.uno.controller.{Controller, GameChanged, GameNotChanged, GameSizeChanged, State, unknownCommandEvent}
-import de.htwg.se.uno.model.InitializeTestGameStrategy
 
 import scala.swing.Reactor
+import scala.util.{Failure, Success, Try}
 
 
 class Tui(controller: Controller) extends Reactor {
   listenTo(controller)
 
-  def processInputLine(input: String): Unit = {
+  def processInputLine(input: String): Try[String] = {
     val wf:Array[String] = input.split("[^a-z^A-Z^ß^ä^ö^ü^Ä^Ö^Ü^0-9/+]+")
     wf(0) match {
       case "n" => {
         if (wf.length == 2) {
           controller.createGame(wf(1).toInt)
+          Success("valid command: " + input)
         } else {
           controller.createGame()
+          Success("valid command: " + input)
         }
       }
-      case "q" =>
+      case "q" => Success("valid command: " + input)
       case "t" => {
         controller.createTestGame()
+        Success("valid command: " + input)
       }
       case "s" => {
         controller.set(input.substring(2))
+        Success("valid command: " + input)
+      }
+      case "p" => {
+        val index = controller.getIndex(input.substring(2))
+        controller.showPushable(2, index)
+        Success("valid command: " + input)
       }
       case "g" => {
         controller.get()
+        Success("valid command: " + input)
       }
       case "r" => {
         controller.redo
         controller.redo
+        Success("valid command: " + input)
       }
       case "u" => {
         controller.undo
         controller.undo
+        Success("valid command: " + input)
       }
       case _ => State.handle(unknownCommandEvent())
+        Failure(new IllegalArgumentException("Wrong input: " + input))
     }
   }
 

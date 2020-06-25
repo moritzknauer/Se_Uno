@@ -64,10 +64,6 @@ class ControllerSpec extends WordSpec with Matchers {
         State.handle(unknownCommandEvent())
         State.state should be(unknownCommandEvent().unknownCommand)
       }
-      "Should be able to update the state to gameStart Event" in {
-        State.handle(gameStartEvent())
-        State.state should be(gameStartEvent().gameStart)
-      }
     }
   }
 }

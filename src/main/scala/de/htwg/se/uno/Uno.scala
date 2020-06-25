@@ -2,7 +2,7 @@ package de.htwg.se.uno
 
 import de.htwg.se.uno.aview.Tui
 import de.htwg.se.uno.aview.gui.SwingGui
-import de.htwg.se.uno.controller.{Controller, GameSizeChanged}
+import de.htwg.se.uno.controller.{Controller, GameSizeChanged, State}
 import de.htwg.se.uno.model.Game
 
 import scala.io.StdIn.readLine
@@ -16,11 +16,14 @@ object Uno {
   def main(args: Array[String]): Unit = {
     var input: String = ""
 
+    println(controller.gameToString)
+    println(State.state)
+
     gui.open()
 
     do {
       input = readLine()
-      tui.processInputLine(input)
+      println(tui.processInputLine(input).get)
     } while (input != "q")
   }
 }
