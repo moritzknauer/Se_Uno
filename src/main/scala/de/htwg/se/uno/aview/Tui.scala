@@ -15,16 +15,16 @@ class Tui(controller: Controller) extends Reactor {
       case "n" => {
         if (wf.length == 2) {
           controller.createGame(wf(1).toInt)
-          Success("valid command: " + input)
+          Success("Valid Command: " + input)
         } else {
           controller.createGame()
-          Success("valid command: " + input)
+          Success("Valid Command: " + input)
         }
       }
-      case "q" => Success("valid command: " + input)
+      case "q" => Success("Valid Command: " + input)
       case "t" => {
         controller.createTestGame()
-        Success("valid command: " + input)
+        Success("Valid Command: " + input)
       }
       case "s" => {
         controller.set(input.substring(2))
@@ -33,21 +33,21 @@ class Tui(controller: Controller) extends Reactor {
       case "p" => {
         val index = controller.getIndex(input.substring(2))
         controller.showPushable(2, index)
-        Success("valid command: " + input)
+        Success("Valid Command: " + input)
       }
       case "g" => {
         controller.get()
-        Success("valid command: " + input)
+        Success("Valid Command: " + input)
       }
       case "r" => {
         controller.redo
         controller.redo
-        Success("valid command: " + input)
+        Success("Valid Command: " + input)
       }
       case "u" => {
         controller.undo
         controller.undo
-        Success("valid command: " + input)
+        Success("Valid Command: " + input)
       }
       case _ => State.handle(unknownCommandEvent())
         Failure(new IllegalArgumentException("Wrong input: " + input))
