@@ -27,10 +27,10 @@ class Controller(var game:Game) extends Publisher {
     val s = gameToString
     undoManager.doStep(new PushCommand(string, this))
     if(!s.equals(gameToString)) {
-      won
       State.handle(enemyTurnEvent())
       publish(new GameChanged)
       enemy()
+      won
     } else {
       State.handle(pushCardNotAllowedEvent())
       publish(new GameNotChanged)
@@ -44,6 +44,7 @@ class Controller(var game:Game) extends Publisher {
       State.handle(enemyTurnEvent())
       publish(new GameChanged)
       enemy()
+      won
     } else {
       State.handle(pullCardNotAllowedEvent())
       publish(new GameNotChanged)
@@ -52,19 +53,22 @@ class Controller(var game:Game) extends Publisher {
 
   def enemy(): Unit = {
     undoManager.doStep(new EnemyCommand(this))
-    won
     State.handle(yourTurnEvent())
     publish(new GameChanged)
   }
 
   def undo: Unit = {
     undoManager.undoStep
+    State.handle(undoEvent())
     publish(new GameChanged)
+    won
   }
 
   def redo: Unit = {
     undoManager.redoStep
+    State.handle(redoEvent())
     publish(new GameChanged)
+    won
   }
 
   def won: Unit = {

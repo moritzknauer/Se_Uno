@@ -37,3 +37,11 @@ case class wonEvent() extends Status {
 case class lostEvent() extends Status {
   def lost = "Du hast leider verloren"
 }
+
+case class undoEvent() extends Status {
+  def undo = "Zug rückgängig gemacht"
+}
+
+case class redoEvent() extends Status {
+  def redo = "Zug wiederhergestellt"
+}

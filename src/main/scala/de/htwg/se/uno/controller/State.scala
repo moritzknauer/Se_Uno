@@ -13,6 +13,8 @@ object State {
       case i: notPushableEvent => state = notPushableEvent().notPushable
       case j: wonEvent => state = wonEvent().won
       case k: lostEvent => state = lostEvent().lost
+      case l: undoEvent => state = undoEvent().undo
+      case m: redoEvent => state = redoEvent().redo
     }
     state
   }
