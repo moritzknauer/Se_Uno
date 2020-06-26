@@ -22,10 +22,6 @@ case class yourTurnEvent() extends Status {
   def yourTurn = "Du bist dran. Mögliche Befehle: q, n, t, s [Karte], p [Karte], g, u, r"
 }
 
-case class gameStartEvent() extends Status {
-  def gameStart = "Willkommen zu unserem Uno Spiel"
-}
-
 case class pushableEvent() extends Status {
   def pushable = "Diese Karte kannst du legen"
 }

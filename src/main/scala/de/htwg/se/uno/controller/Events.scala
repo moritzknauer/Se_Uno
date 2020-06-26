@@ -4,4 +4,4 @@ import scala.swing.event.Event
 
 class GameChanged extends Event
 class GameNotChanged extends Event
-case class GameSizeChanged(newSize: Int = 7) extends Event
+class GameSizeChanged extends Event

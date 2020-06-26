@@ -21,7 +21,10 @@ class Tui(controller: Controller) extends Reactor {
           Success("Valid Command: " + input)
         }
       }
-      case "q" => Success("Valid Command: " + input)
+      case "q" => {
+        System.exit(0)
+        Success("Valid Command: " + input)
+      }
       case "t" => {
         controller.createTestGame()
         Success("Valid Command: " + input)

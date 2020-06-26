@@ -11,14 +11,14 @@ class Controller(var game:Game) extends Publisher {
 
   def createGame(size: Int = 7):Unit = {
     game = Game(size)
-    publish(new GameSizeChanged(size))
+    publish(new GameSizeChanged)
   }
 
   def createTestGame():Unit = {
     game = Game()
     game.init = new InitializeTestGameStrategy
     game.init = game.init.initializeGame()
-    publish(new GameSizeChanged())
+    publish(new GameSizeChanged)
   }
 
   def gameToString: String = game.toString
@@ -71,11 +71,9 @@ class Controller(var game:Game) extends Publisher {
     if(game.init.player.handCards.length == 0) {
       State.handle(wonEvent())
       publish(new GameNotChanged)
-      System.exit(0)
     } else if(game.init.enemy.enemyCards.length == 0) {
       State.handle(lostEvent())
       publish(new GameNotChanged)
-      System.exit(0)
     } else {
       State.state = State.state
     }

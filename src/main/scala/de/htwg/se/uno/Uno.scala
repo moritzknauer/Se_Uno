@@ -23,7 +23,7 @@ object Uno {
 
     do {
       input = readLine()
-      println(tui.processInputLine(input).get)
+      val s = tui.processInputLine(input).get
     } while (input != "q")
   }
 }
