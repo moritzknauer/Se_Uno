@@ -17,9 +17,12 @@ class TuiSpec extends WordSpec with Matchers{
       tui.processInputLine("n 20")
       controller.game should be(Game(20))
     }
+    /*
     "Do nothing on input 'q" in{
       tui.processInputLine("q")
     }
+
+     */
     "Only print on bad input like 'Something'" in {
       val old = controller.gameToString
       tui.processInputLine("Something")
