@@ -50,6 +50,15 @@ class InitializeTestGameStrategy extends InitializeGameStrategy {
     enemy.enemyCards = enemy.enemyCards :+ cardsCovered(95)
     cardsCovered = cardsCovered.take(95) ++ cardsCovered.drop(96)
 
+    player.stack1.popAll()
+    player.stack1.push("Start")
+    player.stack2.popAll()
+    player.stack2.push(-1)
+    enemy.stack1.popAll()
+    enemy.stack1.push(" ")
+    enemy.stack2.popAll()
+    enemy.stack2.push(-1)
+
     this
   }
 }

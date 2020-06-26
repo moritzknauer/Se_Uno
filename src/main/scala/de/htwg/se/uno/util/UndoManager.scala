@@ -9,7 +9,7 @@ class UndoManager {
   }
   def undoStep  = {
     undoStack match {
-      case  Nil =>
+      case Nil =>
       case head::stack => {
         head.undoStep
         undoStack=stack

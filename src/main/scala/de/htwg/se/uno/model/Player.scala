@@ -63,14 +63,15 @@ class Player() {
         handCards = handCards.take(i - 2) ++ handCards.drop(i-1)
         stack2.push(i-2)
         c += 1
+        stack1.push(" ")
       }
     }
     if (c == 0) {
       game.init.cardsRevealed = handCards(handCards.length-1) +: game.init.cardsRevealed
       handCards = handCards.take(handCards.length - 1)
       stack2.push(handCards.length-1)
+      stack1.push(" ")
     }
-    stack1.push(" ")
     this
   }
 

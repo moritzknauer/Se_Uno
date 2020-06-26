@@ -6,11 +6,12 @@ import de.htwg.se.uno.util.UndoManager
 
 
 class Controller(var game:Game) extends Publisher {
-  private val undoManager = new UndoManager
+  private var undoManager = new UndoManager
   var s = ""
 
   def createGame(size: Int = 7):Unit = {
     game = Game(size)
+    undoManager = new UndoManager
     publish(new GameSizeChanged)
   }
 
@@ -18,6 +19,7 @@ class Controller(var game:Game) extends Publisher {
     game = Game()
     game.init = new InitializeTestGameStrategy
     game.init = game.init.initializeGame()
+    undoManager = new UndoManager
     publish(new GameSizeChanged)
   }
 
@@ -74,10 +76,10 @@ class Controller(var game:Game) extends Publisher {
   def won: Unit = {
     if(game.init.player.handCards.length == 0) {
       State.handle(wonEvent())
-      publish(new GameNotChanged)
+      publish(new GameEnded)
     } else if(game.init.enemy.enemyCards.length == 0) {
       State.handle(lostEvent())
-      publish(new GameNotChanged)
+      publish(new GameEnded)
     } else {
       State.state = State.state
     }

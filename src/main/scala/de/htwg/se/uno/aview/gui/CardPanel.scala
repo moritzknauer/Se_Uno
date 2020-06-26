@@ -2,7 +2,10 @@ package de.htwg.se.uno.aview.gui
 
 import de.htwg.se.uno.controller.Controller
 import de.htwg.se.uno.model.Card
+import javax.swing.GroupLayout.Alignment
 
+import scala.swing
+import scala.swing.BorderPanel.Position
 import scala.swing.Swing.LineBorder
 import scala.swing._
 import scala.swing.event.MouseClicked
@@ -68,8 +71,11 @@ class CardPanel (list: Int, index: Int, controller: Controller) extends FlowPane
     }
 
   val card = new BoxPanel(Orientation.Vertical) {
+    /*
     contents += label
     preferredSize = new Dimension(100, 180)
+    maximumSize = new Dimension(100, 180)
+    minimumSize = new Dimension(100, 180)
     background = cardColor(list: Int, index:Int)
     border = LineBorder(java.awt.Color.WHITE, 20)
     listenTo(mouse.clicks)
@@ -77,8 +83,38 @@ class CardPanel (list: Int, index: Int, controller: Controller) extends FlowPane
     reactions += {
       case MouseClicked(src, pt, mod, clicks, pops) => {
         controller.showPushable(list, index)
+        if (list == 2) {
+          controller.pushNext(controller.game.init.player.handCards(index).toString)
+        }
         repaint
       }
     }
+
+     */
+
+    val button = Button(if (list == 0 || (list == 1 && index == 0)) {
+      "Uno"
+    } else if (list == 1 && index == 1) {
+      controller.game.init.cardsRevealed.head.toString
+    } else {
+      controller.game.init.player.handCards(index).toString
+    }) {
+      if (list == 0 || (list == 1 && index == 1)) {
+        controller.showPushable(list, index)
+      } else if (index == 0 && list == 1) {
+        controller.get
+      } else {
+        controller.set(controller.game.init.player.handCards(index).toString)
+      }
+    }
+    button.font = new Font("Verdana", 1, 25)
+    button.preferredSize_=(new Dimension(100,180))
+    button.maximumSize_= (new Dimension(100, 180))
+    button.minimumSize_=(new Dimension(100, 180))
+    button.background = cardColor(list: Int, index: Int)
+    contents += button
+    listenTo(button)
+    background = java.awt.Color.WHITE
+    listenTo(controller)
   }
 }

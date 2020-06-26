@@ -22,6 +22,9 @@ class Enemy() {
           c = i
         }
       }
+      if(c == 0) {
+        return this
+      }
       val card = enemyCards(c-1)
       c = 0
       game.init.cardsCovered = card +: game.init.cardsCovered
@@ -48,14 +51,15 @@ class Enemy() {
         enemyCards = enemyCards.take(i - 2) ++ enemyCards.drop(i-1)
         c += 1
         stack2.push(i-2)
+        stack1.push("")
       }
     }
     if (c == 0) {
       game.init.cardsRevealed = enemyCards(enemyCards.length - 1) +: game.init.cardsRevealed
       enemyCards = enemyCards.take(enemyCards.length - 1)
       stack2.push(enemyCards.length - 1)
+      stack1.push("")
     }
-    stack1.push("")
     this
   }
 
