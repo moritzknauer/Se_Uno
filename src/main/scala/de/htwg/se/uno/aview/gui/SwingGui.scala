@@ -1,6 +1,6 @@
 package de.htwg.se.uno.aview.gui
 
-import de.htwg.se.uno.controller.{Controller, GameChanged, GameEnded, GameEvent, GameNotChanged, GameSizeChanged}
+import de.htwg.se.uno.controller.controllerComponent.{ControllerInterface, GameChanged, GameEnded, GameEvent, GameNotChanged, GameSizeChanged}
 import javax.swing.SwingConstants
 
 import scala.swing.BorderPanel.Position
@@ -8,38 +8,17 @@ import scala.swing._
 import scala.swing.event.Key
 import scala.swing.Swing.LineBorder
 
-class SwingGui(controller: Controller) extends Frame {
+class SwingGui(controller: ControllerInterface) extends Frame {
 
   listenTo(controller)
 
   title = "HTWG Uno"
 
-  /*def pushpanel = new FlowPanel {
-    //contents += new Label("Aktionen:")
-    /*
-    for (index <- 0 to 1) {
-      val button = Button(if (index == 0) "Get" else "Set") {
-        if (index == 0) {
-          controller.get()
-        } else {
-          controller.set(controller.s)
-        }
-      }
-      button.preferredSize_=(new Dimension(90,90))
-      contents += button
-      listenTo(button)
-    }
-
-     */
-  }
-
-   */
-
   def gamePanel = new GridPanel(3, 1) {
-    contents += new GridPanel(1, controller.game.init.enemy.enemyCards.length) {
+    contents += new GridPanel(1, controller.getLength(0)) {
       border = LineBorder(java.awt.Color.WHITE, 20)
       background = java.awt.Color.WHITE
-      for (enemy <- 1 to controller.game.init.enemy.enemyCards.length) {
+      for (enemy <- 1 to controller.getLength(0)) {
         val cardPanel = new CardPanel(0, enemy - 1, controller)
         contents += cardPanel.card
         listenTo(cardPanel)
@@ -54,10 +33,10 @@ class SwingGui(controller: Controller) extends Frame {
         listenTo(cardPanel)
       }
     }
-    contents += new GridPanel(1, controller.game.init.player.handCards.length) {
+    contents += new GridPanel(1, controller.getLength(1)) {
       border = LineBorder(java.awt.Color.WHITE, 20)
       background = java.awt.Color.WHITE
-      for (player <- 1 to controller.game.init.player.handCards.length) {
+      for (player <- 1 to controller.getLength(1)) {
         val cardPanel = new CardPanel(2, player - 1, controller)
         contents += cardPanel.card
         listenTo(cardPanel)

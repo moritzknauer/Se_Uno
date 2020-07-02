@@ -1,12 +1,12 @@
 package de.htwg.se.uno.aview
 
-import de.htwg.se.uno.controller.{Controller, GameChanged, GameEnded, GameEvent, GameNotChanged, GameSizeChanged, unknownCommandEvent}
+import de.htwg.se.uno.controller.controllerComponent.{ControllerInterface, GameChanged, GameEnded, GameEvent, GameNotChanged, GameSizeChanged, unknownCommandEvent}
 
 import scala.swing.Reactor
 import scala.util.{Failure, Success, Try}
 
 
-class Tui(controller: Controller) extends Reactor {
+class Tui(controller: ControllerInterface) extends Reactor {
   listenTo(controller)
 
   def processInputLine(input: String): Try[String] = {

@@ -37,9 +37,9 @@ case class Card(color:Color, value:Values){
       case Value.Seven => " 7 "
       case Value.Eight => " 8 "
       case Value.Nine => " 9 "
-     case Value.Suspend => " ⊘ "
-      case Value.DirectionChange => " ⇆ "
-      case Value.ColorChange => " \u2A01 "
+      case Value.Suspend => " S "//⊘
+      case Value.DirectionChange => " D "//⇆
+      case Value.ColorChange => " C "
       case Value.PlusTwo => "+ 2"
       case Value.PlusFour => "+ 4"
     }

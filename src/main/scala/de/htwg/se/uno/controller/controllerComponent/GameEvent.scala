@@ -1,4 +1,4 @@
-package de.htwg.se.uno.controller
+package de.htwg.se.uno.controller.controllerComponent
 
 object GameEvent {
   var state = yourTurnEvent().yourTurn

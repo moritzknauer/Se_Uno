@@ -1,13 +1,14 @@
-package de.htwg.se.uno.controller
+package de.htwg.se.uno.controller.controllerComponent.controllerBaseImpl
 
-import scala.swing.Publisher
-import de.htwg.se.uno.model.{Game, InitializeTestGameStrategy}
+import de.htwg.se.uno.controller.controllerComponent._
+import de.htwg.se.uno.model.{Card, Game, InitializeTestGameStrategy}
 import de.htwg.se.uno.util.UndoManager
 
+import scala.swing.Publisher
 
-class Controller(var game:Game) extends Publisher {
+
+class Controller(var game:Game) extends ControllerInterface with Publisher {
   private var undoManager = new UndoManager
-  var s = ""
 
   def createGame(size: Int = 7):Unit = {
     game = Game(size)
@@ -95,12 +96,49 @@ class Controller(var game:Game) extends Publisher {
     c
   }
 
-  def pushNext(string:String): Unit = {
-    s = string
-  }
-
   def notPush : Unit = {
     GameEvent.handle(pushCardNotAllowedEvent())
     publish(new GameNotChanged)
+  }
+
+  def getCard(list : Int, index : Int) : Card = {
+    list match{
+      case 0 => game.init.enemy.enemyCards(index)
+      case 1 => {
+        index match {
+          case 0 => game.init.cardsCovered.head
+          case 1 => game.init.cardsRevealed.head
+        }
+      }
+      case 2 => game.init.player.handCards(index)
+    }
+  }
+
+  def getCardText(list : Int, index : Int) : String = {
+    if (list == 1 && index == 1) {
+      game.init.cardsRevealed.head.toString
+    } else if (list == 2) {
+      game.init.player.handCards(index).toString
+    } else {
+      "Uno"
+    }
+  }
+
+  def getGuiCardText(list : Int, index : Int) : String = {
+    if (list == 0 || (list == 1 && index == 0)) {
+      "Uno"
+    } else if (list == 1 && index == 1) {
+      game.init.cardsRevealed.head.toGuiString
+    } else {
+      game.init.player.handCards(index).toGuiString
+    }
+  }
+
+  def getLength(list : Int) : Int = {
+    if(list == 0) {
+      game.init.enemy.enemyCards.length
+    } else {
+      game.init.player.handCards.length
+    }
   }
 }

@@ -1,16 +1,11 @@
 package de.htwg.se.uno.aview.gui
 
-import de.htwg.se.uno.controller.{Controller, GameEvent, GameNotChanged, pushCardNotAllowedEvent}
+import de.htwg.se.uno.controller.controllerComponent.{ControllerInterface, GameEvent, GameNotChanged, pushCardNotAllowedEvent}
 import de.htwg.se.uno.model.Card
-import javax.swing.GroupLayout.Alignment
 
-import scala.swing
-import scala.swing.BorderPanel.Position
-import scala.swing.Swing.LineBorder
 import scala.swing._
-import scala.swing.event.MouseClicked
 
-class CardPanel (list: Int, index: Int, controller: Controller) extends FlowPanel {
+class CardPanel (list: Int, index: Int, controller: ControllerInterface) extends FlowPanel {
 
   val coveredColor = new Color(0,0,0)
   val specialColor = new Color(128,128,128)
@@ -20,26 +15,11 @@ class CardPanel (list: Int, index: Int, controller: Controller) extends FlowPane
   val redColor = new Color(255,0,0)
 
   def myCard(): Card = {
-    list match{
-      case 0 => controller.game.init.enemy.enemyCards(index)
-      case 1 => {
-        index match {
-          case 0 => controller.game.init.cardsCovered.head
-          case 1 => controller.game.init.cardsRevealed.head
-        }
-      }
-      case 2 => controller.game.init.player.handCards(index)
-    }
+    controller.getCard(list, index)
   }
 
   def cardText(list: Int, index: Int) : String = {
-    if (list == 1 && index == 1) {
-      controller.game.init.cardsRevealed.head.toString
-    } else if (list == 2) {
-      controller.game.init.player.handCards(index).toString
-    } else {
-      "Uno"
-    }
+    controller.getCardText(list, index)
   }
 
   def cardTextColor(list: Int, index: Int) : Char = {
@@ -71,34 +51,7 @@ class CardPanel (list: Int, index: Int, controller: Controller) extends FlowPane
     }
 
   val card = new BoxPanel(Orientation.Vertical) {
-    /*
-    contents += label
-    preferredSize = new Dimension(100, 180)
-    maximumSize = new Dimension(100, 180)
-    minimumSize = new Dimension(100, 180)
-    background = cardColor(list: Int, index:Int)
-    border = LineBorder(java.awt.Color.WHITE, 20)
-    listenTo(mouse.clicks)
-    listenTo(controller)
-    reactions += {
-      case MouseClicked(src, pt, mod, clicks, pops) => {
-        controller.showPushable(list, index)
-        if (list == 2) {
-          controller.pushNext(controller.game.init.player.handCards(index).toString)
-        }
-        repaint
-      }
-    }
-
-     */
-
-    val button = Button(if (list == 0 || (list == 1 && index == 0)) {
-      "Uno"
-    } else if (list == 1 && index == 1) {
-      controller.game.init.cardsRevealed.head.toGuiString
-    } else {
-      controller.game.init.player.handCards(index).toGuiString
-    }) {
+    val button = Button(controller.getGuiCardText(list, index)) {
       if (list == 0 || (list == 1 && index == 1)) {
         controller.notPush
         GameEvent.handle(pushCardNotAllowedEvent())
@@ -106,7 +59,7 @@ class CardPanel (list: Int, index: Int, controller: Controller) extends FlowPane
       } else if (index == 0 && list == 1) {
         controller.get
       } else {
-        controller.set(controller.game.init.player.handCards(index).toString)
+        controller.set(cardText(list, index))
       }
     }
     button.font = new Font("Verdana", 1, 25)
