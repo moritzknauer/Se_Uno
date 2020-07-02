@@ -1,6 +1,6 @@
 package de.htwg.se.uno.aview.gui
 
-import de.htwg.se.uno.controller.{Controller, GameChanged, GameEnded, GameNotChanged, GameSizeChanged, State}
+import de.htwg.se.uno.controller.{Controller, GameChanged, GameEnded, GameEvent, GameNotChanged, GameSizeChanged}
 import javax.swing.SwingConstants
 
 import scala.swing.BorderPanel.Position
@@ -65,7 +65,7 @@ class SwingGui(controller: Controller) extends Frame {
     }
   }
 
-  var statusline = new TextField(State.state,30) {
+  var statusline = new TextField(GameEvent.state,30) {
     preferredSize = new Dimension(1,100)
     font = new Font("Verdana", 5, 36)
     background = java.awt.Color.WHITE
@@ -104,12 +104,12 @@ class SwingGui(controller: Controller) extends Frame {
   reactions += {
     case event: GameSizeChanged => redraw
     case event: GameChanged => redraw
-    case event: GameNotChanged => statusline.text = State.state
+    case event: GameNotChanged => statusline.text = GameEvent.state
     case event: GameEnded => ended
   }
 
   def redraw = {
-    statusline.text = State.state
+    statusline.text = GameEvent.state
     contents = new BorderPanel {
       //add(pushpanel, BorderPanel.Position.North)
       add(gamePanel, BorderPanel.Position.Center)
@@ -119,7 +119,7 @@ class SwingGui(controller: Controller) extends Frame {
   }
 
   def ended: Unit = {
-    statusline.text = State.state
+    statusline.text = GameEvent.state
     contents = new BorderPanel {
       add(statusline, BorderPanel.Position.North)
       add(buttons, BorderPanel.Position.Center)

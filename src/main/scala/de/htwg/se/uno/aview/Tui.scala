@@ -1,6 +1,6 @@
 package de.htwg.se.uno.aview
 
-import de.htwg.se.uno.controller.{Controller, GameChanged, GameEnded, GameNotChanged, GameSizeChanged, State, unknownCommandEvent}
+import de.htwg.se.uno.controller.{Controller, GameChanged, GameEnded, GameEvent, GameNotChanged, GameSizeChanged, unknownCommandEvent}
 
 import scala.swing.Reactor
 import scala.util.{Failure, Success, Try}
@@ -33,11 +33,6 @@ class Tui(controller: Controller) extends Reactor {
         controller.set(input.substring(2))
         Success("valid command: " + input)
       }
-      case "p" => {
-        val index = controller.getIndex(input.substring(2))
-        controller.showPushable(2, index)
-        Success("Valid Command: " + input)
-      }
       case "g" => {
         controller.get()
         Success("Valid Command: " + input)
@@ -52,7 +47,7 @@ class Tui(controller: Controller) extends Reactor {
         controller.undo
         Success("Valid Command: " + input)
       }
-      case _ => State.handle(unknownCommandEvent())
+      case _ => GameEvent.handle(unknownCommandEvent())
         Failure(new IllegalArgumentException("Wrong input: " + input))
     }
   }
@@ -60,15 +55,15 @@ class Tui(controller: Controller) extends Reactor {
   reactions += {
       case event: GameSizeChanged => printTui
       case event: GameChanged => printTui
-      case event: GameNotChanged => println(State.state)
+      case event: GameNotChanged => println(GameEvent.state)
       case event: GameEnded => {
-        println(State.state)
+        println(GameEvent.state)
         println("Starte neues Spiel oder beende")
       }
   }
 
   def printTui: Unit = {
     println(controller.gameToString)
-    println(State.state)
+    println(GameEvent.state)
   }
 }

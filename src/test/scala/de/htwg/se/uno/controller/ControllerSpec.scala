@@ -64,40 +64,32 @@ class ControllerSpec extends WordSpec with Matchers {
 
 
       "Should be able to update the state to your turn" in {
-        State.handle(yourTurnEvent())
-        State.state should be(yourTurnEvent().yourTurn)
+        GameEvent.handle(yourTurnEvent())
+        GameEvent.state should be(yourTurnEvent().yourTurn)
       }
       "Should be able to update the state to enemys turn" in {
-        State.handle(enemyTurnEvent())
-        State.state should be(enemyTurnEvent().enemyTurn)
+        GameEvent.handle(enemyTurnEvent())
+        GameEvent.state should be(enemyTurnEvent().enemyTurn)
       }
       "Should be able to update the state to pushCardNotAllowed Event" in {
-        State.handle(pushCardNotAllowedEvent())
-        State.state should be(pushCardNotAllowedEvent().pushCardNotAllowed)
+        GameEvent.handle(pushCardNotAllowedEvent())
+        GameEvent.state should be(pushCardNotAllowedEvent().pushCardNotAllowed)
       }
       "Should be able to update the state to pullCardNotAllowed Event" in {
-        State.handle(pullCardNotAllowedEvent())
-        State.state should be(pullCardNotAllowedEvent().pullCardNotAllowed)
+        GameEvent.handle(pullCardNotAllowedEvent())
+        GameEvent.state should be(pullCardNotAllowedEvent().pullCardNotAllowed)
       }
       "Should be able to update the state to unknownCommand Event" in {
-        State.handle(unknownCommandEvent())
-        State.state should be(unknownCommandEvent().unknownCommand)
-      }
-      "Should be able to update the state to pushable Event" in {
-        State.handle(pushableEvent())
-        State.state should be(pushableEvent().pushable)
-      }
-      "Should be able to update the state to notPushable Event" in {
-        State.handle(notPushableEvent())
-        State.state should be(notPushableEvent().notPushable)
+        GameEvent.handle(unknownCommandEvent())
+        GameEvent.state should be(unknownCommandEvent().unknownCommand)
       }
       "Should be able to update the state to won Event" in {
-        State.handle(wonEvent())
-        State.state should be(wonEvent().won)
+        GameEvent.handle(wonEvent())
+        GameEvent.state should be(wonEvent().won)
       }
       "Should be able to update the state to lost Event" in {
-        State.handle(lostEvent())
-        State.state should be(lostEvent().lost)
+        GameEvent.handle(lostEvent())
+        GameEvent.state should be(lostEvent().lost)
       }
     }
   }

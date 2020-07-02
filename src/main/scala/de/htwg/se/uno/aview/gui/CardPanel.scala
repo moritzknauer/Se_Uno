@@ -1,6 +1,6 @@
 package de.htwg.se.uno.aview.gui
 
-import de.htwg.se.uno.controller.Controller
+import de.htwg.se.uno.controller.{Controller, GameEvent, GameNotChanged, pushCardNotAllowedEvent}
 import de.htwg.se.uno.model.Card
 import javax.swing.GroupLayout.Alignment
 
@@ -95,12 +95,14 @@ class CardPanel (list: Int, index: Int, controller: Controller) extends FlowPane
     val button = Button(if (list == 0 || (list == 1 && index == 0)) {
       "Uno"
     } else if (list == 1 && index == 1) {
-      controller.game.init.cardsRevealed.head.toString
+      controller.game.init.cardsRevealed.head.toGuiString
     } else {
-      controller.game.init.player.handCards(index).toString
+      controller.game.init.player.handCards(index).toGuiString
     }) {
       if (list == 0 || (list == 1 && index == 1)) {
-        controller.showPushable(list, index)
+        controller.notPush
+        GameEvent.handle(pushCardNotAllowedEvent())
+        publish(new GameNotChanged)
       } else if (index == 0 && list == 1) {
         controller.get
       } else {

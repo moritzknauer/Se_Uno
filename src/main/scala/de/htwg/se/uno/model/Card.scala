@@ -24,4 +24,24 @@ case class Card(color:Color, value:Values){
       case Value.PlusFour => color.toString.charAt(0) + "+4"
     }
   }
+
+  def toGuiString:String = {
+    value match {
+      case Value.Zero => " 0 "
+      case Value.One => " 1 "
+      case Value.Two => " 2 "
+      case Value.Three => " 3 "
+      case Value.Four => " 4 "
+      case Value.Five => " 5 "
+      case Value.Six => " 6 "
+      case Value.Seven => " 7 "
+      case Value.Eight => " 8 "
+      case Value.Nine => " 9 "
+     case Value.Suspend => " ⊘ "
+      case Value.DirectionChange => " ⇆ "
+      case Value.ColorChange => " \u2A01 "
+      case Value.PlusTwo => "+ 2"
+      case Value.PlusFour => "+ 4"
+    }
+  }
 }
