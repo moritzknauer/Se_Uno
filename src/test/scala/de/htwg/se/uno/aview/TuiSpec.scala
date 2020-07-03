@@ -1,6 +1,7 @@
 package de.htwg.se.uno.aview
 
 import de.htwg.se.uno.controller.controllerComponent.controllerBaseImpl.Controller
+import de.htwg.se.uno.model.gameComponent.gameBaseImpl.Game
 import org.scalatest.{Matchers, WordSpec}
 
 class TuiSpec extends WordSpec with Matchers{
@@ -34,7 +35,7 @@ class TuiSpec extends WordSpec with Matchers{
       tui.processInputLine("s " + s1)
       controller.game.cardsRevealed(1).toString should be(s1)
       controller.game.cardsRevealed(0).toString should be(s2)*/
-      tui.processInputLine("s " + controller.game.init.cardsRevealed.head.toString)
+      tui.processInputLine("s " + controller.game.getCardText(1, 1))
     }
     "Dont set a Card on wrong input" in{
       val s3 = controller.gameToString

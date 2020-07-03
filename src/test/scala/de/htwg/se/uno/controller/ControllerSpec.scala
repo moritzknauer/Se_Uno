@@ -1,7 +1,7 @@
 package de.htwg.se.uno.controller
 
 import de.htwg.se.uno.controller.controllerComponent.controllerBaseImpl.Controller
-import de.htwg.se.uno.model.InitializeGameStrategy
+import de.htwg.se.uno.model.gameComponent.gameBaseImpl.Game
 import org.scalatest.{Matchers, WordSpec}
 
 import scala.language.reflectiveCalls
@@ -14,31 +14,30 @@ class ControllerSpec extends WordSpec with Matchers {
       val controller = new Controller(game)
       "Should notify its Observer after creation" in {
         controller.createGame(1)
-        controller.game.numOfCards should be(1)
+        controller.game.getLength(1) should be(1)
       }
       "Should be able to create a new Game" in{
         controller.createGame()
-        controller.game.numOfCards should be(7)
+        controller.game.getLength(1) should be(7)
       }
       "Should be able to create a new Test Game" in{
         controller.createTestGame()
-        controller.game.init.player.handCards.length should be(5)
+        controller.game.getLength(1) should be(5)
       }
       "Should Have a String Representation of the game" in {
         controller.gameToString should be (controller.game.toString)
       }
       "Should be able to initialize a Test Game" in {
-        controller.game.init = InitializeGameStrategy(1)
-        controller.game.init = controller.game.init.initializeGame()
+        controller.game.createTestGame()
       }
       "Should be able to push a Card" in {
-        controller.set(controller.game.init.player.handCards.head.toString)
+        controller.set(controller.game.getCardText(2, 0))
       }
       "Should be able to push Cards" in {
-        controller.set(controller.game.init.player.handCards.head.toString)
-        controller.set(controller.game.init.player.handCards(1).toString)
-        controller.set(controller.game.init.player.handCards.head.toString)
-        controller.set(controller.game.init.player.handCards.head.toString)
+        controller.set(controller.game.getCardText(2, 0))
+        controller.set(controller.game.getCardText(2, 1))
+        controller.set(controller.game.getCardText(2, 0))
+        controller.set(controller.game.getCardText(2, 0))
         controller.get()
       }
       /*

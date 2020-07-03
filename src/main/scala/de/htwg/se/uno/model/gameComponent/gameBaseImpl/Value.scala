@@ -1,4 +1,4 @@
-package de.htwg.se.uno.model.cardComponent.cardBaseImpl
+package de.htwg.se.uno.model.gameComponent.gameBaseImpl
 
 object Value extends Enumeration {
   type Values = Value

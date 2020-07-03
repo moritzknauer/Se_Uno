@@ -1,6 +1,7 @@
 package de.htwg.se.uno.util
 
 import de.htwg.se.uno.controller.controllerComponent.controllerBaseImpl.{Controller, PullCommand}
+import de.htwg.se.uno.model.gameComponent.gameBaseImpl.Game
 import org.scalatest.{Matchers, WordSpec}
 
 class UndoManagerSpec extends WordSpec with Matchers { {

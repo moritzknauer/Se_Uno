@@ -1,6 +1,7 @@
 package de.htwg.se.uno.controller
 
 import de.htwg.se.uno.controller.controllerComponent.controllerBaseImpl.{Controller, PullCommand}
+import de.htwg.se.uno.model.gameComponent.gameBaseImpl.Game
 import org.scalatest.{Matchers, WordSpec}
 
 class PullCommandSpec extends WordSpec with Matchers {
