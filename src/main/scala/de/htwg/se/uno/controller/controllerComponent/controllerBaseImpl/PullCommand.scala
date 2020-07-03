@@ -4,14 +4,14 @@ import de.htwg.se.uno.util.Command
 
 class PullCommand(controller: Controller) extends Command  {
   override def doStep: Unit = {
-    controller.game.init.player = controller.game.init.player.pullMove(controller.game)
+    controller.game = controller.game.pullMove()
   }
 
   override def undoStep: Unit = {
-    controller.game.init.player = controller.game.init.player.undo(controller.game)
+    controller.game = controller.game.playerUndo()
   }
 
   override def redoStep: Unit = {
-    controller.game.init.player = controller.game.init.player.pullMove(controller.game)
+    controller.game = controller.game.pullMove()
   }
 }

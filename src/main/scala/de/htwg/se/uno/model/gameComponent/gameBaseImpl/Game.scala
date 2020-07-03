@@ -1,9 +1,12 @@
 package de.htwg.se.uno.model.gameComponent.gameBaseImpl
 
+import de.htwg.se.uno.model.cardComponent.cardBaseImpl.Card
 import de.htwg.se.uno.model.gameComponent.GameInterface
 
-case class Game() extends GameInterface {
+case class Game(numOfCards : Int = 7) extends GameInterface {
   var init = InitializeGameStrategy()
+
+  init.initializeGame()
 
   def createTestGame() : Game = {
     init = InitializeGameStrategy(1)
@@ -11,11 +14,72 @@ case class Game() extends GameInterface {
     this
   }
 
-  def createRandomGame(numOfCards : Int = 7) : Game = {
-    init = InitializeGameStrategy()
-    init.initializeGame(numOfCards)
+
+  def enemy() : Game = {
+    init.enemy = init.enemy.enemy(this)
     this
   }
+
+  def enemyUndo() : Game = {
+    init.enemy = init.enemy.undo(this)
+    this
+  }
+
+  def pullMove() : Game = {
+    init.player = init.player.pullMove(this)
+    this
+  }
+
+  def playerUndo() : Game = {
+    init.player = init.player.undo(this)
+    this
+  }
+
+  def pushMove(string : String) : Game = {
+    init.player = init.player.pushMove(string, this)
+    this
+  }
+
+  def getLength(list:Integer) : Int = {
+    list match{
+      case 0 => init.enemy.enemyCards.length
+      case 1 => init.player.handCards.length
+    }
+  }
+
+  def getCard(list : Int, index : Int) : Card = {
+    list match{
+      case 0 => init.enemy.enemyCards(index)
+      case 1 => {
+        index match {
+          case 0 => init.cardsCovered.head
+          case 1 => init.cardsRevealed.head
+        }
+      }
+      case 2 => init.player.handCards(index)
+    }
+  }
+
+  def getCardText(list : Int, index : Int) : String = {
+    if (list == 1 && index == 1) {
+      init.cardsRevealed.head.toString
+    } else if (list == 2) {
+      init.player.handCards(index).toString
+    } else {
+      "Uno"
+    }
+  }
+
+  def getGuiCardText(list : Int, index : Int) : String = {
+    if (list == 0 || (list == 1 && index == 0)) {
+      "Uno"
+    } else if (list == 1 && index == 1) {
+      init.cardsRevealed.head.toGuiString
+    } else {
+      init.player.handCards(index).toGuiString
+    }
+  }
+
 
   override def toString: String = {
     val a = "┌-------┐  "

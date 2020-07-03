@@ -1,6 +1,7 @@
 package de.htwg.se.uno.controller.controllerComponent.controllerBaseImpl
 
 import de.htwg.se.uno.controller.controllerComponent._
+import de.htwg.se.uno.model.cardComponent.cardBaseImpl.Card
 import de.htwg.se.uno.model.gameComponent.GameInterface
 import de.htwg.se.uno.model.gameComponent.gameBaseImpl.Game
 import de.htwg.se.uno.util.UndoManager
@@ -13,15 +14,13 @@ class Controller(var game: GameInterface) extends ControllerInterface with Publi
   private var hs = "Du bist dran. Mögliche Befehle: q, n, t, s [Karte], g, u, r"
 
   def createGame(size: Int = 7):Unit = {
-    game = game.createRandomGame(size)
+    game = new Game(size)
     undoManager = new UndoManager
     publish(new GameSizeChanged)
   }
 
   def createTestGame():Unit = {
-    game = Game()
-    game.init = new InitializeTestGameStrategy
-    game.init = game.init.initializeGame()
+    game = game.createTestGame()
     undoManager = new UndoManager
     publish(new GameSizeChanged)
   }
@@ -77,25 +76,15 @@ class Controller(var game: GameInterface) extends ControllerInterface with Publi
   }
 
   def won: Unit = {
-    if(game.init.player.handCards.length == 0) {
+    if(game.getLength(1) == 0) {
       gameStatus("won")
       publish(new GameEnded)
-    } else if(game.init.enemy.enemyCards.length == 0) {
+    } else if(game.getLength(0) == 0) {
       gameStatus("lost")
       publish(new GameEnded)
     } else {
       gameStatus("idle")
     }
-  }
-
-  def getIndex(string: String): Int = {
-    var c = -1
-    for(i <- 0 to game.init.player.handCards.length-1) {
-      if(game.init.player.handCards(i).toString.equals(string)) {
-        c = i
-      }
-    }
-    c
   }
 
   def notPush : Unit = {
@@ -104,44 +93,19 @@ class Controller(var game: GameInterface) extends ControllerInterface with Publi
   }
 
   def getCard(list : Int, index : Int) : Card = {
-    list match{
-      case 0 => game.init.enemy.enemyCards(index)
-      case 1 => {
-        index match {
-          case 0 => game.init.cardsCovered.head
-          case 1 => game.init.cardsRevealed.head
-        }
-      }
-      case 2 => game.init.player.handCards(index)
-    }
+    game.getCard(list, index)
   }
 
   def getCardText(list : Int, index : Int) : String = {
-    if (list == 1 && index == 1) {
-      game.init.cardsRevealed.head.toString
-    } else if (list == 2) {
-      game.init.player.handCards(index).toString
-    } else {
-      "Uno"
-    }
+    game.getCardText(list, index)
   }
 
   def getGuiCardText(list : Int, index : Int) : String = {
-    if (list == 0 || (list == 1 && index == 0)) {
-      "Uno"
-    } else if (list == 1 && index == 1) {
-      game.init.cardsRevealed.head.toGuiString
-    } else {
-      game.init.player.handCards(index).toGuiString
-    }
+    getGuiCardText(list, index)
   }
 
   def getLength(list : Int) : Int = {
-    if(list == 0) {
-      game.init.enemy.enemyCards.length
-    } else {
-      game.init.player.handCards.length
-    }
+      game.getLength(list)
   }
 
   def gameStatus(string : String) : String = {

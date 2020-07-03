@@ -1,5 +1,7 @@
 package de.htwg.se.uno.controller.controllerComponent
 
+import de.htwg.se.uno.model.cardComponent.cardBaseImpl.Card
+
 import scala.swing.Publisher
 
 trait ControllerInterface extends Publisher {
@@ -13,7 +15,6 @@ trait ControllerInterface extends Publisher {
   def undo: Unit
   def redo: Unit
   def won: Unit
-  def getIndex(string: String): Int
   def notPush : Unit
   def getCard(list : Int, index : Int) : Card
   def getCardText(list : Int, index : Int) : String

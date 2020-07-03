@@ -4,14 +4,14 @@ import de.htwg.se.uno.util.Command
 
 class EnemyCommand(controller: Controller) extends Command {
   override def doStep: Unit = {
-    controller.game.init.enemy = controller.game.init.enemy.enemy(controller.game)
+    controller.game = controller.game.enemy()
   }
 
   override def undoStep: Unit = {
-    controller.game.init.enemy = controller.game.init.enemy.undo(controller.game)
+    controller.game = controller.game.enemyUndo()
   }
 
   override def redoStep: Unit = {
-    controller.game.init.enemy = controller.game.init.enemy.enemy(controller.game)
+    controller.game = controller.game.enemy()
   }
 }
