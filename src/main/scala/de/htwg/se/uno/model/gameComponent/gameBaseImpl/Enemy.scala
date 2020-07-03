@@ -1,10 +1,8 @@
-package de.htwg.se.uno.model
+package de.htwg.se.uno.model.gameComponent.gameBaseImpl
 
-import java.util
+import de.htwg.se.uno.model.cardComponent.cardBaseImpl.{Card, Color, Value}
 
-import scala.collection.mutable
-import scala.collection.mutable.ListBuffer
-import scala.collection.mutable.Stack
+import scala.collection.mutable.{ListBuffer, Stack}
 
 class Enemy() {
   var enemyCards = new ListBuffer[Card]()

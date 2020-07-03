@@ -1,4 +1,6 @@
-package de.htwg.se.uno.model
+package de.htwg.se.uno.model.gameComponent.gameBaseImpl
+
+import de.htwg.se.uno.model.cardComponent.cardBaseImpl.Card
 
 import scala.collection.mutable.ListBuffer
 

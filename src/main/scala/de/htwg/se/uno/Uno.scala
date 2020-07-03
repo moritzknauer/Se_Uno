@@ -4,12 +4,11 @@ import de.htwg.se.uno.aview.Tui
 import de.htwg.se.uno.aview.gui.SwingGui
 import de.htwg.se.uno.controller.controllerComponent.GameSizeChanged
 import de.htwg.se.uno.controller.controllerComponent.controllerBaseImpl.Controller
-import de.htwg.se.uno.model.Game
 
 import scala.io.StdIn.readLine
 
 object Uno {
-  val controller = new Controller(new Game())
+  val controller = new Controller(new GameInterface())
   val tui = new Tui(controller)
   val gui = new SwingGui(controller)
   controller.publish(new GameSizeChanged())

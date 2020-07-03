@@ -1,7 +1,8 @@
-package de.htwg.se.uno.model
+package de.htwg.se.uno.model.gameComponent.gameBaseImpl
 
-import scala.collection.mutable.ListBuffer
-import scala.collection.mutable.Stack
+import de.htwg.se.uno.model.cardComponent.cardBaseImpl.{Card, Color, Value}
+
+import scala.collection.mutable.{ListBuffer, Stack}
 
 class Player() {
   var handCards = new ListBuffer[Card]()

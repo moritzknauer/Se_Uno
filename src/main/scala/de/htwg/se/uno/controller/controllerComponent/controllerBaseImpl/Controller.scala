@@ -1,18 +1,19 @@
 package de.htwg.se.uno.controller.controllerComponent.controllerBaseImpl
 
 import de.htwg.se.uno.controller.controllerComponent._
-import de.htwg.se.uno.model.{Card, Game, InitializeTestGameStrategy}
+import de.htwg.se.uno.model.gameComponent.GameInterface
+import de.htwg.se.uno.model.gameComponent.gameBaseImpl.Game
 import de.htwg.se.uno.util.UndoManager
 
 import scala.swing.Publisher
 
 
-class Controller(var game:Game) extends ControllerInterface with Publisher {
+class Controller(var game: GameInterface) extends ControllerInterface with Publisher {
   private var undoManager = new UndoManager
   private var hs = "Du bist dran. Mögliche Befehle: q, n, t, s [Karte], g, u, r"
 
   def createGame(size: Int = 7):Unit = {
-    game = Game(size)
+    game = game.createRandomGame(size)
     undoManager = new UndoManager
     publish(new GameSizeChanged)
   }

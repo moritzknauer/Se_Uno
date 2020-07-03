@@ -1,7 +1,5 @@
 package de.htwg.se.uno.controller.controllerComponent
 
-import de.htwg.se.uno.model.Card
-
 import scala.swing.Publisher
 
 trait ControllerInterface extends Publisher {

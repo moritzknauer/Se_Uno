@@ -1,4 +1,4 @@
-package de.htwg.se.uno.model
+package de.htwg.se.uno.model.cardComponent.cardBaseImpl
 
 object Color extends Enumeration {
   type Color = Value

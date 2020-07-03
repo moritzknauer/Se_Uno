@@ -1,12 +1,21 @@
-package de.htwg.se.uno.model
+package de.htwg.se.uno.model.gameComponent.gameBaseImpl
 
-import scala.collection.mutable.ListBuffer
-import de.htwg.se.uno.model.{Color, Value}
+import de.htwg.se.uno.model.gameComponent.GameInterface
 
-case class Game(numOfCards: Int = 7) {
+case class Game() extends GameInterface {
   var init = InitializeGameStrategy()
 
-  init.initializeGame(numOfCards)
+  def createTestGame() : Game = {
+    init = InitializeGameStrategy(1)
+    init = init.initializeGame()
+    this
+  }
+
+  def createRandomGame(numOfCards : Int = 7) : Game = {
+    init = InitializeGameStrategy()
+    init.initializeGame(numOfCards)
+    this
+  }
 
   override def toString: String = {
     val a = "┌-------┐  "

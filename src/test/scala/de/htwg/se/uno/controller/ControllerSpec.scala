@@ -1,7 +1,7 @@
 package de.htwg.se.uno.controller
 
 import de.htwg.se.uno.controller.controllerComponent.controllerBaseImpl.Controller
-import de.htwg.se.uno.model.{Game, InitializeGameStrategy}
+import de.htwg.se.uno.model.InitializeGameStrategy
 import org.scalatest.{Matchers, WordSpec}
 
 import scala.language.reflectiveCalls
