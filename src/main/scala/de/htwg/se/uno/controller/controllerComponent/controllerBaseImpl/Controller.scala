@@ -9,6 +9,7 @@ import scala.swing.Publisher
 
 class Controller(var game:Game) extends ControllerInterface with Publisher {
   private var undoManager = new UndoManager
+  private var hs = "Du bist dran. Mögliche Befehle: q, n, t, s [Karte], g, u, r"
 
   def createGame(size: Int = 7):Unit = {
     game = Game(size)
@@ -30,12 +31,12 @@ class Controller(var game:Game) extends ControllerInterface with Publisher {
     val s = gameToString
     undoManager.doStep(new PushCommand(string, this))
     if(!s.equals(gameToString)) {
-      GameEvent.handle(enemyTurnEvent())
+      gameStatus("enemyTurn")
       publish(new GameChanged)
       enemy()
       won
     } else {
-      GameEvent.handle(pushCardNotAllowedEvent())
+      gameStatus("pushCardNotAllowed")
       publish(new GameNotChanged)
     }
   }
@@ -44,45 +45,45 @@ class Controller(var game:Game) extends ControllerInterface with Publisher {
     val s = gameToString
     undoManager.doStep(new PullCommand(this))
     if(!s.equals(gameToString)) {
-      GameEvent.handle(enemyTurnEvent())
+      gameStatus("enemyTurn")
       publish(new GameChanged)
       enemy()
       won
     } else {
-      GameEvent.handle(pullCardNotAllowedEvent())
+      gameStatus("pullCardNotAllowed")
       publish(new GameNotChanged)
     }
   }
 
   def enemy(): Unit = {
     undoManager.doStep(new EnemyCommand(this))
-    GameEvent.handle(yourTurnEvent())
+    gameStatus("yourTurn")
     publish(new GameChanged)
   }
 
   def undo: Unit = {
     undoManager.undoStep
-    GameEvent.handle(undoEvent())
+    gameStatus("undo")
     publish(new GameChanged)
     won
   }
 
   def redo: Unit = {
     undoManager.redoStep
-    GameEvent.handle(redoEvent())
+    gameStatus("redo")
     publish(new GameChanged)
     won
   }
 
   def won: Unit = {
     if(game.init.player.handCards.length == 0) {
-      GameEvent.handle(wonEvent())
+      gameStatus("won")
       publish(new GameEnded)
     } else if(game.init.enemy.enemyCards.length == 0) {
-      GameEvent.handle(lostEvent())
+      gameStatus("lost")
       publish(new GameEnded)
     } else {
-      GameEvent.state = GameEvent.state
+      gameStatus("idle")
     }
   }
 
@@ -97,7 +98,7 @@ class Controller(var game:Game) extends ControllerInterface with Publisher {
   }
 
   def notPush : Unit = {
-    GameEvent.handle(pushCardNotAllowedEvent())
+    gameStatus("pushCardNotAllowed")
     publish(new GameNotChanged)
   }
 
@@ -139,6 +140,48 @@ class Controller(var game:Game) extends ControllerInterface with Publisher {
       game.init.enemy.enemyCards.length
     } else {
       game.init.player.handCards.length
+    }
+  }
+
+  def gameStatus(string : String) : String = {
+    string match {
+      case "pushCardNotAllowed" => {
+        hs = "Du kannst diese Karte nicht legen"
+        hs
+      }
+      case "enemyTurn" => {
+        hs = "Gegner ist an der Reihe"
+        hs
+      }
+      case "pullCardNotAllowed" => {
+        hs = "Du kannst keine Karte ziehen, da du eine Karte legen kannst"
+        hs
+      }
+      case "unknownCommand" => {
+        hs = "Befehl nicht bekannt"
+        hs
+      }
+      case "yourTurn" => {
+        hs = "Du bist dran. Mögliche Befehle: q, n, t, s [Karte], g, u, r"
+        hs
+      }
+      case "won" => {
+        hs = "Glückwunsch du hast gewonnen"
+        hs
+      }
+      case "lost" => {
+        hs = "Du hast leider verloren"
+        hs
+      }
+      case "undo" => {
+        hs = "Zug rückgängig gemacht"
+        hs
+      }
+      case "redo" => {
+        hs = "Zug wiederhergestellt"
+        hs
+      }
+      case "idle" => hs
     }
   }
 }

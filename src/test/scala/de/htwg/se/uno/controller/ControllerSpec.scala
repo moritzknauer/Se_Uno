@@ -1,5 +1,6 @@
 package de.htwg.se.uno.controller
 
+import de.htwg.se.uno.controller.controllerComponent.controllerBaseImpl.Controller
 import de.htwg.se.uno.model.{Game, InitializeGameStrategy}
 import org.scalatest.{Matchers, WordSpec}
 
@@ -64,32 +65,40 @@ class ControllerSpec extends WordSpec with Matchers {
 
 
       "Should be able to update the state to your turn" in {
-        GameEvent.handle(yourTurnEvent())
-        GameEvent.state should be(yourTurnEvent().yourTurn)
+        controller.gameStatus("yourTurn")
+        controller.gameStatus("idle") should be("Du bist dran. Mögliche Befehle: q, n, t, s [Karte], g, u, r")
       }
       "Should be able to update the state to enemys turn" in {
-        GameEvent.handle(enemyTurnEvent())
-        GameEvent.state should be(enemyTurnEvent().enemyTurn)
+        controller.gameStatus("enemyTurn")
+        controller.gameStatus("idle") should be("Gegner ist an der Reihe")
       }
       "Should be able to update the state to pushCardNotAllowed Event" in {
-        GameEvent.handle(pushCardNotAllowedEvent())
-        GameEvent.state should be(pushCardNotAllowedEvent().pushCardNotAllowed)
+        controller.gameStatus("pushCardNotAllowed")
+        controller.gameStatus("idle") should be("Du kannst diese Karte nicht legen")
       }
       "Should be able to update the state to pullCardNotAllowed Event" in {
-        GameEvent.handle(pullCardNotAllowedEvent())
-        GameEvent.state should be(pullCardNotAllowedEvent().pullCardNotAllowed)
+        controller.gameStatus("pullCardNotAllowed")
+        controller.gameStatus("idle") should be("Du kannst keine Karte ziehen, da du eine Karte legen kannst")
       }
       "Should be able to update the state to unknownCommand Event" in {
-        GameEvent.handle(unknownCommandEvent())
-        GameEvent.state should be(unknownCommandEvent().unknownCommand)
+        controller.gameStatus("unknownCommand")
+        controller.gameStatus("idle") should be("Befehl nicht bekannt")
       }
       "Should be able to update the state to won Event" in {
-        GameEvent.handle(wonEvent())
-        GameEvent.state should be(wonEvent().won)
+        controller.gameStatus("won")
+        controller.gameStatus("idle") should be("Glückwunsch du hast gewonnen")
       }
       "Should be able to update the state to lost Event" in {
-        GameEvent.handle(lostEvent())
-        GameEvent.state should be(lostEvent().lost)
+        controller.gameStatus("lost")
+        controller.gameStatus("idle") should be("Du hast leider verloren")
+      }
+      "Should be able to update the state to undo Event" in {
+        controller.gameStatus("undo")
+        controller.gameStatus("idle") should be("Zug rückgängig gemacht")
+      }
+      "Should be able to update the state to redo Event" in {
+        controller.gameStatus("redo")
+        controller.gameStatus("idle") should be("Zug wiederhergestellt")
       }
     }
   }

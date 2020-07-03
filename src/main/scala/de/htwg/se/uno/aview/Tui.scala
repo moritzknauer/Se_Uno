@@ -1,6 +1,6 @@
 package de.htwg.se.uno.aview
 
-import de.htwg.se.uno.controller.controllerComponent.{ControllerInterface, GameChanged, GameEnded, GameEvent, GameNotChanged, GameSizeChanged, unknownCommandEvent}
+import de.htwg.se.uno.controller.controllerComponent.{ControllerInterface, GameChanged, GameEnded, GameNotChanged, GameSizeChanged}
 
 import scala.swing.Reactor
 import scala.util.{Failure, Success, Try}
@@ -47,7 +47,7 @@ class Tui(controller: ControllerInterface) extends Reactor {
         controller.undo
         Success("Valid Command: " + input)
       }
-      case _ => GameEvent.handle(unknownCommandEvent())
+      case _ => controller.gameStatus("unknownCommand")
         Failure(new IllegalArgumentException("Wrong input: " + input))
     }
   }
@@ -55,15 +55,15 @@ class Tui(controller: ControllerInterface) extends Reactor {
   reactions += {
       case event: GameSizeChanged => printTui
       case event: GameChanged => printTui
-      case event: GameNotChanged => println(GameEvent.state)
+      case event: GameNotChanged => println(controller.gameStatus("idle"))
       case event: GameEnded => {
-        println(GameEvent.state)
+        println(controller.gameStatus("idle"))
         println("Starte neues Spiel oder beende")
       }
   }
 
   def printTui: Unit = {
     println(controller.gameToString)
-    println(GameEvent.state)
+    println(controller.gameStatus("idle"))
   }
 }

@@ -1,5 +1,6 @@
 package de.htwg.se.uno.aview
 
+import de.htwg.se.uno.controller.controllerComponent.controllerBaseImpl.Controller
 import de.htwg.se.uno.model.{Game, Value}
 import org.scalatest.{Matchers, WordSpec}
 

@@ -1,6 +1,6 @@
 package de.htwg.se.uno.aview.gui
 
-import de.htwg.se.uno.controller.controllerComponent.{ControllerInterface, GameEvent, GameNotChanged, pushCardNotAllowedEvent}
+import de.htwg.se.uno.controller.controllerComponent.{ControllerInterface, GameNotChanged}
 import de.htwg.se.uno.model.Card
 
 import scala.swing._
@@ -54,8 +54,6 @@ class CardPanel (list: Int, index: Int, controller: ControllerInterface) extends
     val button = Button(controller.getGuiCardText(list, index)) {
       if (list == 0 || (list == 1 && index == 1)) {
         controller.notPush
-        GameEvent.handle(pushCardNotAllowedEvent())
-        publish(new GameNotChanged)
       } else if (index == 0 && list == 1) {
         controller.get
       } else {
