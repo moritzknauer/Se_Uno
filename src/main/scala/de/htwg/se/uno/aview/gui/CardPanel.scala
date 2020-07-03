@@ -14,10 +14,6 @@ class CardPanel (list: Int, index: Int, controller: ControllerInterface) extends
   val yellowColor = new Color(255,255,0)
   val redColor = new Color(255,0,0)
 
-  def myCard(): Card = {
-    controller.getCard(list, index)
-  }
-
   def cardText(list: Int, index: Int) : String = {
     controller.getCardText(list, index)
   }

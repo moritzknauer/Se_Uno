@@ -1,6 +1,5 @@
 package de.htwg.se.uno.model.gameComponent.gameBaseImpl
 
-import de.htwg.se.uno.model.cardComponent.cardBaseImpl.{Card, Color, Value}
 
 import scala.collection.mutable.{ListBuffer, Stack}
 

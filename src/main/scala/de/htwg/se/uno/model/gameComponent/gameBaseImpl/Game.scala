@@ -1,6 +1,5 @@
 package de.htwg.se.uno.model.gameComponent.gameBaseImpl
 
-import de.htwg.se.uno.model.cardComponent.cardBaseImpl.Card
 import de.htwg.se.uno.model.gameComponent.GameInterface
 
 case class Game(numOfCards : Int = 7) extends GameInterface {
@@ -44,19 +43,6 @@ case class Game(numOfCards : Int = 7) extends GameInterface {
     list match{
       case 0 => init.enemy.enemyCards.length
       case 1 => init.player.handCards.length
-    }
-  }
-
-  def getCard(list : Int, index : Int) : Card = {
-    list match{
-      case 0 => init.enemy.enemyCards(index)
-      case 1 => {
-        index match {
-          case 0 => init.cardsCovered.head
-          case 1 => init.cardsRevealed.head
-        }
-      }
-      case 2 => init.player.handCards(index)
     }
   }
 

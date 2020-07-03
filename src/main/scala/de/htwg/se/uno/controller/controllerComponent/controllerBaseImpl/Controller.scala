@@ -92,10 +92,6 @@ class Controller(var game: GameInterface) extends ControllerInterface with Publi
     publish(new GameNotChanged)
   }
 
-  def getCard(list : Int, index : Int) : Card = {
-    game.getCard(list, index)
-  }
-
   def getCardText(list : Int, index : Int) : String = {
     game.getCardText(list, index)
   }
