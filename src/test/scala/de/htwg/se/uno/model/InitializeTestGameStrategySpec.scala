@@ -1,5 +1,6 @@
 package de.htwg.se.uno.model
 
+import de.htwg.se.uno.model.gameComponent.gameBaseImpl.InitializeTestGameStrategy
 import org.scalatest.Matchers._
 import org.scalatest._
 

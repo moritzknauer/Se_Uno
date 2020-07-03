@@ -1,7 +1,6 @@
 package de.htwg.se.uno.controller.controllerComponent.controllerBaseImpl
 
 import de.htwg.se.uno.controller.controllerComponent._
-import de.htwg.se.uno.model.cardComponent.cardBaseImpl.Card
 import de.htwg.se.uno.model.gameComponent.GameInterface
 import de.htwg.se.uno.model.gameComponent.gameBaseImpl.Game
 import de.htwg.se.uno.util.UndoManager
@@ -14,7 +13,7 @@ class Controller(var game: GameInterface) extends ControllerInterface with Publi
   private var hs = "Du bist dran. Mögliche Befehle: q, n, t, s [Karte], g, u, r"
 
   def createGame(size: Int = 7):Unit = {
-    game = new Game(size)
+    game = Game(size)
     undoManager = new UndoManager
     publish(new GameSizeChanged)
   }
@@ -97,7 +96,7 @@ class Controller(var game: GameInterface) extends ControllerInterface with Publi
   }
 
   def getGuiCardText(list : Int, index : Int) : String = {
-    getGuiCardText(list, index)
+    game.getGuiCardText(list, index)
   }
 
   def getLength(list : Int) : Int = {
@@ -106,42 +105,33 @@ class Controller(var game: GameInterface) extends ControllerInterface with Publi
 
   def gameStatus(string : String) : String = {
     string match {
-      case "pushCardNotAllowed" => {
+      case "pushCardNotAllowed" =>
         hs = "Du kannst diese Karte nicht legen"
         hs
-      }
-      case "enemyTurn" => {
+      case "enemyTurn" =>
         hs = "Gegner ist an der Reihe"
         hs
-      }
-      case "pullCardNotAllowed" => {
+      case "pullCardNotAllowed" =>
         hs = "Du kannst keine Karte ziehen, da du eine Karte legen kannst"
         hs
-      }
-      case "unknownCommand" => {
+      case "unknownCommand" =>
         hs = "Befehl nicht bekannt"
         hs
-      }
-      case "yourTurn" => {
+      case "yourTurn" =>
         hs = "Du bist dran. Mögliche Befehle: q, n, t, s [Karte], g, u, r"
         hs
-      }
-      case "won" => {
+      case "won" =>
         hs = "Glückwunsch du hast gewonnen"
         hs
-      }
-      case "lost" => {
+      case "lost" =>
         hs = "Du hast leider verloren"
         hs
-      }
-      case "undo" => {
+      case "undo" =>
         hs = "Zug rückgängig gemacht"
         hs
-      }
-      case "redo" => {
+      case "redo" =>
         hs = "Zug wiederhergestellt"
         hs
-      }
       case "idle" => hs
     }
   }

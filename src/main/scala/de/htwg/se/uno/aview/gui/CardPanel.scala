@@ -1,7 +1,6 @@
 package de.htwg.se.uno.aview.gui
 
-import de.htwg.se.uno.controller.controllerComponent.{ControllerInterface, GameNotChanged}
-import de.htwg.se.uno.model.cardComponent.cardBaseImpl.Card
+import de.htwg.se.uno.controller.controllerComponent.ControllerInterface
 
 import scala.swing._
 

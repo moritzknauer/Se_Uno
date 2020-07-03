@@ -5,7 +5,7 @@ import de.htwg.se.uno.model.gameComponent.GameInterface
 case class Game(numOfCards : Int = 7) extends GameInterface {
   var init = InitializeGameStrategy()
 
-  init.initializeGame()
+  init.initializeGame(numOfCards)
 
   def createTestGame() : Game = {
     init = InitializeGameStrategy(1)
@@ -40,9 +40,10 @@ case class Game(numOfCards : Int = 7) extends GameInterface {
   }
 
   def getLength(list:Integer) : Int = {
-    list match{
-      case 0 => init.enemy.enemyCards.length
-      case 1 => init.player.handCards.length
+    if (list == 0) {
+      init.enemy.enemyCards.length
+    } else {
+      init.player.handCards.length
     }
   }
 
