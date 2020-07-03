@@ -1,16 +1,18 @@
 package de.htwg.se.uno.model.gameComponent.gameBaseImpl
 
+import com.google.inject.Inject
+import com.google.inject.name.Named
 import de.htwg.se.uno.model.cardComponent.cardBaseImpl.Card
 import de.htwg.se.uno.model.gameComponent.GameInterface
 
-case class Game(numOfCards : Int = 7) extends GameInterface {
+case class Game @Inject() (@Named("DefaultSize") numOfCards:Int) extends  GameInterface {
   var init = InitializeGameStrategy()
 
-  init.initializeGame()
+  init.initializeGame(numOfCards)
 
   def createTestGame() : Game = {
     init = InitializeGameStrategy(1)
-    init = init.initializeGame()
+    init = init.initializeGame(numOfCards)
     this
   }
 

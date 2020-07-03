@@ -1,11 +1,13 @@
 package de.htwg.se.uno.model.gameComponent.gameBaseImpl
 
+import com.google.inject.Inject
+import com.google.inject.name.Named
 import de.htwg.se.uno.model.cardComponent.cardBaseImpl.{Card, Color, Value}
 
 import scala.collection.mutable.ListBuffer
 
 class InitializeRandomGameStrategy extends InitializeGameStrategy {
-  override def initializeGame(numOfPlayerCards: Int = 7): InitializeRandomGameStrategy = {
+  override def initializeGame(numOfPlayerCards: Int): InitializeRandomGameStrategy = {
     var cards = new ListBuffer[Card]()
     for (color <- Color.values) {
       for (value <- Value.values) {

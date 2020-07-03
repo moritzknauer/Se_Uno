@@ -1,9 +1,12 @@
 package de.htwg.se.uno.controller.controllerComponent.controllerBaseImpl
 
+import com.google.inject.Guice
+import com.google.inject.name.Names
+import de.htwg.se.uno.UnoModule
 import de.htwg.se.uno.controller.controllerComponent._
+import net.codingwell.scalaguice.InjectorExtensions._
 import de.htwg.se.uno.model.cardComponent.cardBaseImpl.Card
 import de.htwg.se.uno.model.gameComponent.GameInterface
-import de.htwg.se.uno.model.gameComponent.gameBaseImpl.Game
 import de.htwg.se.uno.util.UndoManager
 
 import scala.swing.Publisher
@@ -11,10 +14,17 @@ import scala.swing.Publisher
 
 class Controller(var game: GameInterface) extends ControllerInterface with Publisher {
   private var undoManager = new UndoManager
+  val injector = Guice.createInjector(new UnoModule)
   private var hs = "Du bist dran. Mögliche Befehle: q, n, t, s [Karte], g, u, r"
 
-  def createGame(size: Int = 7):Unit = {
-    game = new Game(size)
+  def createGame(size: Int): Unit = {
+    //game = new Game(size)
+    size match {
+      case 1 => game = injector.instance[GameInterface](Names.named("1 Card"))
+      case 7 => game = injector.instance[GameInterface](Names.named("7 Cards"))
+      case 15 => game = injector.instance[GameInterface](Names.named("15 Cards"))
+      case _ =>
+    }
     undoManager = new UndoManager
     publish(new GameSizeChanged)
   }
