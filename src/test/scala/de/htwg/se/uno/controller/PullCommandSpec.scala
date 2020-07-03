@@ -7,7 +7,7 @@ import org.scalatest.{Matchers, WordSpec}
 class PullCommandSpec extends WordSpec with Matchers {
   "A PullCommand" when {
     "new" should {
-      val game = Game()
+      val game = Game(7)
       val controller = new Controller(game)
       val command = new PullCommand(controller)
       "Be able to do a Step" in {

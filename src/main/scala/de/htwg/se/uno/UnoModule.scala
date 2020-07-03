@@ -16,6 +16,6 @@ class UnoModule extends AbstractModule with ScalaModule {
     bind[ControllerInterface].to[controllerBaseImpl.Controller]
     bind[GameInterface].annotatedWithName("1 Card").toInstance(new Game(1))
     bind[GameInterface].annotatedWithName("7 Cards").toInstance(new Game(7))
-    bind[GameInterface].annotatedWithName("15 Cards").toInstance(new Game(11))
+    bind[GameInterface].annotatedWithName("15 Cards").toInstance(new Game(15))
   }
 }

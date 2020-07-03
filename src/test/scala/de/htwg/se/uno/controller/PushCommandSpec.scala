@@ -7,7 +7,7 @@ import org.scalatest.{Matchers, WordSpec}
 class PushCommandSpec extends WordSpec with Matchers {
   "A PushCommand" when {
     "new" should {
-      val game = Game()
+      val game = Game(7)
       val controller = new Controller(game)
       val command = new PushCommand("Hallo", controller)
       "Be able to do a Step" in {

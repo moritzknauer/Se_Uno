@@ -1,19 +1,19 @@
 package de.htwg.se.uno.model.gameComponent.gameBaseImpl
 
-import de.htwg.se.uno.model.cardComponent.cardBaseImpl.Card
+import com.google.inject.Inject
+import com.google.inject.name.Named
 import de.htwg.se.uno.model.gameComponent.GameInterface
 
-case class Game(numOfCards : Int = 7) extends GameInterface {
+case class Game @Inject() (@Named("DefaultSize") numOfCards:Int) extends GameInterface{
   var init = InitializeGameStrategy()
 
-  init.initializeGame()
+  init.initializeGame(numOfCards)
 
   def createTestGame() : Game = {
     init = InitializeGameStrategy(1)
-    init = init.initializeGame()
+    init = init.initializeGame(numOfCards)
     this
   }
-
 
   def enemy() : Game = {
     init.enemy = init.enemy.enemy(this)
@@ -41,23 +41,10 @@ case class Game(numOfCards : Int = 7) extends GameInterface {
   }
 
   def getLength(list:Integer) : Int = {
-    list match{
-      case 0 => init.enemy.enemyCards.length
-      case 1 => init.player.handCards.length
-    }
-  }
-
-  def getCard(list : Int, index : Int) : Card = {
-    list match{
-      case 0 => init.enemy.enemyCards(index)
-      case 1 => {
-        index match {
-          case 0 => init.cardsCovered.head
-          case 1 => init.cardsRevealed.head
-        }
-      }
-      case 2 => init.player.handCards(index)
-    }
+    if (list == 0)
+      init.enemy.enemyCards.length
+    else
+      init.player.handCards.length
   }
 
   def getCardText(list : Int, index : Int) : String = {

@@ -7,7 +7,7 @@ import org.scalatest.{Matchers, WordSpec}
 class EnemyCommandSpec extends WordSpec with Matchers {
   "A EnemyCommand" when {
     "new" should {
-      val game = Game()
+      val game = Game(7)
       val controller = new Controller(game)
       val command = new EnemyCommand(controller)
       "Be able to do a Step" in {

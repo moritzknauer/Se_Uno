@@ -11,7 +11,7 @@ class TuiSpec extends WordSpec with Matchers{
     val tui = new Tui(controller)
     "create an empty Game on input 'n'" in {
       tui.processInputLine("n")
-      controller.game should be(Game())
+      controller.game should be(Game(7))
     }
     "create an empty Game on input 'n 20'" in {
       tui.processInputLine("n 20")

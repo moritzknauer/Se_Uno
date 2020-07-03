@@ -9,7 +9,7 @@ class InitializeRandomGameStrategySpec extends WordSpec {
     "new" should {
       var init = new InitializeRandomGameStrategy
       "Have a standard number of Cards of size seven" in {
-        init = init.initializeGame()
+        init = init.initializeGame(7)
       }
       "Have a List of Hand Cards" in {
         init.player.handCards.length should be(7)

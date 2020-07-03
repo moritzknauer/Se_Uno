@@ -8,7 +8,7 @@ class UndoManagerSpec extends WordSpec with Matchers { {
   "A UndoManager" when {
     "new" should {
       val undoManager = new UndoManager()
-      val game = new Game()
+      val game = new Game(7)
       val controller = new Controller(game)
       val command = new PullCommand(controller)
       "Not be able to undo a Step" in {

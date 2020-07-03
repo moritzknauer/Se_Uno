@@ -8,7 +8,7 @@ class InitializeTestGameStrategySpec extends WordSpec {
   "An InitializeRandomGameStrategy" when {
     "new" should {
       var init = new InitializeTestGameStrategy
-      init = init.initializeGame()
+      init = init.initializeGame(7)
       "Have a List of Hand Cards" in {
         init.player.handCards.length should be(5)
       }

@@ -7,9 +7,9 @@ import org.scalatest.Matchers._
 class EnemySpec extends WordSpec {
   "A Enemy" when {
     "new" should {
-      var newGame = Game()
+      var newGame = Game(7)
       newGame.init = InitializeGameStrategy(1)
-      newGame.init = newGame.init.initializeGame()
+      newGame.init = newGame.init.initializeGame(7)
       "be able to check if a Card of the Enemys Card List can be pushed" in{
         newGame.init.enemy.pushableEnemy(Card(newGame.init.enemy.enemyCards(4).color, newGame.init.enemy.enemyCards(4).value), newGame) should be (false)
       }
