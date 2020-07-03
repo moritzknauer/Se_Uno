@@ -18,7 +18,6 @@ class Controller(var game: GameInterface) extends ControllerInterface with Publi
   private var hs = "Du bist dran. Mögliche Befehle: q, n, t, s [Karte], g, u, r"
 
   def createGame(size: Int): Unit = {
-    //game = new Game(size)
     size match {
       case 1 => game = injector.instance[GameInterface](Names.named("1 Card"))
       case 7 => game = injector.instance[GameInterface](Names.named("7 Cards"))
