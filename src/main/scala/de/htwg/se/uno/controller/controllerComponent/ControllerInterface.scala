@@ -18,7 +18,8 @@ trait ControllerInterface extends Publisher {
   def getGuiCardText(list : Int, index : Int) : String
   def getLength(list : Int) : Int
   def gameStatus(string : String) : String
-
+  def getNumOfPlayers() : Int
+  def nextTurn() : Boolean
 }
 
 

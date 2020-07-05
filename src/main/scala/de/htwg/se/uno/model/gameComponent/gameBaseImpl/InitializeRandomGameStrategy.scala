@@ -3,7 +3,13 @@ package de.htwg.se.uno.model.gameComponent.gameBaseImpl
 import scala.collection.mutable.ListBuffer
 
 class InitializeRandomGameStrategy extends InitializeGameStrategy {
-  override def initializeGame(numOfPlayerCards: Int): InitializeRandomGameStrategy = {
+  override def initializeGame(numOfPlayers: Int): InitializeRandomGameStrategy = {
+    cardsCovered = new ListBuffer[Card]()
+    cardsRevealed = new ListBuffer[Card]()
+    enemy.enemyCards = new ListBuffer[Card]()
+    player.handCards = new ListBuffer[Card]()
+    enemy2.enemyCards = new ListBuffer[Card]()
+    enemy3.enemyCards = new ListBuffer[Card]()
     var cards = new ListBuffer[Card]()
     for (color <- Color.values) {
       for (value <- Value.values) {
@@ -26,11 +32,25 @@ class InitializeRandomGameStrategy extends InitializeGameStrategy {
       cards = cards.take(p - 1) ++ cards.drop(p)
       n -= 1
     }
-    for (i <- 1 to numOfPlayerCards) {
+    for (i <- 1 to 7) {
       player.handCards = cardsCovered(0) +: player.handCards
       cardsCovered = cardsCovered.drop(1)
-      enemy.enemyCards = cardsCovered(0) +: enemy.enemyCards
-      cardsCovered = cardsCovered.drop(1)
+      if (numOfPlayers == 2) {
+        enemy.enemyCards = cardsCovered(0) +: enemy.enemyCards
+        cardsCovered = cardsCovered.drop(1)
+      } else if(numOfPlayers == 3) {
+        enemy.enemyCards = cardsCovered(0) +: enemy.enemyCards
+        cardsCovered = cardsCovered.drop(1)
+        enemy2.enemyCards = cardsCovered(0) +: enemy2.enemyCards
+        cardsCovered = cardsCovered.drop(1)
+      } else {
+        enemy.enemyCards = cardsCovered(0) +: enemy.enemyCards
+        cardsCovered = cardsCovered.drop(1)
+        enemy2.enemyCards = cardsCovered(0) +: enemy2.enemyCards
+        cardsCovered = cardsCovered.drop(1)
+        enemy3.enemyCards = cardsCovered(0) +: enemy3.enemyCards
+        cardsCovered = cardsCovered.drop(1)
+      }
     }
     cardsRevealed = cardsCovered(0) +: cardsRevealed
     cardsCovered = cardsCovered.drop(1)
@@ -40,9 +60,17 @@ class InitializeRandomGameStrategy extends InitializeGameStrategy {
     player.stack2.popAll()
     player.stack2.push(-1)
     enemy.stack1.popAll()
-    enemy.stack1.push(" ")
+    enemy.stack1.push("Start")
     enemy.stack2.popAll()
     enemy.stack2.push(-1)
+    enemy2.stack1.popAll()
+    enemy2.stack1.push("Start")
+    enemy2.stack2.popAll()
+    enemy2.stack2.push(-1)
+    enemy3.stack1.popAll()
+    enemy3.stack1.push("Start")
+    enemy3.stack2.popAll()
+    enemy3.stack2.push(-1)
 
     this
   }

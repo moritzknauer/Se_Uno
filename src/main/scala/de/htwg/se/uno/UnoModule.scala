@@ -8,14 +8,14 @@ import de.htwg.se.uno.model.gameComponent.GameInterface
 import de.htwg.se.uno.model.gameComponent.gameBaseImpl.Game
 
 class UnoModule extends AbstractModule with ScalaModule {
-  val defaultSize:Int = 7
+  val defaultPlayers:Int = 2
 
   override def configure() = {
-    bindConstant().annotatedWith(Names.named("DefaultSize")).to(defaultSize)
+    bindConstant().annotatedWith(Names.named("DefaultPlayers")).to(defaultPlayers)
     bind[GameInterface].to[Game]
     bind[ControllerInterface].to[controllerBaseImpl.Controller]
-    bind[GameInterface].annotatedWithName("1 Card").toInstance(new Game(1))
-    bind[GameInterface].annotatedWithName("7 Cards").toInstance(new Game(7))
-    bind[GameInterface].annotatedWithName("15 Cards").toInstance(new Game(15))
+    bind[GameInterface].annotatedWithName("2 Players").toInstance(new Game(2))
+    bind[GameInterface].annotatedWithName("3 Players").toInstance(new Game(3))
+    bind[GameInterface].annotatedWithName("4 Players").toInstance(new Game(4))
   }
 }

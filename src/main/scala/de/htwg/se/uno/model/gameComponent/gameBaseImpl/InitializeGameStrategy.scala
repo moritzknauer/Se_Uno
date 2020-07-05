@@ -7,8 +7,10 @@ trait InitializeGameStrategy {
   var cardsRevealed = new ListBuffer[Card]()
   var player = new Player
   var enemy = new Enemy
+  var enemy2 = new Enemy
+  var enemy3 = new Enemy
 
-  def initializeGame(numOfPlayerCards: Int): InitializeGameStrategy
+  def initializeGame(numOfPlayers: Int): InitializeGameStrategy
 }
 
 object InitializeGameStrategy {

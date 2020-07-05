@@ -4,14 +4,27 @@ import com.google.inject.Inject
 import com.google.inject.name.Named
 import de.htwg.se.uno.model.gameComponent.GameInterface
 
-case class Game @Inject() (@Named("DefaultSize") numOfCards:Int) extends GameInterface{
+case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends GameInterface{
   var init = InitializeGameStrategy()
 
-  init.initializeGame(numOfCards)
+  init.initializeGame(numOfPlayers)
+
+  private var activePlayer = numOfPlayers - 1
+  private var direction = true
+
+  def createGame() : Game = {
+    init = InitializeGameStrategy()
+    init = init.initializeGame(numOfPlayers)
+    activePlayer = numOfPlayers - 1
+    direction = true
+    this
+  }
 
   def createTestGame() : Game = {
     init = InitializeGameStrategy(1)
-    init = init.initializeGame(numOfCards)
+    init = init.initializeGame(numOfPlayers)
+    activePlayer = numOfPlayers - 1
+    direction = true
     this
   }
 
@@ -20,8 +33,64 @@ case class Game @Inject() (@Named("DefaultSize") numOfCards:Int) extends GameInt
     this
   }
 
+  def enemy2() : Game = {
+    init.enemy2 = init.enemy2.enemy(this)
+    this
+  }
+
+  def enemy3() : Game = {
+    init.enemy3 = init.enemy3.enemy(this)
+    this
+  }
+
+  def nextEnemy() : Int = {
+    if (numOfPlayers == 2) {
+      1
+    } else if (numOfPlayers == 3) {
+      if (activePlayer == 0) {
+        if (direction) {
+          1
+        } else {
+          2
+        }
+      } else if (activePlayer == 1) {
+        2
+      } else {
+        1
+      }
+    } else {
+      if (activePlayer == 0) {
+        if (direction) {
+          1
+        } else {
+          3
+        }
+      } else if (activePlayer == 1) {
+        2
+      } else if (activePlayer == 2) {
+        if (direction) {
+          3
+        } else {
+          1
+        }
+      } else {
+        2
+      }
+    }
+  }
+
   def enemyUndo() : Game = {
     init.enemy = init.enemy.undo(this)
+    this
+  }
+
+  def enemyUndo2() : Game = {
+    init.enemy2 = init.enemy2.undo(this)
+    this
+  }
+
+  def enemyUndo3() : Game = {
+    init.enemy3 = init.enemy3.undo(this)
     this
   }
 
@@ -43,14 +112,20 @@ case class Game @Inject() (@Named("DefaultSize") numOfCards:Int) extends GameInt
   def getLength(list:Integer) : Int = {
     if (list == 0)
       init.enemy.enemyCards.length
+    else if (list == 1)
+      init.enemy2.enemyCards.length
+    else if (list == 2)
+      init.enemy3.enemyCards.length
     else
       init.player.handCards.length
   }
 
   def getCardText(list : Int, index : Int) : String = {
-    if (list == 1 && index == 1) {
+    if (list == 3 && index == 1) {
       init.cardsRevealed.head.toString
-    } else if (list == 2) {
+    } else if (list == 3 && index == 2) {
+      "Do Step"
+    } else if (list == 4) {
       init.player.handCards(index).toString
     } else {
       "Uno"
@@ -58,15 +133,47 @@ case class Game @Inject() (@Named("DefaultSize") numOfCards:Int) extends GameInt
   }
 
   def getGuiCardText(list : Int, index : Int) : String = {
-    if (list == 0 || (list == 1 && index == 0)) {
-      "Uno"
-    } else if (list == 1 && index == 1) {
+     if (list == 3 && index == 1) {
       init.cardsRevealed.head.toGuiString
-    } else {
+    } else if (list == 3 && index == 2) {
+       "Do Step"
+     } else if (list == 4) {
       init.player.handCards(index).toGuiString
+    } else {
+      "Uno"
     }
   }
 
+  def getNumOfPlayers() : Int = {
+    numOfPlayers
+  }
+
+  def nextTurn() : Boolean = {
+    if ((activePlayer == 1 && (!direction || numOfPlayers == 2)) ||
+        (activePlayer == 2 && direction && numOfPlayers == 3) || (activePlayer == 3 && direction && numOfPlayers== 4)) {
+      true
+    } else {
+      false
+    }
+  }
+
+  def setActivePlayer() : Game = {
+    if (nextTurn()) {
+      activePlayer = 0
+    } else {
+      activePlayer = nextEnemy()
+    }
+    this
+  }
+
+  def setDirection() : Game = {
+    if (direction) {
+      direction = false
+    } else {
+      direction = true
+    }
+    this
+  }
 
   override def toString: String = {
     val a = "┌-------┐  "

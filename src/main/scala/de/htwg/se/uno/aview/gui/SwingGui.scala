@@ -5,6 +5,7 @@ import scala.swing.BorderPanel.Position
 import scala.swing._
 import scala.swing.event.Key
 import scala.swing.Swing.LineBorder
+import de.htwg.se.uno.Uno.gui
 
 class SwingGui(controller: ControllerInterface) extends Frame {
 
@@ -13,31 +14,91 @@ class SwingGui(controller: ControllerInterface) extends Frame {
   title = "HTWG Uno"
 
   def gamePanel = new GridPanel(3, 1) {
-    contents += new GridPanel(1, controller.getLength(0)) {
-      border = LineBorder(java.awt.Color.WHITE, 20)
-      background = java.awt.Color.WHITE
-      for (enemy <- 1 to controller.getLength(0)) {
-        val cardPanel = new CardPanel(0, enemy - 1, controller)
-        contents += cardPanel.card
-        listenTo(cardPanel)
+    if(controller.getNumOfPlayers() <= 3) {
+      contents += new GridPanel(1, controller.getNumOfPlayers()-1) {
+        border = LineBorder(java.awt.Color.WHITE, 20)
+        background = java.awt.Color.WHITE
+        for (i <- 0 to controller.getNumOfPlayers() - 2) {
+          contents += new GridPanel(1, controller.getLength(i)) {
+            border = LineBorder(java.awt.Color.WHITE, 20)
+            background = java.awt.Color.WHITE
+            for (enemy <- 1 to controller.getLength(i)) {
+              val cardPanel = new CardPanel(i, enemy - 1, controller)
+              contents += cardPanel.card
+              listenTo(cardPanel)
+            }
+          }
+        }
       }
-    }
-    contents += new GridPanel(1, 2) {
-      border = LineBorder(java.awt.Color.WHITE, 20)
-      background = java.awt.Color.WHITE
-      for (i <- 0 to 1) {
-        val cardPanel = new CardPanel(1, i, controller)
-        contents += cardPanel.card
-        listenTo(cardPanel)
+      contents += new GridPanel(1, 3) {
+        border = LineBorder(java.awt.Color.WHITE, 40)
+        background = java.awt.Color.WHITE
+        for (i <- 0 to 2) {
+          val cardPanel = new CardPanel(3, i, controller)
+          contents += cardPanel.card
+          listenTo(cardPanel)
+        }
       }
-    }
-    contents += new GridPanel(1, controller.getLength(1)) {
-      border = LineBorder(java.awt.Color.WHITE, 20)
-      background = java.awt.Color.WHITE
-      for (player <- 1 to controller.getLength(1)) {
-        val cardPanel = new CardPanel(2, player - 1, controller)
-        contents += cardPanel.card
-        listenTo(cardPanel)
+      contents += new GridPanel(1, controller.getLength(3)) {
+        border = LineBorder(java.awt.Color.WHITE, 40)
+        background = java.awt.Color.WHITE
+        for (player <- 1 to controller.getLength(3)) {
+          val cardPanel = new CardPanel(4, player - 1, controller)
+          contents += cardPanel.card
+          listenTo(cardPanel)
+        }
+      }
+    } else {
+      contents += new GridPanel(1, controller.getNumOfPlayers()-1) {
+        border = LineBorder(java.awt.Color.WHITE, 20)
+        background = java.awt.Color.WHITE
+        for (i <- 0 to 1) {
+          contents += new GridPanel(1, controller.getLength(i)) {
+            border = LineBorder(java.awt.Color.WHITE, 20)
+            background = java.awt.Color.WHITE
+            for (enemy <- 1 to controller.getLength(i)) {
+              val cardPanel = new CardPanel(i, enemy - 1, controller)
+              contents += cardPanel.card
+              listenTo(cardPanel)
+            }
+          }
+        }
+      }
+      contents += new GridPanel(1, 3) {
+        border = LineBorder(java.awt.Color.WHITE, 40)
+        background = java.awt.Color.WHITE
+        for (i <- 0 to 2) {
+          val cardPanel = new CardPanel(3, i, controller)
+          contents += cardPanel.card
+          listenTo(cardPanel)
+        }
+      }
+      contents += new GridPanel(1, controller.getNumOfPlayers()-1) {
+        border = LineBorder(java.awt.Color.WHITE, 20)
+        background = java.awt.Color.WHITE
+        for (i <- 0 to 1) {
+          if (i == 1) {
+            contents += new GridPanel(1, controller.getLength(2)) {
+              border = LineBorder(java.awt.Color.WHITE, 20)
+              background = java.awt.Color.WHITE
+              for (enemy <- 1 to controller.getLength(2)) {
+                val cardPanel = new CardPanel(2, enemy - 1, controller)
+                contents += cardPanel.card
+                listenTo(cardPanel)
+              }
+            }
+          } else {
+            contents += new GridPanel(1, controller.getLength(3)) {
+              border = LineBorder(java.awt.Color.WHITE, 20)
+              background = java.awt.Color.WHITE
+              for (player <- 1 to controller.getLength(3)) {
+                val cardPanel = new CardPanel(4, player - 1, controller)
+                contents += cardPanel.card
+                listenTo(cardPanel)
+              }
+            }
+          }
+        }
       }
     }
   }
@@ -60,9 +121,9 @@ class SwingGui(controller: ControllerInterface) extends Frame {
       contents += new MenuItem(Action("Test") {controller.createTestGame()})
       contents += new Menu("Random") {
         mnemonic = Key.R
-        contents += new MenuItem(Action("1") {controller.createGame(1)})
-        contents += new MenuItem(Action("7") {controller.createGame()})
-        contents += new MenuItem(Action("15") {controller.createGame(15)})
+        contents += new MenuItem(Action("2 Players") {controller.createGame(2)})
+        contents += new MenuItem(Action("3 Players") {controller.createGame(3)})
+        contents += new MenuItem(Action("4 Players") {controller.createGame(4)})
       }
       contents += new MenuItem(Action("Quit") {System.exit(0)})
     }
@@ -110,11 +171,11 @@ class SwingGui(controller: ControllerInterface) extends Frame {
         if(i == 0) {
           "New Testgame"
         } else if(i == 1) {
-          "Random Game with size 1"
+          "Random Game with 2 Players"
         } else if(i == 2) {
-          "Random Game with size 7"
+          "Random Game with 3 Players"
         } else if (i == 3){
-          "Random Game with size 15"
+          "Random Game with 4 Players"
         }else {
           "Quit"
         }
@@ -122,11 +183,11 @@ class SwingGui(controller: ControllerInterface) extends Frame {
         if(i == 0) {
           controller.createTestGame()
         } else if(i == 1) {
-          controller.createGame(1)
+          controller.createGame(2)
         } else if(i == 2) {
-          controller.createGame()
+          controller.createGame(3)
         } else if (i == 3){
-          controller.createGame(15)
+          controller.createGame(4)
         } else {
           System.exit(0)
         }

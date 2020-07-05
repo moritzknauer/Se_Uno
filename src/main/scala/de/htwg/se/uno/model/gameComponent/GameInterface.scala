@@ -13,4 +13,13 @@ trait GameInterface {
   def getLength(list:Integer) : Int
   def getCardText(list : Int, index : Int) : String
   def getGuiCardText(list : Int, index : Int) : String
+  def getNumOfPlayers() : Int
+  def createGame() : Game
+  def enemyUndo2() : Game
+  def enemyUndo3() : Game
+  def enemy2() : Game
+  def enemy3() : Game
+  def nextTurn() : Boolean
+  def nextEnemy() : Int
+  def setActivePlayer() : Game
 }

@@ -3,11 +3,13 @@ package de.htwg.se.uno.model.gameComponent.gameBaseImpl
 import scala.collection.mutable.ListBuffer
 
 class InitializeTestGameStrategy extends InitializeGameStrategy {
-  override def initializeGame(numOfPlayerCards: Int): InitializeTestGameStrategy = {
+  override def initializeGame(numOfPlayers: Int): InitializeTestGameStrategy = {
     cardsCovered = new ListBuffer[Card]()
     cardsRevealed = new ListBuffer[Card]()
     enemy.enemyCards = new ListBuffer[Card]()
     player.handCards = new ListBuffer[Card]()
+    enemy2.enemyCards = new ListBuffer[Card]()
+    enemy3.enemyCards = new ListBuffer[Card]()
     var cards = new ListBuffer[Card]()
     for (color <- Color.values) {
       for (value <- Value.values) {
@@ -55,9 +57,17 @@ class InitializeTestGameStrategy extends InitializeGameStrategy {
     player.stack2.popAll()
     player.stack2.push(-1)
     enemy.stack1.popAll()
-    enemy.stack1.push(" ")
+    enemy.stack1.push("Start")
     enemy.stack2.popAll()
     enemy.stack2.push(-1)
+    enemy2.stack1.popAll()
+    enemy2.stack1.push("Start")
+    enemy2.stack2.popAll()
+    enemy2.stack2.push(-1)
+    enemy3.stack1.popAll()
+    enemy3.stack1.push("Start")
+    enemy3.stack2.popAll()
+    enemy3.stack2.push(-1)
 
     this
   }

@@ -2,6 +2,7 @@ package de.htwg.se.uno.controller.controllerComponent.controllerBaseImpl
 
 import com.google.inject.{Guice, Inject, Injector}
 import com.google.inject.name.Names
+import de.htwg.se.uno.Uno.gui
 import de.htwg.se.uno.UnoModule
 import de.htwg.se.uno.controller.controllerComponent._
 import net.codingwell.scalaguice.InjectorExtensions._
@@ -18,16 +19,18 @@ class Controller @Inject() (var game: GameInterface) extends ControllerInterface
 
   def createGame(size: Int):Unit = {
     size match {
-      case 1 => game = injector.instance[GameInterface](Names.named("1 Card"))
-      case 7 => game = injector.instance[GameInterface](Names.named("7 Cards"))
-      case 15 => game = injector.instance[GameInterface](Names.named("15 Cards"))
+      case 2 => game = injector.instance[GameInterface](Names.named("2 Players"))
+      case 3 => game = injector.instance[GameInterface](Names.named("3 Players"))
+      case 4 => game = injector.instance[GameInterface](Names.named("4 Players"))
       case _ =>
     }
+    game = game.createGame()
     undoManager = new UndoManager
     publish(new GameSizeChanged)
   }
 
   def createTestGame():Unit = {
+    game = injector.instance[GameInterface](Names.named("2 Players"))
     game = game.createTestGame()
     undoManager = new UndoManager
     publish(new GameSizeChanged)
@@ -36,37 +39,71 @@ class Controller @Inject() (var game: GameInterface) extends ControllerInterface
   def gameToString: String = game.toString
 
   def set(string:String): Unit = {
-    val s = gameToString
-    undoManager.doStep(new PushCommand(string, this))
-    if(!s.equals(gameToString)) {
-      gameStatus("enemyTurn")
-      publish(new GameChanged)
-      enemy()
-      won
+    if (game.nextTurn()) {
+      val s = gameToString
+      undoManager.doStep(new PushCommand(string, this))
+      if(!s.equals(gameToString)) {
+        gameStatus("enemyTurn")
+        game = game.setActivePlayer()
+        publish(new GameChanged)
+        won
+      } else {
+        gameStatus("pushCardNotAllowed")
+        publish(new GameNotChanged)
+      }
     } else {
-      gameStatus("pushCardNotAllowed")
+      gameStatus("enemyTurn")
       publish(new GameNotChanged)
     }
   }
 
   def get(): Unit = {
-    val s = gameToString
-    undoManager.doStep(new PullCommand(this))
-    if(!s.equals(gameToString)) {
-      gameStatus("enemyTurn")
-      publish(new GameChanged)
-      enemy()
-      won
+    if (game.nextTurn()) {
+      val s = gameToString
+      undoManager.doStep(new PullCommand(this))
+      if (!s.equals(gameToString)) {
+        gameStatus("enemyTurn")
+        game = game.setActivePlayer()
+        publish(new GameChanged)
+        won
+      } else {
+        gameStatus("pullCardNotAllowed")
+        publish(new GameNotChanged)
+      }
     } else {
-      gameStatus("pullCardNotAllowed")
+      gameStatus("enemyTurn")
       publish(new GameNotChanged)
     }
   }
 
   def enemy(): Unit = {
-    undoManager.doStep(new EnemyCommand(this))
-    gameStatus("yourTurn")
+    if (game.nextEnemy() == 1) {
+      undoManager.doStep(new EnemyCommand(this))
+      game = game.setActivePlayer()
+      if (game.nextTurn()) {
+        gameStatus("yourTurn")
+      } else {
+        gameStatus("enemyTurn")
+      }
+    } else if (game.nextEnemy() == 2) {
+      undoManager.doStep(new EnemyCommand2(this))
+      game = game.setActivePlayer()
+      if (game.nextTurn()) {
+        gameStatus("yourTurn")
+      } else {
+        gameStatus("enemyTurn")
+      }
+    } else {
+      undoManager.doStep(new EnemyCommand3(this))
+      game = game.setActivePlayer()
+      if (game.nextTurn()) {
+        gameStatus("yourTurn")
+      } else {
+        gameStatus("enemyTurn")
+      }
+    }
     publish(new GameChanged)
+    won
   }
 
   def undo: Unit = {
@@ -84,10 +121,16 @@ class Controller @Inject() (var game: GameInterface) extends ControllerInterface
   }
 
   def won: Unit = {
-    if(game.getLength(1) == 0) {
+    if(game.getLength(4) == 0) {
       gameStatus("won")
       publish(new GameEnded)
     } else if(game.getLength(0) == 0) {
+      gameStatus("lost")
+      publish(new GameEnded)
+    } else if (game.getNumOfPlayers() >= 3 &&game.getLength(1) == 0) {
+      gameStatus("lost")
+      publish(new GameEnded)
+    } else if (game.getNumOfPlayers() >= 4 &&game.getLength(2) == 0) {
       gameStatus("lost")
       publish(new GameEnded)
     } else {
@@ -109,8 +152,14 @@ class Controller @Inject() (var game: GameInterface) extends ControllerInterface
   }
 
   def getLength(list : Int) : Int = {
-      game.getLength(list)
+    game.getLength(list)
   }
+
+  def getNumOfPlayers() : Int = {
+    game.getNumOfPlayers()
+  }
+
+  def nextTurn() : Boolean = game.nextTurn()
 
   def gameStatus(string : String) : String = {
     string match {

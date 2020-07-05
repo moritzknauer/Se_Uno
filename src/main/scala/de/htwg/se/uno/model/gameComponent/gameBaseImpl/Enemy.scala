@@ -4,11 +4,11 @@ import scala.collection.mutable.{ListBuffer, Stack}
 
 class Enemy() {
   var enemyCards = new ListBuffer[Card]()
-  var stack1 = Stack[String](" ")
+  var stack1 = Stack[String]("Start")
   var stack2 = Stack[Integer](-1)
 
   def undo(game: Game) : Enemy = {
-    if(stack1.top.equals("")) {
+    if(stack1.top.equals(" ")) {
       enemyCards = enemyCards.take(stack2.top) ++ game.init.cardsRevealed.take(1) ++ enemyCards.drop(stack2.top)
       game.init.cardsRevealed = game.init.cardsRevealed.drop(1)
     } else {
@@ -47,14 +47,14 @@ class Enemy() {
         enemyCards = enemyCards.take(i - 2) ++ enemyCards.drop(i-1)
         c += 1
         stack2.push(i-2)
-        stack1.push("")
+        stack1.push(" ")
       }
     }
     if (c == 0) {
       game.init.cardsRevealed = enemyCards(enemyCards.length - 1) +: game.init.cardsRevealed
       enemyCards = enemyCards.take(enemyCards.length - 1)
       stack2.push(enemyCards.length - 1)
-      stack1.push("")
+      stack1.push(" ")
     }
     this
   }
