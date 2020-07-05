@@ -16,6 +16,7 @@ case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends Ga
   private var direction = true
   var special = mutable.Stack[Integer](0)
   var color = 0
+  private var hv = false
 
   def createGame() : Game = {
     init = InitializeGameStrategy()
@@ -124,10 +125,12 @@ case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends Ga
   def pullMove() : Game = {
     if(special.top != - 1) {
       init.player = init.player.pullMove(this)
+      hv = false
     } else {
       special.push(0)
       init.player.stack1.push("Suspend")
       init.player.stack2.push(-1)
+      hv = true
       setActivePlayer()
     }
     this
@@ -144,10 +147,12 @@ case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends Ga
         this.color = color
       }
       init.player = init.player.pushMove(string, color, this)
+      hv = false
     } else {
       special.push(0)
       init.player.stack1.push("Suspend")
       init.player.stack2.push(-1)
+      hv = true
       setActivePlayer()
     }
     this
@@ -237,6 +242,19 @@ case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends Ga
   }
 
   def getNextEnemy() : Enemy = {
+    val i = nextEnemy()
+    if (i == 1) {
+      init.enemy
+    } else if (i == 2) {
+      init.enemy2
+    } else {
+      init.enemy3
+    }
+  }
+
+  def getHv() : Boolean = hv
+
+  /*def getNextEnemy() : Enemy = {
     if (numOfPlayers == 3) {
       if (activePlayer == 0) {
         if (direction) {
@@ -268,7 +286,7 @@ case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends Ga
     } else {
       false
     }
-  }
+  }*/
 
   override def toString: String = {
     val a = "┌-------┐  "

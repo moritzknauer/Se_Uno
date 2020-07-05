@@ -181,7 +181,7 @@ class Enemy() {
 
   def enemy(game: Game) : Enemy = {
     val s = game.toString
-    if(game.getNextPlayer()) {
+    if(game.nextTurn()) {
       if (game.init.player.handCards.length <= 2) {
         ki(game)
       }

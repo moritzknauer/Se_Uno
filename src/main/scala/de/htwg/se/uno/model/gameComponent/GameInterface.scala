@@ -28,4 +28,5 @@ trait GameInterface {
   def getActivePlayer() : Int
   def getDirection() : Boolean
   def getColor() : Color
+  def getHv() : Boolean
 }

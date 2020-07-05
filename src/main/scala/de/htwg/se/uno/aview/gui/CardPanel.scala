@@ -65,17 +65,17 @@ class CardPanel (list: Int, index: Int, controller: ControllerInterface) extends
     }
     if ((controller.getNumOfPlayers == 2 && list == 3 && index != 2) || (controller.getNumOfPlayers == 2 &&
           list != 3) || (list == 3 && index != 2) || (list == 4 && controller.getNumOfPlayers == 3)) {
-      button.font = new Font("Verdana", 1, 25)
+      button.font = new Font("Verdana", 5, 25)
       button.preferredSize_=(new Dimension(100,180))
       button.maximumSize_= (new Dimension(100, 180))
       button.minimumSize_=(new Dimension(100, 180))
     } else if (list == 3 && index == 2) {
-      button.font = new Font("Verdana", 1, 25)
+      button.font = new Font("Verdana", 5, 25)
       button.preferredSize_=(new Dimension(200,180))
       button.maximumSize_= (new Dimension(200, 180))
       button.minimumSize_=(new Dimension(200, 180))
     } else {
-      button.font = new Font("Verdana", 1, 15)
+      button.font = new Font("Verdana", 5, 15)
       button.preferredSize_=(new Dimension(70,126))
       button.maximumSize_= (new Dimension(70, 126))
       button.minimumSize_=(new Dimension(70, 126))

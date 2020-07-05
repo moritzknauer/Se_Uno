@@ -75,20 +75,10 @@ class Controller @Inject() (var game: GameInterface) extends ControllerInterface
 
   def get(): Unit = {
     if (game.nextTurn()) {
-      val s = gameToString
       game = game.setActivePlayer()
       undoManager.doStep(new PullCommand(this))
-      if (!s.equals(gameToString)) {
-        gameStatus("enemyTurn")
-        publish(new GameChanged)
-        won
-      } else {
-        game = game.setDirection()
-        game = game.setActivePlayer()
-        game = game.setDirection()
-        gameStatus("pullCardNotAllowed")
-        publish(new GameNotChanged)
-      }
+      gameStatus("enemyTurn")
+      publish(new GameChanged)
     } else {
       gameStatus("enemyTurn")
       publish(new GameNotChanged)
@@ -139,9 +129,8 @@ class Controller @Inject() (var game: GameInterface) extends ControllerInterface
   }
 
   def redo: Unit = {
-    val a = game.getActivePlayer()
     undoManager.redoStep
-    if (a == game.getActivePlayer())
+    if (game.getHv())
       game = game.setActivePlayer()
     gameStatus("redo")
     publish(new GameChanged)

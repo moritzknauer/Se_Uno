@@ -49,12 +49,6 @@ class PlayerSpec extends WordSpec {
         newGame.init.player.pushCard(Card(newGame.init.player.handCards(0).color, newGame.init.player.handCards(0).value), 0, newGame) should be(newGame.init.player)
       }
 
-
-      "be able to check if a Card of the Players Card List can be pulled" in{
-        newGame.init.player.pullable(newGame) should be (false)
-      }
-
-
       "be able to check if a seventh Card of the Players Card List can be pushed" in{
         newGame.init.player.pushable(Card(newGame.init.player.handCards.head.color, newGame.init.player.handCards.head.value), newGame) should be (true)
       }
@@ -71,9 +65,6 @@ class PlayerSpec extends WordSpec {
       }
 
 
-      "be able to check if a second Card of the Players Card List can be pulled" in{
-        newGame.init.player.pullable(newGame) should be (true)
-      }
       "be able to pull a Card to the Players Card List" in{
         newGame.init.player.pull(newGame) should be (newGame.init.player)
       }
