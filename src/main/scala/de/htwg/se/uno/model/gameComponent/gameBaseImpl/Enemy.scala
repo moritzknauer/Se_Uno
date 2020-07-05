@@ -178,6 +178,7 @@ class Enemy() {
       }
     } else {
       game.anotherPull = true
+      game.hv = true
     }
     game.special.push(0)
     this
@@ -243,6 +244,9 @@ class Enemy() {
       return pullEnemy(game)
     }
     game.anotherPull = false
+    game.special.push(0)
+    game.init.player.stack1.push("Suspend")
+    game.init.player.stack2.push(-1)
     this
   }
 

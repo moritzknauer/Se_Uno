@@ -17,6 +17,7 @@ case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends Ga
   var anotherPull = false
   var special = mutable.Stack[Integer](0)
   var color = 0
+  var hv = false
 
   def createGame() : Game = {
     init = InitializeGameStrategy()
@@ -41,10 +42,12 @@ case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends Ga
   def enemy() : Game = {
     if (special.top != - 1) {
       init.enemy = init.enemy.enemy(this)
+      hv = false
     } else {
       special.push(0)
       init.enemy.stack1.push("Suspend")
       init.enemy.stack2.push(-1)
+      hv = true
     }
     this
   }
@@ -52,10 +55,12 @@ case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends Ga
   def enemy2() : Game = {
   if (special.top != - 1) {
     init.enemy2 = init.enemy2.enemy(this)
+    hv = false
   } else {
     special.push(0)
     init.enemy2.stack1.push("Suspend")
     init.enemy2.stack2.push(-1)
+    hv = true
   }
     this
   }
@@ -63,10 +68,12 @@ case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends Ga
   def enemy3() : Game = {
     if (special.top != - 1) {
       init.enemy3 = init.enemy3.enemy(this)
+      hv = false
     } else {
       special.push(0)
       init.enemy3.stack1.push("Suspend")
       init.enemy3.stack2.push(-1)
+      hv = true
     }
     this
   }
@@ -125,10 +132,12 @@ case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends Ga
   def pullMove() : Game = {
     if(special.top != - 1) {
       init.player = init.player.pullMove(this)
+      hv = false
     } else {
       special.push(0)
       init.player.stack1.push("Suspend")
       init.player.stack2.push(-1)
+      hv = true
       setActivePlayer()
     }
     this
@@ -145,10 +154,12 @@ case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends Ga
         this.color = color
       }
       init.player = init.player.pushMove(string, color, this)
+      hv = false
     } else {
       special.push(0)
       init.player.stack1.push("Suspend")
       init.player.stack2.push(-1)
+      hv = true
       setActivePlayer()
     }
     this
@@ -254,6 +265,8 @@ case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends Ga
     anotherPull = b
     this
   }
+
+  def getHv() : Boolean = hv
 
   /*def getNextEnemy() : Enemy = {
     if (numOfPlayers == 3) {

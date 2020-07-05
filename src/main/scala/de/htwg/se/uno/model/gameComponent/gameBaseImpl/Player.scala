@@ -26,6 +26,9 @@ class Player() {
       pull(game)
     } else {
       game.anotherPull = false
+      game.special.push(0)
+      game.init.player.stack1.push("Suspend")
+      game.init.player.stack2.push(-1)
       this
     }
   }
@@ -131,13 +134,14 @@ class Player() {
   }
 
   def pushable(card: Card, game: Game) : Boolean = {
-    if (game.init.cardsRevealed.head.value == Value.PlusTwo && card.value != Value.PlusTwo && game.special.top != 0) {
+    if (game.init.cardsRevealed.head.value == Value.PlusTwo && card.value != Value.PlusTwo && game.special.top > 0) {
       return false
-    } else if (game.init.cardsRevealed.head.value == Value.PlusFour && card.value != Value.PlusFour && game.special.top != 0) {
+    } else if (game.init.cardsRevealed.head.value == Value.PlusFour && card.value != Value.PlusFour && game.special.top > 0) {
       return false
     } else if (card.value == Value.PlusFour) {
       for (i <- 1 to handCards.length) {
-        if (handCards(i - 1).color == game.init.cardsRevealed.head.color && game.init.cardsRevealed.head.color != Color.Schwarz) {
+        if (handCards(i - 1).color == game.init.cardsRevealed.head.color &&
+            game.init.cardsRevealed.head.color != Color.Schwarz && game.init.cardsRevealed.head.value != Value.PlusFour) {
           return false
         }
       }
@@ -164,6 +168,7 @@ class Player() {
       }
     } else {
       game.anotherPull = true
+      game.hv = true
     }
     game.special.push(0)
     this

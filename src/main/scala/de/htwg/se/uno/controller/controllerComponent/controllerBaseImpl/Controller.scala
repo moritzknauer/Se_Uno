@@ -18,6 +18,7 @@ class Controller @Inject() (var game: GameInterface) extends ControllerInterface
   private var hs = "Du bist dran. Mögliche Befehle: q, n, t, s [Karte], g, u, r"
   private var hs2 = ""
   private var color = 0
+  private var hv = false
 
   def createGame(size: Int):Unit = {
     size match {
@@ -147,10 +148,16 @@ class Controller @Inject() (var game: GameInterface) extends ControllerInterface
   }
 
   def redo: Unit = {
-    val a = game.getActivePlayer()
+    val s = gameToString
     undoManager.redoStep
-    if (a == game.getActivePlayer())
+    if (game.getHv() && s.equals(gameToString)) //Das Problem ist das es wenn doppelter Schritt nicht weiterschaltet. ERgibt so noch übehaupt keinen sinn
       game = game.setActivePlayer()
+    else if (!s.equals(gameToString) && !game.getHv() && !hv) {
+      game = game.setActivePlayer()
+      hv = true
+    } else if (hv) {
+      hv = false
+    }
     gameStatus("redo")
     publish(new GameChanged)
     won
