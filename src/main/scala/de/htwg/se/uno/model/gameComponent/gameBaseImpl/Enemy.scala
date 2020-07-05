@@ -112,19 +112,19 @@ class Enemy() {
           if (i == 0) {
             max = c
             myCard = Card(Color.Blue, card.value)
-            color = i
+            color = i + 1
           } else if (i == 1) {
             max = c
             myCard = Card(Color.Green, card.value)
-            color = i
+            color = i + 1
           } else if (i == 2) {
             max = c
             myCard = Card(Color.Yellow, card.value)
-            color = i
+            color = i + 1
           } else {
             max = c
             myCard = Card(Color.Red, card.value)
-            color = i
+            color = i + 1
           }
         }
       }
@@ -180,30 +180,164 @@ class Enemy() {
   }
 
   def enemy(game: Game) : Enemy = {
+    val s = game.toString
+    if(game.getNextPlayer()) {
+      if (game.init.player.handCards.length <= 2) {
+        ki(game)
+      }
+    } else if (game.getNextEnemy().enemyCards.length <= 2) {
+      ki(game)
+    }
+    if (!game.toString.equals(s)) return this
+
+
     for (i <- 1 to enemyCards.length) {
-      if(pushableEnemy(enemyCards(i-1), game)) {
+      if(pushable1(enemyCards(i-1), game)) {
+        return pushCardEnemy(enemyCards(i-1), game)
+      }
+    }
+    for (i <- 1 to enemyCards.length) {
+      if(pushable2(enemyCards(i-1), game)) {
+        return pushCardEnemy(enemyCards(i-1), game)
+      }
+    }
+    for (i <- 1 to enemyCards.length) {
+      if(pushable3(enemyCards(i-1), game)) {
+        return pushCardEnemy(enemyCards(i-1), game)
+      }
+    }
+    for (i <- 1 to enemyCards.length) {
+      if(pushable4(enemyCards(i-1), game)) {
+        return pushCardEnemy(enemyCards(i-1), game)
+      }
+    }
+    for (i <- 1 to enemyCards.length) {
+      if(pushable5(enemyCards(i-1), game)) {
+        return pushCardEnemy(enemyCards(i-1), game)
+      }
+    }
+    for (i <- 1 to enemyCards.length) {
+      if(pushable6(enemyCards(i-1), game)) {
+        return pushCardEnemy(enemyCards(i-1), game)
+      }
+    }
+    if (enemyCards.length >= 4) {
+      return pullEnemy(game)
+    }
+    for (i <- 1 to enemyCards.length) {
+      if(pushable7(enemyCards(i-1), game)) {
+        return pushCardEnemy(enemyCards(i-1), game)
+      }
+    }
+    for (i <- 1 to enemyCards.length) {
+      if(pushable8(enemyCards(i-1), game)) {
         return pushCardEnemy(enemyCards(i-1), game)
       }
     }
     pullEnemy(game)
   }
 
-  def pushableEnemy(card: Card, game: Game) : Boolean = {
-    if (game.init.cardsRevealed.head.value == Value.PlusTwo && card.value != Value.PlusTwo && game.special.top != 0) {
-      return false
-    } else if (game.init.cardsRevealed.head.value == Value.PlusFour && card.value != Value.PlusFour && game.special.top != 0) {
-      return false
-    } else if (card.value == Value.PlusFour) {
+  def pushable1(card : Card, game : Game) : Boolean = {
+    if (((game.init.cardsRevealed.head.value == Value.PlusTwo && card.value == Value.PlusTwo) ||
+          (game.init.cardsRevealed.head.value == Value.PlusFour && card.value == Value.PlusFour)) && game.special.top > 0)  {
+      true
+    } else {
+      false
+    }
+  }
+
+  def pushable2(card : Card, game : Game) : Boolean = {
+    if (card.color == game.init.cardsRevealed.head.color && card.value != Value.Suspend &&
+          card.value != Value.DirectionChange && card.value != Value.PlusTwo && card.color != Color.Schwarz &&
+          game.special.top <= 0)  {
+      true
+    } else {
+      false
+    }
+  }
+
+  def pushable3(card : Card, game : Game) : Boolean = {
+    if (card.color == game.init.cardsRevealed.head.color && card.color != Color.Schwarz &&
+          game.special.top <= 0) {
+      true
+    } else {
+      false
+    }
+  }
+
+  def pushable4(card : Card, game : Game) : Boolean = {
+    if (card.value == game.init.cardsRevealed.head.value && card.color != Color.Schwarz &&
+          card.value != Value.Suspend && card.value != Value.DirectionChange && card.value != Value.PlusTwo &&
+          game.special.top <= 0) {
+      true
+    } else {
+      false
+    }
+  }
+
+
+
+  def pushable5(card : Card, game : Game) : Boolean = {
+    if (card.value == Value.ColorChange && game.special.top <= 0) {
+      true
+    } else {
+      false
+    }
+  }
+
+  def pushable6(card : Card, game : Game) : Boolean = {
+    if (game.init.cardsRevealed.head.color == Color.Schwarz) {
+      true
+    } else {
+      false
+    }
+  }
+
+  def pushable7(card : Card, game : Game) : Boolean = {
+    if (card.value == game.init.cardsRevealed.head.value && card.color != Color.Schwarz &&
+      game.special.top <= 0) {
+      true
+    } else {
+      false
+    }
+  }
+
+  def pushable8(card : Card, game : Game) : Boolean = {
+    if (card.value == Value.PlusFour && game.init.cardsRevealed.head.value != Value.PlusTwo) {
       for (i <- 1 to enemyCards.length) {
-        if (enemyCards(i - 1).color == game.init.cardsRevealed.head.color && game.init.cardsRevealed.head.color != Color.Schwarz) {
-          return false
+        if (enemyCards(i - 1).color == game.init.cardsRevealed.head.color &&
+            game.init.cardsRevealed.head.color != Color.Schwarz) {
+          false
         }
       }
-      return true
-    } else if (card.color == game.init.cardsRevealed.head.color || card.value == game.init.cardsRevealed.head.value
-      || card.value == Value.ColorChange || game.init.cardsRevealed.head.color == Color.Schwarz) {
-      return true
+      true
+    } else {
+      false
     }
-    false
+  }
+
+  def ki(game : Game) : Enemy = {
+    for (i <- 1 to enemyCards.length) {
+      if(pushable7(enemyCards(i - 1), game) && game.init.cardsRevealed.head.value != Value.PlusTwo) {
+        return pushCardEnemy(enemyCards(i-1), game)
+      }
+    }
+    for (i <- 1 to enemyCards.length) {
+      if(enemyCards(i - 1).value == Value.PlusTwo && game.init.cardsRevealed.head.value != Value.PlusFour &&
+        (enemyCards(i - 1).value == game.init.cardsRevealed.head.value ||
+          enemyCards(i - 1).color == game.init.cardsRevealed.head.color)) {
+        return pushCardEnemy(enemyCards(i-1), game)
+      }
+    }
+    for (i <- 1 to enemyCards.length) {
+      if((enemyCards(i - 1).value == Value.Suspend || enemyCards(i - 1).value == Value.DirectionChange) &&
+        ((game.init.cardsRevealed.head.value != Value.PlusTwo &&
+          game.init.cardsRevealed.head.value != Value.PlusFour) || game.special.top <= 0) &&
+        (enemyCards(i - 1).value == game.init.cardsRevealed.head.value ||
+          enemyCards(i - 1).color == game.init.cardsRevealed.head.color)) {
+        return pushCardEnemy(enemyCards(i-1), game)
+      }
+    }
+    this
   }
 }

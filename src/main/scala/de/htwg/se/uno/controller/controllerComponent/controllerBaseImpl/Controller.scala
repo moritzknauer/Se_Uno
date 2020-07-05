@@ -190,7 +190,7 @@ class Controller @Inject() (var game: GameInterface) extends ControllerInterface
         hs
       }
       case "pullCardNotAllowed" => {
-        hs = "Du kannst keine Karte ziehen, da du eine Karte legen kannst"
+        hs = "Du kannst keine Karte ziehen"
         hs
       }
       case "unknownCommand" => {

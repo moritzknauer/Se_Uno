@@ -41,7 +41,7 @@ class CardPanel (list: Int, index: Int, controller: ControllerInterface) extends
       if (list == 4) {
         specialColor
       } else {
-        controller.getColor()
+        controller.getColor
       }
     }
   }
@@ -63,8 +63,8 @@ class CardPanel (list: Int, index: Int, controller: ControllerInterface) extends
         controller.notPush
       }
     }
-    if ((controller.getNumOfPlayers() == 2 && list == 3 && index != 2) || (controller.getNumOfPlayers() == 2 &&
-          list != 3) || (list == 3 && index != 2) || (list == 4 && controller.getNumOfPlayers() == 3)) {
+    if ((controller.getNumOfPlayers == 2 && list == 3 && index != 2) || (controller.getNumOfPlayers == 2 &&
+          list != 3) || (list == 3 && index != 2) || (list == 4 && controller.getNumOfPlayers == 3)) {
       button.font = new Font("Verdana", 1, 25)
       button.preferredSize_=(new Dimension(100,180))
       button.maximumSize_= (new Dimension(100, 180))
@@ -75,12 +75,16 @@ class CardPanel (list: Int, index: Int, controller: ControllerInterface) extends
       button.maximumSize_= (new Dimension(200, 180))
       button.minimumSize_=(new Dimension(200, 180))
     } else {
-      button.font = new Font("Verdana", 1, 10)
-      button.preferredSize_=(new Dimension(60,108))
-      button.maximumSize_= (new Dimension(60, 108))
-      button.minimumSize_=(new Dimension(60, 108))
+      button.font = new Font("Verdana", 1, 15)
+      button.preferredSize_=(new Dimension(70,126))
+      button.maximumSize_= (new Dimension(70, 126))
+      button.minimumSize_=(new Dimension(70, 126))
     }
-    button.background = cardColor(list: Int, index: Int)
+    button.background = cardColor(list, index)
+    if (cardColor(list, index) == coveredColor)
+      button.foreground = whiteColor
+    else
+      button.foreground = coveredColor
     contents += button
     listenTo(button)
     background = java.awt.Color.WHITE

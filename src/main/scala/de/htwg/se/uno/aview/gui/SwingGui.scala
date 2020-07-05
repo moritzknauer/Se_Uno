@@ -15,11 +15,11 @@ class SwingGui(controller: ControllerInterface) extends Frame {
   title = "HTWG Uno"
 
   def gamePanel = new GridPanel(3, 1) {
-    if(controller.getNumOfPlayers() <= 3) {
-      contents += new GridPanel(1, controller.getNumOfPlayers()-1) {
+    if(controller.getNumOfPlayers <= 3) {
+      contents += new GridPanel(1, controller.getNumOfPlayers-1) {
         border = LineBorder(java.awt.Color.WHITE, 20)
         background = java.awt.Color.WHITE
-        for (i <- 0 to controller.getNumOfPlayers() - 2) {
+        for (i <- 0 to controller.getNumOfPlayers - 2) {
           contents += new GridPanel(1, controller.getLength(i)) {
             border = LineBorder(java.awt.Color.WHITE, 20)
             background = java.awt.Color.WHITE
@@ -50,7 +50,7 @@ class SwingGui(controller: ControllerInterface) extends Frame {
         }
       }
     } else {
-      contents += new GridPanel(1, controller.getNumOfPlayers()-1) {
+      contents += new GridPanel(1, controller.getNumOfPlayers-1) {
         border = LineBorder(java.awt.Color.WHITE, 20)
         background = java.awt.Color.WHITE
         for (i <- 0 to 1) {
@@ -74,7 +74,7 @@ class SwingGui(controller: ControllerInterface) extends Frame {
           listenTo(cardPanel)
         }
       }
-      contents += new GridPanel(1, controller.getNumOfPlayers()-1) {
+      contents += new GridPanel(1, controller.getNumOfPlayers-1) {
         border = LineBorder(java.awt.Color.WHITE, 20)
         background = java.awt.Color.WHITE
         for (i <- 0 to 1) {
@@ -167,7 +167,7 @@ class SwingGui(controller: ControllerInterface) extends Frame {
 
   def pushpanel = new FlowPanel {
     for (i <- 0 to 3) {
-      val button = Button("") {controller.set(controller.getHs2(), i + 1)}
+      val button = Button("") {controller.set(controller.getHs2, i + 1)}
       if (i == 0) {
         button.background = new Color(0,0,255)
       } else if (i == 1) {

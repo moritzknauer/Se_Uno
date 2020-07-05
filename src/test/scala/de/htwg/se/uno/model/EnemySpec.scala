@@ -11,15 +11,15 @@ class EnemySpec extends WordSpec {
       newGame.init = InitializeGameStrategy(1)
       newGame.init = newGame.init.initializeGame(7)
       "be able to check if a Card of the Enemys Card List can be pushed" in{
-        newGame.init.enemy.pushableEnemy(Card(newGame.init.enemy.enemyCards(4).color, newGame.init.enemy.enemyCards(4).value), newGame) should be (false)
+        newGame.init.enemy.pushable1(Card(newGame.init.enemy.enemyCards(4).color, newGame.init.enemy.enemyCards(4).value), newGame) should be (false)
       }
       "be able to check if a second Card of the Enemys Card List can be pushed" in{
-        newGame.init.enemy.pushableEnemy(Card(newGame.init.enemy.enemyCards(1).color, newGame.init.enemy.enemyCards(1).value), newGame) should be (false)
+        newGame.init.enemy.pushable1(Card(newGame.init.enemy.enemyCards(1).color, newGame.init.enemy.enemyCards(1).value), newGame) should be (false)
       }
 
 
       "be able to check if a third Card of the Enemys Card List can be pushed" in{
-        newGame.init.enemy.pushableEnemy(Card(newGame.init.enemy.enemyCards(0).color, newGame.init.enemy.enemyCards(0).value), newGame) should be (true)
+        newGame.init.enemy.pushable1(Card(newGame.init.enemy.enemyCards(0).color, newGame.init.enemy.enemyCards(0).value), newGame) should be (true)
       }
       "be able to push a Card of the Enemys Card List" in{
         newGame.init.enemy.pushCardEnemy(Card(newGame.init.enemy.enemyCards.head.color, newGame.init.enemy.enemyCards.head.value), newGame) should be(newGame.init.enemy)
@@ -27,7 +27,7 @@ class EnemySpec extends WordSpec {
 
 
       "be able to check if a fourth Card of the Enemys Card List can be pushed" in{
-        newGame.init.enemy.pushableEnemy(Card(newGame.init.enemy.enemyCards(0).color, newGame.init.enemy.enemyCards(0).value), newGame) should be (true)
+        newGame.init.enemy.pushable1(Card(newGame.init.enemy.enemyCards(0).color, newGame.init.enemy.enemyCards(0).value), newGame) should be (true)
       }
       "be able to push a second Card of the Enemys Card List" in{
         newGame.init.enemy.pushCardEnemy(Card(newGame.init.enemy.enemyCards.head.color, newGame.init.enemy.enemyCards.head.value), newGame) should be(newGame.init.enemy)
@@ -35,7 +35,7 @@ class EnemySpec extends WordSpec {
 
 
       "be able to check if a fifth Card of the Enemys Card List can be pushed" in{
-        newGame.init.enemy.pushableEnemy(Card(newGame.init.enemy.enemyCards(1).color, newGame.init.enemy.enemyCards(1).value), newGame) should be (true)
+        newGame.init.enemy.pushable1(Card(newGame.init.enemy.enemyCards(1).color, newGame.init.enemy.enemyCards(1).value), newGame) should be (true)
       }
       "be able to push a third Card of the Enemys Card List" in{
         newGame.init.enemy.pushCardEnemy(Card(newGame.init.enemy.enemyCards(1).color, newGame.init.enemy.enemyCards(1).value), newGame) should be(newGame.init.enemy)
@@ -43,7 +43,7 @@ class EnemySpec extends WordSpec {
 
 
       "be able to check if a sixth Card of the Enemys Card List can be pushed" in{
-        newGame.init.enemy.pushableEnemy(Card(newGame.init.enemy.enemyCards(0).color, newGame.init.enemy.enemyCards(0).value), newGame) should be (true)
+        newGame.init.enemy.pushable1(Card(newGame.init.enemy.enemyCards(0).color, newGame.init.enemy.enemyCards(0).value), newGame) should be (true)
       }
       "be able to push a fourth Card of the Enemys Card List" in{
         newGame.init.enemy.pushCardEnemy(Card(newGame.init.enemy.enemyCards(0).color, newGame.init.enemy.enemyCards(0).value), newGame) should be(newGame.init.enemy)
@@ -51,7 +51,7 @@ class EnemySpec extends WordSpec {
 
 
       "be able to check if a seventh Card of the Enemys Card List can be pushed" in{
-        newGame.init.enemy.pushableEnemy(Card(newGame.init.enemy.enemyCards.head.color, newGame.init.enemy.enemyCards.head.value), newGame) should be (true)
+        newGame.init.enemy.pushable1(Card(newGame.init.enemy.enemyCards.head.color, newGame.init.enemy.enemyCards.head.value), newGame) should be (true)
       }
       "be able to push a fifth Card of the Enemys Card List" in{
         newGame.init.enemy.pushCardEnemy(Card(newGame.init.enemy.enemyCards.head.color, newGame.init.enemy.enemyCards.head.value), newGame) should be(newGame.init.enemy)

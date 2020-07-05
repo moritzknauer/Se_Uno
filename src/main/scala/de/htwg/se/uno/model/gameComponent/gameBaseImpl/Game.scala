@@ -236,6 +236,40 @@ case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends Ga
     }
   }
 
+  def getNextEnemy() : Enemy = {
+    if (numOfPlayers == 3) {
+      if (activePlayer == 0) {
+        if (direction) {
+          init.enemy2
+        } else {
+          init.enemy
+        }
+      } else if (activePlayer == 1) {
+        init.enemy2
+      } else {
+        init.enemy
+      }
+    } else {
+      if (activePlayer == 0) {
+        init.enemy2
+      } else if (activePlayer == 1) {
+        init.enemy3
+      } else {
+        init.enemy
+      }
+    }
+  }
+
+  def getNextPlayer() : Boolean = {
+    if ((activePlayer == 0 && numOfPlayers == 2) ||
+        ((activePlayer == 1 && direction) || (activePlayer == 2 && !direction) && numOfPlayers == 3) ||
+        (activePlayer == 2 && numOfPlayers== 4)) {
+      true
+    } else {
+      false
+    }
+  }
+
   override def toString: String = {
     val a = "┌-------┐  "
     val b = "|       |  "
