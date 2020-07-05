@@ -39,12 +39,19 @@ class Tui(controller: ControllerInterface) extends Reactor {
       }
       case "r" => {
         controller.redo
-        controller.redo
         Success("Valid Command: " + input)
       }
       case "u" => {
         controller.undo
-        controller.undo
+        Success("Valid Command: " + input)
+      }
+      case "d" => {
+        if (controller.nextTurn()) {
+          controller.gameStatus("yourTurn")
+          controller.publish(new GameNotChanged)
+        } else {
+          controller.enemy()
+        }
         Success("Valid Command: " + input)
       }
       case _ => controller.gameStatus("unknownCommand")

@@ -175,12 +175,16 @@ case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends Ga
     this
   }
 
+  def getActivePlayer() : Int = activePlayer
+
+  def getDirection() : Boolean = direction
+
   override def toString: String = {
     val a = "┌-------┐  "
     val b = "|       |  "
     val c = "|  Uno  |  "
     val d = "└-------┘  "
-    var e, f, g, h, i, j, k, l, m, n, o, p = ""
+    var e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v, w, x = ""
 
     for (_ <- 1 to init.enemy.enemyCards.length) {
       e = e.concat(a)
@@ -199,8 +203,40 @@ case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends Ga
     k = k.concat(c).concat("           |  " + init.cardsRevealed.head.toString + "  |") + "\n"
     l = l.concat(d).concat("           └-------┘") + "\n\n"
 
-    val playingField = e + "\n" + f + "\n" + g + "\n" + f + "\n" + h + "\n\n" + i + j + k + j + l + m + "\n" + n +
-                        "\n" + o + "\n" + n + "\n" + p
+
+    if (numOfPlayers == 3) {
+      for (_ <- 1 to init.enemy2.enemyCards.length) {
+        q = q.concat(a)
+        r = r.concat(b)
+        s = s.concat(c)
+        t = t.concat(d)
+      }
+    } else if (numOfPlayers == 4) {
+      for (_ <- 1 to init.enemy2.enemyCards.length) {
+        q = q.concat(a)
+        r = r.concat(b)
+        s = s.concat(c)
+        t = t.concat(d)
+      }
+      for (_ <- 1 to init.enemy3.enemyCards.length) {
+        u = u.concat(a)
+        v = v.concat(b)
+        w = w.concat(c)
+        x = x.concat(d)
+      }
+    }
+
+    val playingField = e + "\t\t\t\t\t" + q + "\n" +
+                        f + "\t\t\t\t\t" + r + "\n" +
+                        g + "\t\t\t\t\t" + s + "\n" +
+                        f + "\t\t\t\t\t" + r + "\n" +
+                        h + "\t\t\t\t\t" + t + "\n\n" +
+                        i + j + k + j + l +
+                        m + "\t\t\t\t\t" + u + "\n" +
+                        n + "\t\t\t\t\t" + v + "\n" +
+                        o + "\t\t\t\t\t" + w + "\n" +
+                        n + "\t\t\t\t\t" + v + "\n" +
+                        p + "\t\t\t\t\t" + x
     playingField
   }
 }

@@ -22,4 +22,7 @@ trait GameInterface {
   def nextTurn() : Boolean
   def nextEnemy() : Int
   def setActivePlayer() : Game
+  def setDirection() : Game
+  def getActivePlayer() : Int
+  def getDirection() : Boolean
 }

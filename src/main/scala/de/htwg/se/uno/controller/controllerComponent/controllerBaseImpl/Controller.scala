@@ -26,6 +26,7 @@ class Controller @Inject() (var game: GameInterface) extends ControllerInterface
     }
     game = game.createGame()
     undoManager = new UndoManager
+    gameStatus("yourTurn")
     publish(new GameSizeChanged)
   }
 
@@ -33,6 +34,7 @@ class Controller @Inject() (var game: GameInterface) extends ControllerInterface
     game = injector.instance[GameInterface](Names.named("2 Players"))
     game = game.createTestGame()
     undoManager = new UndoManager
+    gameStatus("yourTurn")
     publish(new GameSizeChanged)
   }
 
@@ -107,7 +109,13 @@ class Controller @Inject() (var game: GameInterface) extends ControllerInterface
   }
 
   def undo: Unit = {
-    undoManager.undoStep
+    do {
+      undoManager.undoStep
+      game.setDirection()
+      game.setActivePlayer()
+      game.setDirection()
+    }
+    while(!game.nextTurn())
     gameStatus("undo")
     publish(new GameChanged)
     won
@@ -143,22 +151,10 @@ class Controller @Inject() (var game: GameInterface) extends ControllerInterface
     publish(new GameNotChanged)
   }
 
-  def getCardText(list : Int, index : Int) : String = {
-    game.getCardText(list, index)
-  }
-
-  def getGuiCardText(list : Int, index : Int) : String = {
-    game.getGuiCardText(list, index)
-  }
-
-  def getLength(list : Int) : Int = {
-    game.getLength(list)
-  }
-
-  def getNumOfPlayers() : Int = {
-    game.getNumOfPlayers()
-  }
-
+  def getCardText(list : Int, index : Int) : String = game.getCardText(list, index)
+  def getGuiCardText(list : Int, index : Int) : String = game.getGuiCardText(list, index)
+  def getLength(list : Int) : Int = game.getLength(list)
+  def getNumOfPlayers() : Int = game.getNumOfPlayers()
   def nextTurn() : Boolean = game.nextTurn()
 
   def gameStatus(string : String) : String = {
@@ -180,7 +176,7 @@ class Controller @Inject() (var game: GameInterface) extends ControllerInterface
         hs
       }
       case "yourTurn" => {
-        hs = "Du bist dran. Mögliche Befehle: q, n, t, s [Karte], g, u, r"
+        hs = "Du bist dran. Mögliche Befehle: q, n [2 | 3 | 4], t, s [Karte], g, u, r, d"
         hs
       }
       case "won" => {
