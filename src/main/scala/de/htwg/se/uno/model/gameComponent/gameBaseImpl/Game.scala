@@ -4,6 +4,8 @@ import com.google.inject.Inject
 import com.google.inject.name.Named
 import de.htwg.se.uno.model.gameComponent.GameInterface
 
+import scala.collection.mutable
+
 case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends GameInterface{
   var init = InitializeGameStrategy()
 
@@ -11,12 +13,15 @@ case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends Ga
 
   private var activePlayer = numOfPlayers - 1
   private var direction = true
+  var special = mutable.Stack[Integer](0)
 
   def createGame() : Game = {
     init = InitializeGameStrategy()
     init = init.initializeGame(numOfPlayers)
     activePlayer = numOfPlayers - 1
     direction = true
+    special.popAll()
+    special.push(0)
     this
   }
 
@@ -25,21 +30,35 @@ case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends Ga
     init = init.initializeGame(numOfPlayers)
     activePlayer = numOfPlayers - 1
     direction = true
+    special.popAll()
+    special.push(0)
     this
   }
 
   def enemy() : Game = {
-    init.enemy = init.enemy.enemy(this)
+    if (special.top != - 1) {
+      init.enemy = init.enemy.enemy(this)
+    } else {
+      special.push(0)
+    }
     this
   }
 
   def enemy2() : Game = {
+  if (special.top != - 1) {
     init.enemy2 = init.enemy2.enemy(this)
+  } else {
+    special.push(0)
+  }
     this
   }
 
   def enemy3() : Game = {
-    init.enemy3 = init.enemy3.enemy(this)
+    if (special.top != - 1) {
+      init.enemy3 = init.enemy3.enemy(this)
+    } else {
+      special.push(0)
+    }
     this
   }
 
@@ -95,7 +114,12 @@ case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends Ga
   }
 
   def pullMove() : Game = {
-    init.player = init.player.pullMove(this)
+    if(special.top != - 1) {
+      init.player = init.player.pullMove(this)
+    } else {
+      special.push(0)
+      setActivePlayer()
+    }
     this
   }
 
@@ -105,7 +129,12 @@ case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends Ga
   }
 
   def pushMove(string : String) : Game = {
-    init.player = init.player.pushMove(string, this)
+    if(special.top != - 1) {
+      init.player = init.player.pushMove(string, this)
+    } else {
+      special.push(0)
+      setActivePlayer()
+    }
     this
   }
 

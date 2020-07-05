@@ -43,13 +43,16 @@ class Controller @Inject() (var game: GameInterface) extends ControllerInterface
   def set(string:String): Unit = {
     if (game.nextTurn()) {
       val s = gameToString
+      game = game.setActivePlayer()
       undoManager.doStep(new PushCommand(string, this))
       if(!s.equals(gameToString)) {
         gameStatus("enemyTurn")
-        game = game.setActivePlayer()
         publish(new GameChanged)
         won
       } else {
+        game = game.setDirection()
+        game = game.setActivePlayer()
+        game = game.setDirection()
         gameStatus("pushCardNotAllowed")
         publish(new GameNotChanged)
       }
@@ -62,13 +65,16 @@ class Controller @Inject() (var game: GameInterface) extends ControllerInterface
   def get(): Unit = {
     if (game.nextTurn()) {
       val s = gameToString
+      game = game.setActivePlayer()
       undoManager.doStep(new PullCommand(this))
       if (!s.equals(gameToString)) {
         gameStatus("enemyTurn")
-        game = game.setActivePlayer()
         publish(new GameChanged)
         won
       } else {
+        game = game.setDirection()
+        game = game.setActivePlayer()
+        game = game.setDirection()
         gameStatus("pullCardNotAllowed")
         publish(new GameNotChanged)
       }
@@ -80,24 +86,24 @@ class Controller @Inject() (var game: GameInterface) extends ControllerInterface
 
   def enemy(): Unit = {
     if (game.nextEnemy() == 1) {
-      undoManager.doStep(new EnemyCommand(this))
       game = game.setActivePlayer()
+      undoManager.doStep(new EnemyCommand(this))
       if (game.nextTurn()) {
         gameStatus("yourTurn")
       } else {
         gameStatus("enemyTurn")
       }
     } else if (game.nextEnemy() == 2) {
-      undoManager.doStep(new EnemyCommand2(this))
       game = game.setActivePlayer()
+      undoManager.doStep(new EnemyCommand2(this))
       if (game.nextTurn()) {
         gameStatus("yourTurn")
       } else {
         gameStatus("enemyTurn")
       }
     } else {
-      undoManager.doStep(new EnemyCommand3(this))
       game = game.setActivePlayer()
+      undoManager.doStep(new EnemyCommand3(this))
       if (game.nextTurn()) {
         gameStatus("yourTurn")
       } else {

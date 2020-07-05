@@ -59,18 +59,22 @@ class InitializeRandomGameStrategy extends InitializeGameStrategy {
     player.stack1.push("Start")
     player.stack2.popAll()
     player.stack2.push(-1)
+    player.stack3.popAll()
     enemy.stack1.popAll()
     enemy.stack1.push("Start")
     enemy.stack2.popAll()
     enemy.stack2.push(-1)
+    enemy.stack3.popAll()
     enemy2.stack1.popAll()
     enemy2.stack1.push("Start")
     enemy2.stack2.popAll()
     enemy2.stack2.push(-1)
+    enemy2.stack3.popAll()
     enemy3.stack1.popAll()
     enemy3.stack1.push("Start")
     enemy3.stack2.popAll()
     enemy3.stack2.push(-1)
+    enemy3.stack3.popAll()
 
     this
   }
