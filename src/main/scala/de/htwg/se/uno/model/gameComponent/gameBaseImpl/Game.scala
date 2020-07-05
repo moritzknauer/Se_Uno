@@ -5,6 +5,7 @@ import com.google.inject.name.Named
 import de.htwg.se.uno.model.gameComponent.GameInterface
 
 import scala.collection.mutable
+import scala.swing.Color
 
 case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends GameInterface{
   var init = InitializeGameStrategy()
@@ -14,6 +15,7 @@ case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends Ga
   private var activePlayer = numOfPlayers - 1
   private var direction = true
   var special = mutable.Stack[Integer](0)
+  var color = 0
 
   def createGame() : Game = {
     init = InitializeGameStrategy()
@@ -128,9 +130,12 @@ case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends Ga
     this
   }
 
-  def pushMove(string : String) : Game = {
+  def pushMove(string : String, color : Int) : Game = {
     if(special.top != - 1) {
-      init.player = init.player.pushMove(string, this)
+      if (color != 0) {
+        this.color = color
+      }
+      init.player = init.player.pushMove(string, color, this)
     } else {
       special.push(0)
       setActivePlayer()
@@ -205,8 +210,21 @@ case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends Ga
   }
 
   def getActivePlayer() : Int = activePlayer
-
   def getDirection() : Boolean = direction
+
+  def getColor() : Color = {
+    if (color == 1) {
+      new Color(0, 0, 255)
+    } else if (color == 2) {
+      new Color(0, 255, 0)
+    } else if (color == 3) {
+      new Color(255, 255, 0)
+    } else if (color == 4) {
+      new Color(255, 0, 0)
+    } else {
+      new Color(128, 128, 128)
+    }
+  }
 
   override def toString: String = {
     val a = "┌-------┐  "

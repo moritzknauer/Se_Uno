@@ -9,13 +9,15 @@ import net.codingwell.scalaguice.InjectorExtensions._
 import de.htwg.se.uno.model.gameComponent.GameInterface
 import de.htwg.se.uno.util.UndoManager
 
-import scala.swing.Publisher
+import scala.swing.{Color, Publisher}
 
 
 class Controller @Inject() (var game: GameInterface) extends ControllerInterface with Publisher {
   private var undoManager = new UndoManager
   val injector: Injector = Guice.createInjector(new UnoModule)
   private var hs = "Du bist dran. Mögliche Befehle: q, n, t, s [Karte], g, u, r"
+  private var hs2 = ""
+  private var color = 0
 
   def createGame(size: Int):Unit = {
     size match {
@@ -25,6 +27,8 @@ class Controller @Inject() (var game: GameInterface) extends ControllerInterface
       case _ =>
     }
     game = game.createGame()
+    hs2 = ""
+    color = 0
     undoManager = new UndoManager
     gameStatus("yourTurn")
     publish(new GameSizeChanged)
@@ -33,6 +37,7 @@ class Controller @Inject() (var game: GameInterface) extends ControllerInterface
   def createTestGame():Unit = {
     game = injector.instance[GameInterface](Names.named("2 Players"))
     game = game.createTestGame()
+    hs2 = ""
     undoManager = new UndoManager
     gameStatus("yourTurn")
     publish(new GameSizeChanged)
@@ -40,25 +45,31 @@ class Controller @Inject() (var game: GameInterface) extends ControllerInterface
 
   def gameToString: String = game.toString
 
-  def set(string:String): Unit = {
-    if (game.nextTurn()) {
-      val s = gameToString
-      game = game.setActivePlayer()
-      undoManager.doStep(new PushCommand(string, this))
-      if(!s.equals(gameToString)) {
-        gameStatus("enemyTurn")
-        publish(new GameChanged)
-        won
-      } else {
-        game = game.setDirection()
+  def set(string:String, color : Int = 0): Unit = {
+    if (string.charAt(0) != 'S' || color != 0) {
+      if (game.nextTurn()) {
+        val s = gameToString
         game = game.setActivePlayer()
-        game = game.setDirection()
-        gameStatus("pushCardNotAllowed")
+        undoManager.doStep(new PushCommand(string, color, this))
+        if (!s.equals(gameToString)) {
+          gameStatus("enemyTurn")
+          publish(new GameChanged)
+          won
+        } else {
+          game = game.setDirection()
+          game = game.setActivePlayer()
+          game = game.setDirection()
+          gameStatus("pushCardNotAllowed")
+          publish(new GameNotChanged)
+        }
+      } else {
+        gameStatus("enemyTurn")
         publish(new GameNotChanged)
       }
     } else {
-      gameStatus("enemyTurn")
-      publish(new GameNotChanged)
+      hs2 = string
+      gameStatus("chooseColor")
+      publish(new ChooseColor)
     }
   }
 
@@ -162,6 +173,8 @@ class Controller @Inject() (var game: GameInterface) extends ControllerInterface
   def getLength(list : Int) : Int = game.getLength(list)
   def getNumOfPlayers() : Int = game.getNumOfPlayers()
   def nextTurn() : Boolean = game.nextTurn()
+  def getHs2() : String = hs2
+  def getColor() : Color = game.getColor()
 
   def gameStatus(string : String) : String = {
     string match {
@@ -199,6 +212,10 @@ class Controller @Inject() (var game: GameInterface) extends ControllerInterface
       }
       case "redo" => {
         hs = "Zug wiederhergestellt"
+        hs
+      }
+      case "chooseColor" => {
+        hs = "Wähle eine Farbe"
         hs
       }
       case "idle" => hs

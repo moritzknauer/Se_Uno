@@ -2,6 +2,8 @@ package de.htwg.se.uno.model.gameComponent
 
 import de.htwg.se.uno.model.gameComponent.gameBaseImpl.Game
 
+import scala.swing.Color
+
 trait GameInterface {
   def toString: String
   def createTestGame() : Game
@@ -9,7 +11,7 @@ trait GameInterface {
   def enemyUndo() : Game
   def pullMove() : Game
   def playerUndo() : Game
-  def pushMove(string : String) : Game
+  def pushMove(string : String, color : Int) : Game
   def getLength(list:Integer) : Int
   def getCardText(list : Int, index : Int) : String
   def getGuiCardText(list : Int, index : Int) : String
@@ -25,4 +27,5 @@ trait GameInterface {
   def setDirection() : Game
   def getActivePlayer() : Int
   def getDirection() : Boolean
+  def getColor() : Color
 }

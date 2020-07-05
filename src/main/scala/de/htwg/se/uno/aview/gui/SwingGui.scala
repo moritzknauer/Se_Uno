@@ -1,6 +1,7 @@
 package de.htwg.se.uno.aview.gui
 
-import de.htwg.se.uno.controller.controllerComponent.{ControllerInterface, GameChanged, GameEnded, GameNotChanged, GameSizeChanged}
+import de.htwg.se.uno.controller.controllerComponent.{ChooseColor, ControllerInterface, GameChanged, GameEnded, GameNotChanged, GameSizeChanged}
+
 import scala.swing.BorderPanel.Position
 import scala.swing._
 import scala.swing.event.Key
@@ -142,6 +143,7 @@ class SwingGui(controller: ControllerInterface) extends Frame {
     case event: GameChanged => redraw
     case event: GameNotChanged => statusline.text = controller.gameStatus("idle")
     case event: GameEnded => ended
+    case event: ChooseColor => special
   }
 
   def redraw = {
@@ -152,6 +154,33 @@ class SwingGui(controller: ControllerInterface) extends Frame {
       add(statusline, BorderPanel.Position.South)
     }
     repaint
+  }
+
+  def special : Unit = {
+    statusline.text = controller.gameStatus("idle")
+    contents = new BorderPanel {
+      add(pushpanel, BorderPanel.Position.North)
+      add(gamePanel, BorderPanel.Position.Center)
+      add(statusline, BorderPanel.Position.South)
+    }
+  }
+
+  def pushpanel = new FlowPanel {
+    for (i <- 0 to 3) {
+      val button = Button("") {controller.set(controller.getHs2(), i + 1)}
+      if (i == 0) {
+        button.background = new Color(0,0,255)
+      } else if (i == 1) {
+        button.background = new Color(0,255,0)
+      } else if (i == 2) {
+        button.background = new Color(255,255,0)
+      } else {
+        button.background = new Color(255,0,0)
+      }
+      button.preferredSize_=(new Dimension(90,90))
+      contents += button
+      listenTo(button)
+    }
   }
 
   def ended: Unit = {

@@ -11,11 +11,11 @@ class Player() {
 
 
 
-  def pushMove(string:String, game: Game) : Player = {
+  def pushMove(string:String, color : Int, game: Game) : Player = {
     if(equalsCard(string)) {
       val card = getCard(string)
       if (pushable(card, game)) {
-        return pushCard(card, game)
+        return pushCard(card, color, game)
       }
     }
     this
@@ -61,12 +61,22 @@ class Player() {
     this
   }
 
-  def pushCard(card: Card, game: Game) : Player = {
+  def pushCard(card: Card, color : Int, game: Game) : Player = {
     var c = 0
-    stack3.push(card)
+    var myCard = card
+    if(color == 1) {
+      myCard = Card(Color.Blue, card.value)
+    } else if (color == 2) {
+      myCard = Card(Color.Green, card.value)
+    } else if (color == 3) {
+      myCard = Card(Color.Yellow, card.value)
+    } else if (color == 4) {
+      myCard = Card(Color.Red, card.value)
+    }
+    stack3.push(myCard)
     for (i <- 2 to handCards.length) {
       if (handCards(i - 2).color == card.color && handCards(i - 2).value == card.value && c == 0) {
-        game.init.cardsRevealed = handCards(i - 2) +: game.init.cardsRevealed
+        game.init.cardsRevealed = myCard +: game.init.cardsRevealed
         handCards = handCards.take(i - 2) ++ handCards.drop(i-1)
         stack2.push(i-2)
         c += 1
@@ -74,7 +84,7 @@ class Player() {
       }
     }
     if (c == 0) {
-      game.init.cardsRevealed = handCards(handCards.length-1) +: game.init.cardsRevealed
+      game.init.cardsRevealed = myCard +: game.init.cardsRevealed
       handCards = handCards.take(handCards.length - 1)
       stack2.push(handCards.length-1)
       stack1.push(" ")
@@ -101,7 +111,7 @@ class Player() {
       return false
     } else if (card.value == Value.PlusFour) {
       for (i <- 1 to handCards.length) {
-        if (handCards(i - 1).color == game.init.cardsRevealed.head.color) {
+        if (handCards(i - 1).color == game.init.cardsRevealed.head.color && game.init.cardsRevealed.head.color != Color.Schwarz) {
           return false
         }
       }

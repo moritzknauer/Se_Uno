@@ -22,7 +22,7 @@ class PlayerSpec extends WordSpec {
         newGame.init.player.pushable(Card(newGame.init.player.handCards(0).color, newGame.init.player.handCards(0).value), newGame) should be (true)
       }
       "be able to push a Card of the Players Card List" in{
-        newGame.init.player.pushCard(Card(newGame.init.player.handCards.head.color, newGame.init.player.handCards.head.value), newGame) should be(newGame.init.player)
+        newGame.init.player.pushCard(Card(newGame.init.player.handCards.head.color, newGame.init.player.handCards.head.value), 0, newGame) should be(newGame.init.player)
       }
 
 
@@ -30,7 +30,7 @@ class PlayerSpec extends WordSpec {
         newGame.init.player.pushable(Card(newGame.init.player.handCards(0).color, newGame.init.player.handCards(0).value), newGame) should be (true)
       }
       "be able to push a second Card of the Players Card List" in{
-        newGame.init.player.pushCard(Card(newGame.init.player.handCards.head.color, newGame.init.player.handCards.head.value), newGame) should be(newGame.init.player)
+        newGame.init.player.pushCard(Card(newGame.init.player.handCards.head.color, newGame.init.player.handCards.head.value), 0, newGame) should be(newGame.init.player)
       }
 
 
@@ -38,7 +38,7 @@ class PlayerSpec extends WordSpec {
         newGame.init.player.pushable(Card(newGame.init.player.handCards(1).color, newGame.init.player.handCards(1).value), newGame) should be (true)
       }
       "be able to push a third Card of the Players Card List" in{
-        newGame.init.player.pushCard(Card(newGame.init.player.handCards(1).color, newGame.init.player.handCards(1).value), newGame) should be(newGame.init.player)
+        newGame.init.player.pushCard(Card(newGame.init.player.handCards(1).color, newGame.init.player.handCards(1).value), 0 ,  newGame) should be(newGame.init.player)
       }
 
 
@@ -46,7 +46,7 @@ class PlayerSpec extends WordSpec {
         newGame.init.player.pushable(Card(newGame.init.player.handCards(0).color, newGame.init.player.handCards(0).value), newGame) should be (true)
       }
       "be able to push a fourth Card of the Players Card List" in{
-        newGame.init.player.pushCard(Card(newGame.init.player.handCards(0).color, newGame.init.player.handCards(0).value), newGame) should be(newGame.init.player)
+        newGame.init.player.pushCard(Card(newGame.init.player.handCards(0).color, newGame.init.player.handCards(0).value), 0, newGame) should be(newGame.init.player)
       }
 
 
@@ -59,7 +59,7 @@ class PlayerSpec extends WordSpec {
         newGame.init.player.pushable(Card(newGame.init.player.handCards.head.color, newGame.init.player.handCards.head.value), newGame) should be (true)
       }
       "be able to push a fifth Card of the Players Card List" in{
-        newGame.init.player.pushCard(Card(newGame.init.player.handCards.head.color, newGame.init.player.handCards.head.value), newGame) should be(newGame.init.player)
+        newGame.init.player.pushCard(Card(newGame.init.player.handCards.head.color, newGame.init.player.handCards.head.value), 0, newGame) should be(newGame.init.player)
       }
 
 
@@ -67,7 +67,7 @@ class PlayerSpec extends WordSpec {
         newGame.init.player.undo(newGame) should be(newGame.init.player)
       }
       "be able to push a sixth Card of the Players Card List" in{
-        newGame.init.player.pushCard(Card(newGame.init.player.handCards.head.color, newGame.init.player.handCards.head.value), newGame) should be(newGame.init.player)
+        newGame.init.player.pushCard(Card(newGame.init.player.handCards.head.color, newGame.init.player.handCards.head.value), 0, newGame) should be(newGame.init.player)
       }
 
 
@@ -103,7 +103,7 @@ class PlayerSpec extends WordSpec {
 
 
       "be able to do a push move" in {
-        newGame.init.player.pushMove(newGame.init.player.handCards.head.toString, newGame) should be(newGame.init.player)
+        newGame.init.player.pushMove(newGame.init.player.handCards.head.toString, 0, newGame) should be(newGame.init.player)
       }
       "be able to do a pull Move" in {
         newGame.init.player.pullMove(newGame) should be(newGame.init.player)

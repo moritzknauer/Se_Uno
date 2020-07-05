@@ -38,7 +38,11 @@ class CardPanel (list: Int, index: Int, controller: ControllerInterface) extends
     } else if (cardTextColor(list, index) == 'B') {
       blueColor
     } else {
-      specialColor
+      if (list == 4) {
+        specialColor
+      } else {
+        controller.getColor()
+      }
     }
   }
 

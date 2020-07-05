@@ -1,6 +1,7 @@
 package de.htwg.se.uno.model.gameComponent.gameBaseImpl
 
 import scala.collection.mutable.{ListBuffer, Stack}
+import scala.swing.Color
 
 class Enemy() {
   var enemyCards = new ListBuffer[Card]()
@@ -48,10 +49,58 @@ class Enemy() {
 
   def pushCardEnemy(card: Card, game: Game) : Enemy = {
     var c = 0
+    var max = 0
+    var myCard = card
+    var color = 0
+    if (card.color == Color.Schwarz) {
+      for (i <- 0 to 3) {
+        c = 0
+        for (j <- 0 to enemyCards.length - 1) {
+          if (i == 0) {
+            if (enemyCards(j).color == Color.Blue) {
+              c += 1
+            }
+          } else if (i == 1) {
+            if (enemyCards(j).color == Color.Green) {
+              c += 1
+            }
+          } else if (i == 2) {
+            if (enemyCards(j).color == Color.Yellow) {
+              c += 1
+            }
+          } else {
+            if (enemyCards(j).color == Color.Red) {
+              c += 1
+            }
+          }
+        }
+        if (c > max) {
+          if (i == 0) {
+            max = c
+            myCard = Card(Color.Blue, card.value)
+            color = i
+          } else if (i == 1) {
+            max = c
+            myCard = Card(Color.Green, card.value)
+            color = i
+          } else if (i == 2) {
+            max = c
+            myCard = Card(Color.Yellow, card.value)
+            color = i
+          } else {
+            max = c
+            myCard = Card(Color.Red, card.value)
+            color = i
+          }
+        }
+      }
+    }
+    game.color = color
+    c = 0
     stack3.push(card)
     for (i <- 2 to enemyCards.length) {
       if (enemyCards(i - 2).color == card.color && enemyCards(i - 2).value == card.value && c == 0) {
-        game.init.cardsRevealed = enemyCards(i - 2) +: game.init.cardsRevealed
+        game.init.cardsRevealed = myCard +: game.init.cardsRevealed
         enemyCards = enemyCards.take(i - 2) ++ enemyCards.drop(i-1)
         c += 1
         stack2.push(i-2)
@@ -59,7 +108,7 @@ class Enemy() {
       }
     }
     if (c == 0) {
-      game.init.cardsRevealed = enemyCards(enemyCards.length - 1) +: game.init.cardsRevealed
+      game.init.cardsRevealed = myCard +: game.init.cardsRevealed
       enemyCards = enemyCards.take(enemyCards.length - 1)
       stack2.push(enemyCards.length - 1)
       stack1.push(" ")
@@ -113,7 +162,7 @@ class Enemy() {
       return false
     } else if (card.value == Value.PlusFour) {
       for (i <- 1 to enemyCards.length) {
-        if (enemyCards(i - 1).color == game.init.cardsRevealed.head.color) {
+        if (enemyCards(i - 1).color == game.init.cardsRevealed.head.color && game.init.cardsRevealed.head.color != Color.Schwarz) {
           return false
         }
       }
