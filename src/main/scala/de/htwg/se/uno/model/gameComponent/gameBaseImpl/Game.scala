@@ -14,6 +14,7 @@ case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends Ga
 
   private var activePlayer = numOfPlayers - 1
   private var direction = true
+  var anotherPull = false
   var special = mutable.Stack[Integer](0)
   var color = 0
 
@@ -237,6 +238,24 @@ case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends Ga
   }
 
   def getNextEnemy() : Enemy = {
+    val i = nextEnemy()
+    if (i == 1) {
+      init.enemy
+    } else if (i == 2) {
+      init.enemy2
+    } else {
+      init.enemy3
+    }
+  }
+
+  def getAnotherPull() : Boolean = anotherPull
+
+  def setAnotherPull(b : Boolean = false) : Game = {
+    anotherPull = b
+    this
+  }
+
+  /*def getNextEnemy() : Enemy = {
     if (numOfPlayers == 3) {
       if (activePlayer == 0) {
         if (direction) {
@@ -268,7 +287,7 @@ case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends Ga
     } else {
       false
     }
-  }
+  }*/
 
   override def toString: String = {
     val a = "┌-------┐  "

@@ -53,6 +53,7 @@ class Controller @Inject() (var game: GameInterface) extends ControllerInterface
         undoManager.doStep(new PushCommand(string, color, this))
         if (!s.equals(gameToString)) {
           gameStatus("enemyTurn")
+          game = game.setAnotherPull()
           publish(new GameChanged)
           won
         } else {
@@ -75,20 +76,21 @@ class Controller @Inject() (var game: GameInterface) extends ControllerInterface
 
   def get(): Unit = {
     if (game.nextTurn()) {
-      val s = gameToString
+      val b = game.getAnotherPull()
       game = game.setActivePlayer()
       undoManager.doStep(new PullCommand(this))
-      if (!s.equals(gameToString)) {
-        gameStatus("enemyTurn")
-        publish(new GameChanged)
-        won
-      } else {
+      gameStatus("enemyTurn")
+      if (b) {
+        game = game.setAnotherPull()
+      }
+      if (game.getAnotherPull()) {
         game = game.setDirection()
         game = game.setActivePlayer()
         game = game.setDirection()
-        gameStatus("pullCardNotAllowed")
-        publish(new GameNotChanged)
+        gameStatus("yourTurn")
       }
+      publish(new GameChanged)
+      won
     } else {
       gameStatus("enemyTurn")
       publish(new GameNotChanged)
@@ -120,6 +122,12 @@ class Controller @Inject() (var game: GameInterface) extends ControllerInterface
       } else {
         gameStatus("enemyTurn")
       }
+    }
+    if (game.getAnotherPull()) {
+      game.setDirection()
+      game.setActivePlayer()
+      game.setDirection()
+      gameStatus("enemyTurn")
     }
     publish(new GameChanged)
     won

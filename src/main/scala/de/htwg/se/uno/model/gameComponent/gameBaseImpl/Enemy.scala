@@ -159,6 +159,7 @@ class Enemy() {
     } else {
       game.special.push(0)
     }
+    game.anotherPull = false
     this
   }
 
@@ -168,12 +169,15 @@ class Enemy() {
     enemyCards += Card(game.init.cardsCovered.head.color, game.init.cardsCovered.head.value)
     game.init.cardsCovered = game.init.cardsCovered.drop(1)
     if (game.special.top > 0) {
+      game.anotherPull = false
       for (_ <- 2 to game.special.top) {
         stack1.push(game.init.cardsCovered.head.toString)
         stack2.push(-1)
         enemyCards += Card(game.init.cardsCovered.head.color, game.init.cardsCovered.head.value)
         game.init.cardsCovered = game.init.cardsCovered.drop(1)
       }
+    } else {
+      game.anotherPull = true
     }
     game.special.push(0)
     this
@@ -181,14 +185,15 @@ class Enemy() {
 
   def enemy(game: Game) : Enemy = {
     val s = game.toString
-    if(game.getNextPlayer()) {
+    if(game.nextTurn()) {
       if (game.init.player.handCards.length <= 2) {
         ki(game)
       }
     } else if (game.getNextEnemy().enemyCards.length <= 2) {
       ki(game)
     }
-    if (!game.toString.equals(s)) return this
+    if (!game.toString.equals(s))
+      return this
 
 
     for (i <- 1 to enemyCards.length) {
@@ -221,20 +226,24 @@ class Enemy() {
         return pushCardEnemy(enemyCards(i-1), game)
       }
     }
-    if (enemyCards.length >= 4) {
+    if (!game.anotherPull) {
+      if (enemyCards.length >= 4) {
+        return pullEnemy(game)
+      }
+      for (i <- 1 to enemyCards.length) {
+        if(pushable7(enemyCards(i-1), game)) {
+          return pushCardEnemy(enemyCards(i-1), game)
+        }
+      }
+      for (i <- 1 to enemyCards.length) {
+        if(pushable8(enemyCards(i-1), game)) {
+          return pushCardEnemy(enemyCards(i-1), game)
+        }
+      }
       return pullEnemy(game)
     }
-    for (i <- 1 to enemyCards.length) {
-      if(pushable7(enemyCards(i-1), game)) {
-        return pushCardEnemy(enemyCards(i-1), game)
-      }
-    }
-    for (i <- 1 to enemyCards.length) {
-      if(pushable8(enemyCards(i-1), game)) {
-        return pushCardEnemy(enemyCards(i-1), game)
-      }
-    }
-    pullEnemy(game)
+    game.anotherPull = false
+    this
   }
 
   def pushable1(card : Card, game : Game) : Boolean = {

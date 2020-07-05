@@ -22,9 +22,10 @@ class Player() {
   }
 
   def pullMove(game:Game) : Player = {
-    if (pullable(game)) {
+    if (!game.anotherPull) {
       pull(game)
     } else {
+      game.anotherPull = false
       this
     }
   }
@@ -125,6 +126,7 @@ class Player() {
     } else {
       game.special.push(0)
     }
+    game.anotherPull = false
     this
   }
 
@@ -147,27 +149,21 @@ class Player() {
     false
   }
 
-  def pullable(game: Game) : Boolean = {
-    for (i <- 1 to handCards.length) {
-      if(pushable(handCards(i-1), game)) {
-        return false
-      }
-    }
-    true
-  }
-
   def pull(game: Game) : Player = {
     stack1.push(game.init.cardsCovered.head.toString)
     stack2.push(-1)
     handCards += Card(game.init.cardsCovered.head.color, game.init.cardsCovered.head.value)
     game.init.cardsCovered = game.init.cardsCovered.drop(1)
     if (game.special.top > 0) {
+      game.anotherPull = false
       for (_ <- 2 to game.special.top) {
         stack1.push(game.init.cardsCovered.head.toString)
         stack2.push(-1)
         handCards += Card(game.init.cardsCovered.head.color, game.init.cardsCovered.head.value)
         game.init.cardsCovered = game.init.cardsCovered.drop(1)
       }
+    } else {
+      game.anotherPull = true
     }
     game.special.push(0)
     this
