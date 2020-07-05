@@ -11,7 +11,7 @@ class Enemy() {
 
   def undo(game: Game) : Enemy = {
     if(stack1.top.equals(" ")) {
-      enemyCards = enemyCards.take(stack2.top) ++ game.init.cardsRevealed.take(1) ++ enemyCards.drop(stack2.top)
+      enemyCards = enemyCards.take(stack2.top) :+ stack3.top :++ enemyCards.drop(stack2.top)
       game.init.cardsRevealed = game.init.cardsRevealed.drop(1)
       if (stack3.top.value == Value.DirectionChange) {
         game.setDirection()
@@ -19,6 +19,7 @@ class Enemy() {
       stack1.pop()
       stack2.pop()
       stack3.pop()
+      game.special.pop()
     } else {
       var c = 0
       for(i <- 1 to enemyCards.length) {
@@ -27,6 +28,9 @@ class Enemy() {
         }
       }
       if(c == 0) {
+        stack1.pop()
+        stack2.pop()
+        game.special.pop()
         return this
       }
       val card = enemyCards(c-1)
@@ -43,6 +47,36 @@ class Enemy() {
       }
       stack1.pop()
       stack2.pop()
+
+
+      game.special.pop()
+      if(game.special.top > 0) {
+        for (_ <- 2 to game.special.top) {
+          var c = 0
+          for(i <- 1 to enemyCards.length) {
+            if(enemyCards(i - 1).toString.equals(stack1.top) && c == 0) {
+              c = i
+            }
+          }
+          if(c == 0) {
+            return this
+          }
+          val card = enemyCards(c-1)
+          c = 0
+          game.init.cardsCovered = card +: game.init.cardsCovered
+          for (i <- 2 to enemyCards.length) {
+            if (enemyCards(i - 2).color == card.color && enemyCards(i - 2).value == card.value && c == 0) {
+              enemyCards = enemyCards.take(i - 2) ++ enemyCards.drop(i - 1)
+              c = 1
+            }
+          }
+          if (c == 0) {
+            enemyCards = enemyCards.take(enemyCards.length - 1)
+          }
+          stack1.pop()
+          stack2.pop()
+        }
+      }
     }
     this
   }
@@ -139,7 +173,6 @@ class Enemy() {
         stack2.push(-1)
         enemyCards += Card(game.init.cardsCovered.head.color, game.init.cardsCovered.head.value)
         game.init.cardsCovered = game.init.cardsCovered.drop(1)
-        game.special.push(0)
       }
     }
     game.special.push(0)

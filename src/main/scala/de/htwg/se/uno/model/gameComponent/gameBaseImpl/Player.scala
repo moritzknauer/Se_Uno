@@ -30,8 +30,8 @@ class Player() {
   }
 
   def undo(game: Game) : Player = {
-    if (stack1.top.equals(" ")) {
-      handCards = handCards.take(stack2.top) ++ game.init.cardsRevealed.take(1) ++ handCards.drop(stack2.top)
+    if (stack1.top.equals(" ")) { //Wenn gelegt wurde
+      handCards = handCards.take(stack2.top) :+ stack3.top :++ handCards.drop(stack2.top)
       game.init.cardsRevealed = game.init.cardsRevealed.drop(1)
       if (stack3.top.value == Value.DirectionChange) {
         game.setDirection()
@@ -39,6 +39,7 @@ class Player() {
       stack1.pop()
       stack2.pop()
       stack3.pop()
+      game.special.pop()
     } else {
       var c = 0
       if (equalsCard(stack1.top)) {
@@ -54,8 +55,31 @@ class Player() {
         if (c == 0) {
           handCards = handCards.take(handCards.length - 1)
         }
-        stack1.pop()
-        stack2.pop()
+      }
+      stack1.pop()
+      stack2.pop()
+
+
+      game.special.pop()
+      if (game.special.top > 0) {
+        for (_ <- 2 to game.special.top) {
+          if (equalsCard(stack1.top)) {
+            val card = getCard(stack1.top)
+            game.init.cardsCovered = card +: game.init.cardsCovered
+            c = 0
+            for (i <- 2 to handCards.length) {
+              if (handCards(i - 2).color == card.color && handCards(i - 2).value == card.value && c == 0) {
+                handCards = handCards.take(i - 2) ++ handCards.drop(i - 1)
+                c = 1
+              }
+            }
+            if (c == 0) {
+              handCards = handCards.take(handCards.length - 1)
+            }
+            stack1.pop()
+            stack2.pop()
+          }
+        }
       }
     }
     this
@@ -73,7 +97,7 @@ class Player() {
     } else if (color == 4) {
       myCard = Card(Color.Red, card.value)
     }
-    stack3.push(myCard)
+    stack3.push(card)
     for (i <- 2 to handCards.length) {
       if (handCards(i - 2).color == card.color && handCards(i - 2).value == card.value && c == 0) {
         game.init.cardsRevealed = myCard +: game.init.cardsRevealed
@@ -143,7 +167,6 @@ class Player() {
         stack2.push(-1)
         handCards += Card(game.init.cardsCovered.head.color, game.init.cardsCovered.head.value)
         game.init.cardsCovered = game.init.cardsCovered.drop(1)
-        game.special.push(0)
       }
     }
     game.special.push(0)

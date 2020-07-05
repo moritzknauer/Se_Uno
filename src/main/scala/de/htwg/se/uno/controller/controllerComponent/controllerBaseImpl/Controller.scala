@@ -139,7 +139,10 @@ class Controller @Inject() (var game: GameInterface) extends ControllerInterface
   }
 
   def redo: Unit = {
+    val a = game.getActivePlayer()
     undoManager.redoStep
+    if (a == game.getActivePlayer())
+      game = game.setActivePlayer()
     gameStatus("redo")
     publish(new GameChanged)
     won
