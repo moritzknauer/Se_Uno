@@ -151,10 +151,9 @@ class Controller @Inject() (var game: GameInterface) extends ControllerInterface
 
   def redo: Unit = {
     game = game.setHv()
+    game.setActivePlayer()
     undoManager.redoStep
-    if (!game.getHv())
-      game = game.setActivePlayer()
-    else if (game.getHv3()) {
+    if (game.getHv()) {
       game = game.setDirection()
       game = game.setActivePlayer()
       game = game.setDirection()
