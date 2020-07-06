@@ -139,9 +139,29 @@ case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends Ga
       init.enemy2.enemyCards.length
     else if (list == 2)
       init.enemy3.enemyCards.length
-    else
+    else if (list == 3)
       init.player.handCards.length
+    else if (list == 4)
+      init.cardsCovered.length
+    else
+      init.cardsRevealed.length
   }
+
+  def getAllCards(list: Int, index: Int) : String = {
+    if (list == 0)
+      init.enemy.enemyCards(index).toString
+    else if (list == 1)
+      init.enemy2.enemyCards(index).toString
+    else if (list == 2)
+      init.enemy3.enemyCards(index).toString
+    else if (list == 3)
+      init.player.handCards(index).toString
+    else if (list == 4)
+      init.cardsCovered(index).toString
+    else
+      init.cardsRevealed(index).toString
+  }
+
   def getCardText(list : Int, index : Int) : String = {
     if (list == 3 && index == 1) {
       init.cardsRevealed.head.toString
@@ -257,6 +277,11 @@ case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends Ga
   }
   def setHv(b : Boolean = true) : Game = {
     hv = b
+    this
+  }
+
+  def setColor(i: Int) : Game = {
+    color = i
     this
   }
 

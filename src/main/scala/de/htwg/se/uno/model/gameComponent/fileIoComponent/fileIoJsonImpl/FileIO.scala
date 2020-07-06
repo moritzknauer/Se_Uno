@@ -1,0 +1,83 @@
+package de.htwg.se.uno.model.gameComponent.fileIoComponent.fileIoJsonImpl
+
+import com.google.inject.Guice
+import com.google.inject.name.Names
+import net.codingwell.scalaguice.InjectorExtensions._
+import de.htwg.se.uno.UnoModule
+import de.htwg.se.uno.model.gameComponent.GameInterface
+import de.htwg.se.uno.model.gameComponent.fileIoComponent.FileIOInterface
+import play.api.libs.json._
+
+import scala.io.Source
+
+class FileIO extends  FileIOInterface{
+  override def load: GameInterface = {
+    var game: GameInterface = null
+    val source: String = Source.fromFile("game.json").getLines.mkString
+    val json: JsValue = Json.parse(source)
+    val injector = Guice.createInjector(new UnoModule)
+
+    val numOfPlayers = (json \ "game" \ "numOfPlayers").get.toString.toInt
+    numOfPlayers match {
+      case 2 => game = injector.instance[GameInterface](Names.named("2 Players"))
+      case 3 => game = injector.instance[GameInterface](Names.named("3 Players"))
+      case 4 => game = injector.instance[GameInterface](Names.named("4 Players"))
+      case _ =>
+    }
+
+    val activePlayer = (json \ "game" \ "activePlayer").get.toString.toInt
+    while (activePlayer != game.getActivePlayer) {
+      game = game.setActivePlayer()
+    }
+
+    val direction = (json \ "game" \ "direction").get.toString.toBoolean
+    if (direction != game.getDirection())
+      game = game.setDirection()
+
+    val anotherPull = (json \ "game" \ "anotherPull").get.toString.toBoolean
+    game = game.setAnotherPull(anotherPull)
+
+    val color = (json \ "game" \ "color").get.toString.toInt
+    game = game.setColor(color)
+
+    for {
+      listNumber <- 0 until 5
+      cardNumber <- 0 until game.getLength(listNumber)
+    } yield {
+
+    }
+
+    game
+  }
+
+  def gameToJson(game: GameInterface): JsValue = {
+    Json.obj(
+      "game" -> Json.obj(
+        "numOfPlayers" -> JsNumber(game.getNumOfPlayers()),
+        "activePlayer" -> JsNumber(game.getActivePlayer()),
+        "direction" -> JsBoolean(game.getDirection()),
+        "anotherPull" -> JsBoolean(game.getAnotherPull()),
+        "color" -> Json.toJson(game.getColor()),
+        "playerCards" -> Json.toJson(
+          for {
+            listNumber <- 0 until 5
+            cardNumber <- 0 until game.getLength(listNumber)
+          } yield {
+            Json.obj(
+              "listNumber" -> listNumber,
+              "cardNumber" -> cardNumber,
+              "card" -> Json.toJson(game.getAllCards(listNumber, cardNumber))
+            )
+          }
+        )
+      )
+    )
+  }
+
+  override def save(grid: GameInterface): Unit = {
+    import java.io._
+    val pw = new PrintWriter(new File("game.json"))
+    pw.write(Json.prettyPrint(gameToJson(grid)))
+    pw.close()
+  }
+}
