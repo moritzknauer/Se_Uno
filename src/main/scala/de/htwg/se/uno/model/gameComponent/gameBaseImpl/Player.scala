@@ -8,8 +8,7 @@ class Player() {
   var stack1 = Stack[String]("Start")
   var stack2 = Stack[Integer](-1)
   var stack3 = Stack[Card]()
-
-
+  var stack4 = Stack[Boolean]()
 
   def pushMove(string:String, color : Int, game: Game) : Player = {
     if(equalsCard(string)) {
@@ -27,8 +26,9 @@ class Player() {
     } else {
       game.anotherPull = false
       game.special.push(0)
-      game.init.player.stack1.push("Suspend")
-      game.init.player.stack2.push(-1)
+      stack1.push("Suspend")
+      stack2.push(-1)
+      stack4.push(false)
       this
     }
   }
@@ -44,6 +44,7 @@ class Player() {
       stack2.pop()
       stack3.pop()
       game.special.pop()
+      game.hv2 = true
     } else {
       var c = 0
       if (equalsCard(stack1.top)) {
@@ -62,7 +63,11 @@ class Player() {
       }
       stack1.pop()
       stack2.pop()
-
+      game.hv2 = true
+      if(stack4.top) {
+        game.hv2 = false
+      }
+      stack4.pop()
 
       game.special.pop()
       if (game.special.top > 0) {
@@ -120,6 +125,7 @@ class Player() {
     if (stack3.top.value == Value.DirectionChange) {
       game.setDirection()
       game.special.push(0)
+      game.hv3 = true
     } else if (stack3.top.value == Value.PlusTwo) {
       game.special.push(game.special.top + 2)
     } else if (stack3.top.value == Value.PlusFour) {
@@ -160,6 +166,7 @@ class Player() {
     game.init.cardsCovered = game.init.cardsCovered.drop(1)
     if (game.special.top > 0) {
       game.anotherPull = false
+      stack4.push(false)
       for (_ <- 2 to game.special.top) {
         stack1.push(game.init.cardsCovered.head.toString)
         stack2.push(-1)
@@ -169,6 +176,7 @@ class Player() {
     } else {
       game.anotherPull = true
       game.hv = true
+      stack4.push(true)
     }
     game.special.push(0)
     this

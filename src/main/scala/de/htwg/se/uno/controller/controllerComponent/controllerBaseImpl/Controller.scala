@@ -137,9 +137,11 @@ class Controller @Inject() (var game: GameInterface) extends ControllerInterface
   def undo: Unit = {
     do {
       undoManager.undoStep
-      game.setDirection()
-      game.setActivePlayer()
-      game.setDirection()
+      if (game.getHv2()) {
+        game.setDirection()
+        game.setActivePlayer()
+        game.setDirection()
+      }
     }
     while(!game.nextTurn())
     gameStatus("undo")
@@ -150,8 +152,13 @@ class Controller @Inject() (var game: GameInterface) extends ControllerInterface
   def redo: Unit = {
     game = game.setHv()
     undoManager.redoStep
-    if (!game.getHv()) //Das Problem ist das es wenn doppelter Schritt nicht weiterschaltet. ERgibt so noch übehaupt keinen sinn
+    if (!game.getHv())
       game = game.setActivePlayer()
+    else if (game.getHv3()) {
+      game = game.setDirection()
+      game = game.setActivePlayer()
+      game = game.setDirection()
+    }
     gameStatus("redo")
     publish(new GameChanged)
     won

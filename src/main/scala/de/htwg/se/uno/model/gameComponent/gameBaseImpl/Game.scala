@@ -18,6 +18,8 @@ case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends Ga
   var special = mutable.Stack[Integer](0)
   var color = 0
   var hv = false
+  var hv2 = false
+  var hv3 = false
 
   def createGame() : Game = {
     init = InitializeGameStrategy()
@@ -42,12 +44,13 @@ case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends Ga
   def enemy() : Game = {
     if (special.top != - 1) {
       hv = false
+      hv3 = false
       init.enemy = init.enemy.enemy(this)
     } else {
       special.push(0)
       init.enemy.stack1.push("Suspend")
       init.enemy.stack2.push(-1)
-      hv = true
+      hv = false
     }
     this
   }
@@ -55,12 +58,13 @@ case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends Ga
   def enemy2() : Game = {
     if (special.top != - 1) {
       hv = false
+      hv3 = false
       init.enemy2 = init.enemy2.enemy(this)
     } else {
       special.push(0)
       init.enemy2.stack1.push("Suspend")
       init.enemy2.stack2.push(-1)
-      hv = true
+      hv = false
     }
     this
   }
@@ -68,12 +72,13 @@ case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends Ga
   def enemy3() : Game = {
     if (special.top != - 1) {
       hv = false
+      hv3 = false
       init.enemy3 = init.enemy3.enemy(this)
     } else {
       special.push(0)
       init.enemy3.stack1.push("Suspend")
       init.enemy3.stack2.push(-1)
-      hv = true
+      hv = false
     }
     this
   }
@@ -129,14 +134,35 @@ case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends Ga
     this
   }
 
+  def pushMove(string : String, color : Int) : Game = {
+    if(special.top != - 1) {
+      if (color != 0) {
+        this.color = color
+      }
+      hv = false
+      hv3 = false
+      init.player = init.player.pushMove(string, color, this)
+    } else {
+      special.push(0)
+      init.player.stack1.push("Suspend")
+      init.player.stack2.push(-1)
+      init.player.stack4.push(false)
+      hv = true
+      setActivePlayer()
+    }
+    this
+  }
+
   def pullMove() : Game = {
     if(special.top != - 1) {
       hv = false
+      hv3 = false
       init.player = init.player.pullMove(this)
     } else {
       special.push(0)
       init.player.stack1.push("Suspend")
       init.player.stack2.push(-1)
+      init.player.stack4.push(false)
       hv = true
       setActivePlayer()
     }
@@ -145,23 +171,6 @@ case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends Ga
 
   def playerUndo() : Game = {
     init.player = init.player.undo(this)
-    this
-  }
-
-  def pushMove(string : String, color : Int) : Game = {
-    if(special.top != - 1) {
-      if (color != 0) {
-        this.color = color
-      }
-      hv = false
-      init.player = init.player.pushMove(string, color, this)
-    } else {
-      special.push(0)
-      init.player.stack1.push("Suspend")
-      init.player.stack2.push(-1)
-      hv = true
-      setActivePlayer()
-    }
     this
   }
 
@@ -271,6 +280,9 @@ case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends Ga
     hv = b
     this
   }
+
+  def getHv2() : Boolean = hv2
+  def getHv3() : Boolean = hv3
 
   /*def getNextEnemy() : Enemy = {
     if (numOfPlayers == 3) {
