@@ -108,7 +108,7 @@ class Enemy() {
             }
           }
         }
-        if (c > max) {
+        if (c >= max) {
           if (i == 0) {
             max = c
             myCard = Card(Color.Blue, card.value)
