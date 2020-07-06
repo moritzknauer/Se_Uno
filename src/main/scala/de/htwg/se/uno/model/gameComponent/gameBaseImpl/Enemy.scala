@@ -158,7 +158,6 @@ class Enemy() {
     if (stack3.top.value == Value.DirectionChange) {
       game.setDirection()
       game.special.push(0)
-      game.hv3 = false
     } else if (stack3.top.value == Value.PlusTwo) {
       game.special.push(game.special.top + 2)
     } else if (stack3.top.value == Value.PlusFour) {
@@ -198,10 +197,10 @@ class Enemy() {
   def enemy(game: Game) : Enemy = {
     val s = game.toString
     if(game.nextTurn()) {
-      if (game.init.player.handCards.length <= 2) {
+      if (game.init.player.handCards.length <= 3) {
         ki(game)
       }
-    } else if (game.getNextEnemy().enemyCards.length <= 2) {
+    } else if (game.getNextEnemy().enemyCards.length <= 3) {
       ki(game)
     }
     if (!game.toString.equals(s))
@@ -252,6 +251,11 @@ class Enemy() {
           return pushCardEnemy(enemyCards(i-1), game)
         }
       }
+      for (i <- 1 to enemyCards.length) {
+        if(pushable9(enemyCards(i-1), game)) {
+          return pushCardEnemy(enemyCards(i-1), game)
+        }
+      }
       return pullEnemy(game)
     }
     game.anotherPull = false
@@ -280,7 +284,7 @@ class Enemy() {
   }
   def pushable3(card : Card, game : Game) : Boolean = {
     if (card.color == game.init.cardsRevealed.head.color && card.color != Color.Schwarz &&
-          game.special.top <= 0) {
+          game.special.top <= 0 && card.value != Value.PlusTwo) {
       true
     } else {
       false
@@ -296,32 +300,40 @@ class Enemy() {
     }
   }
   def pushable5(card : Card, game : Game) : Boolean = {
-    if (card.value == Value.ColorChange && game.special.top <= 0) {
+    if (card.value == game.init.cardsRevealed.head.value && card.color != Color.Schwarz &&
+      game.special.top <= 0 && card.value != Value.PlusTwo) {
       true
     } else {
       false
     }
   }
   def pushable6(card : Card, game : Game) : Boolean = {
-    if (game.init.cardsRevealed.head.color == Color.Schwarz) {
+    if (card.value == Value.ColorChange && game.special.top <= 0) {
       true
     } else {
       false
     }
   }
   def pushable7(card : Card, game : Game) : Boolean = {
-    if (card.value == game.init.cardsRevealed.head.value && card.color != Color.Schwarz &&
-      game.special.top <= 0) {
+    if (game.init.cardsRevealed.head.color == Color.Schwarz) {
       true
     } else {
       false
     }
   }
   def pushable8(card : Card, game : Game) : Boolean = {
+    if (card.value == Value.PlusTwo && (game.init.cardsRevealed.head.value == card.value ||
+          game.init.cardsRevealed.head.color == card.color) && game.special.top <= 0) {
+      true
+    } else {
+      false
+    }
+  }
+  def pushable9(card : Card, game : Game) : Boolean = {
     if (card.value == Value.PlusFour && game.init.cardsRevealed.head.value != Value.PlusTwo) {
       for (i <- 1 to enemyCards.length) {
         if (enemyCards(i - 1).color == game.init.cardsRevealed.head.color &&
-            game.init.cardsRevealed.head.color != Color.Schwarz) {
+            game.init.cardsRevealed.head.color != Color.Schwarz && game.init.cardsRevealed.head.value != Value.PlusFour) {
           false
         }
       }

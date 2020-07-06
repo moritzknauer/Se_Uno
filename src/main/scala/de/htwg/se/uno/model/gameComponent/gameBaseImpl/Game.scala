@@ -19,7 +19,6 @@ case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends Ga
   var color = 0
   var hv = false
   var hv2 = false
-  var hv3 = false
 
   def createGame() : Game = {
     init = InitializeGameStrategy()
@@ -44,7 +43,6 @@ case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends Ga
   def enemy() : Game = {
     if (special.top != - 1) {
       hv = false
-      hv3 = false
       init.enemy = init.enemy.enemy(this)
     } else {
       special.push(0)
@@ -58,7 +56,6 @@ case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends Ga
   def enemy2() : Game = {
     if (special.top != - 1) {
       hv = false
-      hv3 = false
       init.enemy2 = init.enemy2.enemy(this)
     } else {
       special.push(0)
@@ -72,7 +69,6 @@ case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends Ga
   def enemy3() : Game = {
     if (special.top != - 1) {
       hv = false
-      hv3 = false
       init.enemy3 = init.enemy3.enemy(this)
     } else {
       special.push(0)
@@ -140,7 +136,6 @@ case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends Ga
         this.color = color
       }
       hv = false
-      hv3 = false
       init.player = init.player.pushMove(string, color, this)
     } else {
       special.push(0)
@@ -156,7 +151,6 @@ case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends Ga
   def pullMove() : Game = {
     if(special.top != - 1) {
       hv = false
-      hv3 = false
       init.player = init.player.pullMove(this)
     } else {
       special.push(0)
@@ -282,7 +276,6 @@ case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends Ga
   }
 
   def getHv2() : Boolean = hv2
-  def getHv3() : Boolean = hv3
 
   /*def getNextEnemy() : Enemy = {
     if (numOfPlayers == 3) {

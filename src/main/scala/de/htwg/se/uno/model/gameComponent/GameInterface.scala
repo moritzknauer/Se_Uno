@@ -33,5 +33,4 @@ trait GameInterface {
   def getHv() : Boolean
   def setHv(b : Boolean = true) : Game
   def getHv2() : Boolean
-  def getHv3() : Boolean
 }

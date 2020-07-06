@@ -125,7 +125,6 @@ class Player() {
     if (stack3.top.value == Value.DirectionChange) {
       game.setDirection()
       game.special.push(0)
-      game.hv3 = true
     } else if (stack3.top.value == Value.PlusTwo) {
       game.special.push(game.special.top + 2)
     } else if (stack3.top.value == Value.PlusFour) {
