@@ -2,7 +2,6 @@ package de.htwg.se.uno.controller.controllerComponent.controllerBaseImpl
 
 import com.google.inject.{Guice, Inject, Injector}
 import com.google.inject.name.Names
-import de.htwg.se.uno.Uno.gui
 import de.htwg.se.uno.UnoModule
 import de.htwg.se.uno.controller.controllerComponent._
 import net.codingwell.scalaguice.InjectorExtensions._

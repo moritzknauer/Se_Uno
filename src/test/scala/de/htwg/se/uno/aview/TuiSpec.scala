@@ -42,7 +42,7 @@ class TuiSpec extends WordSpec with Matchers{
       controller.gameToString should be(old)
     }
     "Set a Card on input s [Karte]" in {
-      tui.processInputLine("s " + controller.game.getCardText(4, 2))
+      tui.processInputLine("s " + controller.getCardText(4, 2))
       controller.nextTurn() should be (false)
     }
     "Do the Enemys Run" in {
@@ -52,7 +52,7 @@ class TuiSpec extends WordSpec with Matchers{
       controller.nextTurn() should be(true)
     }
     "Set another Card on input s [Karte]" in {
-      tui.processInputLine("s " + controller.game.getCardText(4, 1) + " blue")
+      tui.processInputLine("s " + controller.getCardText(4, 1) + " blue")
       controller.game.getLength(3) should be (7)
     }
     "Undo a Step" in {
@@ -60,7 +60,7 @@ class TuiSpec extends WordSpec with Matchers{
       controller.nextTurn() should be(true)
     }
     "Set a third Card on input s [Karte]" in {
-      tui.processInputLine("s " + controller.game.getCardText(4, 1) + " green")
+      tui.processInputLine("s " + controller.getCardText(4, 1) + " green")
       controller.nextTurn() should be(false)
     }
     "Undo another Step" in {
@@ -68,7 +68,7 @@ class TuiSpec extends WordSpec with Matchers{
       controller.nextTurn() should be(true)
     }
     "Set a fourth Card on input s [Karte]" in {
-      tui.processInputLine("s " + controller.game.getCardText(4, 1) + " yellow")
+      tui.processInputLine("s " + controller.getCardText(4, 1) + " yellow")
       controller.nextTurn() should be(false)
     }
     "Undo a third Step" in {
@@ -76,7 +76,7 @@ class TuiSpec extends WordSpec with Matchers{
       controller.nextTurn() should be(true)
     }
     "Set a fifth Card on input s [Karte]" in {
-      tui.processInputLine("s " + controller.game.getCardText(4, 1) + " red")
+      tui.processInputLine("s " + controller.getCardText(4, 1) + " red")
       controller.nextTurn() should be(false)
     }
     "Undo a fourth Step" in {

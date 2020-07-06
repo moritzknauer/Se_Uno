@@ -9,7 +9,8 @@ class PushCommandSpec extends WordSpec with Matchers {
     "new" should {
       val game = Game(7)
       val controller = new Controller(game)
-      val command = new PushCommand("Hallo", 0, controller)
+      controller.createTestGame()
+      val command = new PushCommand(controller.getCardText(4,2), 0, controller)
       "Be able to do a Step" in {
         command.doStep
       }

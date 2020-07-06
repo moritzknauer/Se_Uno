@@ -19,6 +19,7 @@ case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends Ga
   var color = 0
   var hv = false
   var hv2 = false
+  private var i = 0
 
   def createGame() : Game = {
     init = InitializeGameStrategy()
@@ -132,15 +133,36 @@ case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends Ga
     this
   }
 
+  def setLength(i : Integer) : Unit = {
+    this.i = i
+  }
+
   def getLength(list:Integer) : Int = {
-    if (list == 0)
-      init.enemy.enemyCards.length
-    else if (list == 1)
-      init.enemy2.enemyCards.length
-    else if (list == 2)
-      init.enemy3.enemyCards.length
-    else
-      init.player.handCards.length
+    if (list == 0) {
+      if (i == 1) {
+        i = 0
+        i
+      } else
+        init.enemy.enemyCards.length
+    } else if (list == 1) {
+      if (i == 2) {
+        i = 0
+        i
+      } else
+        init.enemy2.enemyCards.length
+    } else if (list == 2) {
+      if (i == 3) {
+        i = 0
+        i
+      } else
+        init.enemy3.enemyCards.length
+    } else {
+      if (i == 4) {
+        i = 0
+        i
+      } else
+        init.player.handCards.length
+    }
   }
   def getCardText(list : Int, index : Int) : String = {
     if (list == 3 && index == 1) {
