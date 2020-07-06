@@ -313,25 +313,20 @@ case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends Ga
     l = l.concat(d).concat("           └-------┘") + "\n\n"
 
 
-    if (numOfPlayers == 3) {
+    if (numOfPlayers >= 3) {
       for (_ <- 1 to init.enemy2.enemyCards.length) {
         q = q.concat(a)
         r = r.concat(b)
         s = s.concat(c)
         t = t.concat(d)
       }
-    } else if (numOfPlayers == 4) {
-      for (_ <- 1 to init.enemy2.enemyCards.length) {
-        q = q.concat(a)
-        r = r.concat(b)
-        s = s.concat(c)
-        t = t.concat(d)
-      }
-      for (_ <- 1 to init.enemy3.enemyCards.length) {
-        u = u.concat(a)
-        v = v.concat(b)
-        w = w.concat(c)
-        x = x.concat(d)
+      if (numOfPlayers == 4) {
+        for (_ <- 1 to init.enemy3.enemyCards.length) {
+          u = u.concat(a)
+          v = v.concat(b)
+          w = w.concat(c)
+          x = x.concat(d)
+        }
       }
     }
 

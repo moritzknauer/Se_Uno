@@ -11,7 +11,7 @@ class ControllerSpec extends WordSpec with Matchers {
 
   "A Controller" when {
     "it's a Publisher" should {
-      val game = new Game(1)
+      val game = new Game(2)
       val controller = new Controller(game)
       "Be able to create a game with 2 Players" in {
         controller.createGame(2)
