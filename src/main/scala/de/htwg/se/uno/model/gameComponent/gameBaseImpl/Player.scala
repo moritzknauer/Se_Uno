@@ -65,6 +65,7 @@ class Player() {
       game.hv2 = true
       if(stack4.top) {
         game.hv2 = false
+        game.anotherPull = false
       }
       stack4.pop()
 

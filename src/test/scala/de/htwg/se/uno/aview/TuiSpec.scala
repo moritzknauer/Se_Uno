@@ -31,7 +31,16 @@ class TuiSpec extends WordSpec with Matchers{
       tui.processInputLine("t")
       controller.getNumOfPlayers() should be(4)
     }
-    "Set a Card on input s [Karte]" in{
+    "Not do anything on input d if it's your turn" in {
+      tui.processInputLine("d")
+      controller.gameStatus("idle") should be(controller.gameStatus("yourTurn"))
+    }
+    "Not set a card on input 's S...' without color" in {
+      val old = controller.gameToString
+      tui.processInputLine("s S+4")
+      controller.gameToString should be(old)
+    }
+    "Set a Card on input s [Karte]" in {
       tui.processInputLine("s " + controller.game.getCardText(4, 2))
       controller.nextTurn() should be (false)
     }
@@ -43,7 +52,7 @@ class TuiSpec extends WordSpec with Matchers{
     }
     "Set another Card on input s [Karte]" in {
       tui.processInputLine("s " + controller.game.getCardText(4, 1) + "blue")
-      controller.nextTurn() should be(false)
+      controller.game.getLength(3) should be (7)
     }
     "Undo a Step" in {
       tui.processInputLine("u")
