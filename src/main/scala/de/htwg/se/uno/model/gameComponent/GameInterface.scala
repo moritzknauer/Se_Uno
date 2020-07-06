@@ -31,4 +31,5 @@ trait GameInterface {
   def getAnotherPull() : Boolean
   def setAnotherPull(b : Boolean = false) : Game
   def getHv() : Boolean
+  def setHv(b : Boolean = true) : Game
 }

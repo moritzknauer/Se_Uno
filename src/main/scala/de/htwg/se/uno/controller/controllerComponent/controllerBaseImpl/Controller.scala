@@ -148,16 +148,10 @@ class Controller @Inject() (var game: GameInterface) extends ControllerInterface
   }
 
   def redo: Unit = {
-    val s = gameToString
+    game = game.setHv()
     undoManager.redoStep
-    if (game.getHv() && s.equals(gameToString)) //Das Problem ist das es wenn doppelter Schritt nicht weiterschaltet. ERgibt so noch übehaupt keinen sinn
+    if (!game.getHv()) //Das Problem ist das es wenn doppelter Schritt nicht weiterschaltet. ERgibt so noch übehaupt keinen sinn
       game = game.setActivePlayer()
-    else if (!s.equals(gameToString) && !game.getHv() && !hv) {
-      game = game.setActivePlayer()
-      hv = true
-    } else if (hv) {
-      hv = false
-    }
     gameStatus("redo")
     publish(new GameChanged)
     won
@@ -193,6 +187,7 @@ class Controller @Inject() (var game: GameInterface) extends ControllerInterface
   def nextTurn() : Boolean = game.nextTurn()
   def getHs2() : String = hs2
   def getColor() : Color = game.getColor()
+  def nextEnemy() : Int = game.nextEnemy()
 
   def gameStatus(string : String) : String = {
     string match {

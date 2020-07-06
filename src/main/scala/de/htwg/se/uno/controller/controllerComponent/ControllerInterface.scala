@@ -22,6 +22,7 @@ trait ControllerInterface extends Publisher {
   def nextTurn() : Boolean
   def getHs2: String
   def getColor: Color
+  def nextEnemy() : Int
 }
 
 

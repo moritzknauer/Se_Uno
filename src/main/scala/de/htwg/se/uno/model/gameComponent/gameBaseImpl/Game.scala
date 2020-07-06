@@ -41,8 +41,8 @@ case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends Ga
 
   def enemy() : Game = {
     if (special.top != - 1) {
-      init.enemy = init.enemy.enemy(this)
       hv = false
+      init.enemy = init.enemy.enemy(this)
     } else {
       special.push(0)
       init.enemy.stack1.push("Suspend")
@@ -53,22 +53,22 @@ case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends Ga
   }
 
   def enemy2() : Game = {
-  if (special.top != - 1) {
-    init.enemy2 = init.enemy2.enemy(this)
-    hv = false
-  } else {
-    special.push(0)
-    init.enemy2.stack1.push("Suspend")
-    init.enemy2.stack2.push(-1)
-    hv = true
-  }
+    if (special.top != - 1) {
+      hv = false
+      init.enemy2 = init.enemy2.enemy(this)
+    } else {
+      special.push(0)
+      init.enemy2.stack1.push("Suspend")
+      init.enemy2.stack2.push(-1)
+      hv = true
+    }
     this
   }
 
   def enemy3() : Game = {
     if (special.top != - 1) {
-      init.enemy3 = init.enemy3.enemy(this)
       hv = false
+      init.enemy3 = init.enemy3.enemy(this)
     } else {
       special.push(0)
       init.enemy3.stack1.push("Suspend")
@@ -131,8 +131,8 @@ case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends Ga
 
   def pullMove() : Game = {
     if(special.top != - 1) {
-      init.player = init.player.pullMove(this)
       hv = false
+      init.player = init.player.pullMove(this)
     } else {
       special.push(0)
       init.player.stack1.push("Suspend")
@@ -153,8 +153,8 @@ case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends Ga
       if (color != 0) {
         this.color = color
       }
-      init.player = init.player.pushMove(string, color, this)
       hv = false
+      init.player = init.player.pushMove(string, color, this)
     } else {
       special.push(0)
       init.player.stack1.push("Suspend")
@@ -267,6 +267,10 @@ case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends Ga
   }
 
   def getHv() : Boolean = hv
+  def setHv(b : Boolean = true) : Game = {
+    hv = b
+    this
+  }
 
   /*def getNextEnemy() : Enemy = {
     if (numOfPlayers == 3) {
