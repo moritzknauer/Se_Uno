@@ -9,7 +9,7 @@ import scala.language.reflectiveCalls
 class ControllerSpec extends WordSpec with Matchers {
 
   "A Controller" when {
-    "observed by an Observer" should {
+    "as a Publisher" should {
       val game = new Game(1)
       val controller = new Controller(game)
       "Should notify its Observer after creation" in {
