@@ -7,65 +7,90 @@ import org.scalatest.{Matchers, WordSpec}
 class TuiSpec extends WordSpec with Matchers{
 
   "A Game Tui" should {
-    val controller = new Controller(Game(20))
+    val controller = new Controller(Game(2))
     val tui = new Tui(controller)
-    "create an empty Game on input 'n'" in {
+    "create a Game on input 'n'" in {
       tui.processInputLine("n")
-      controller.game should be(Game(7))
+      controller.getNumOfPlayers() should be(2)
     }
-    "create an empty Game on input 'n 20'" in {
-      tui.processInputLine("n 20")
-      controller.game should be(Game(20))
+    "create a Game on input 'n 3'" in {
+      tui.processInputLine("n 3")
+      controller.getNumOfPlayers() should be(3)
     }
-    /*
+    /* Geht nicht mehr, da sonst Tests beendet werden.
     "Do nothing on input 'q" in{
       tui.processInputLine("q")
     }
-
      */
     "Only print on bad input like 'Something'" in {
       val old = controller.gameToString
       tui.processInputLine("Something")
       controller.gameToString should be(old)
     }
+    "Create a test Game on input 't'" in {
+      tui.processInputLine("t")
+      controller.getNumOfPlayers() should be(4)
+    }
     "Set a Card on input s [Karte]" in{
-      /*controller.game = controller.game.initializeTestGame()
-      val s1 = controller.game.player.handCards.head.toString
-      val s2 = controller.game.player.handCards.head.toString
-      tui.processInputLine("s " + s1)
-      controller.game.cardsRevealed(1).toString should be(s1)
-      controller.game.cardsRevealed(0).toString should be(s2)*/
-      tui.processInputLine("s " + controller.game.getCardText(1, 1))
+      tui.processInputLine("s " + controller.game.getCardText(4, 2))
+      controller.nextTurn() should be (false)
+    }
+    "Do the Enemys Run" in {
+      tui.processInputLine("d")
+      tui.processInputLine("d")
+      tui.processInputLine("d")
+      controller.nextTurn() should be(true)
+    }
+    "Set another Card on input s [Karte]" in {
+      tui.processInputLine("s " + controller.game.getCardText(4, 1) + "blue")
+      controller.nextTurn() should be(false)
+    }
+    "Undo a Step" in {
+      tui.processInputLine("u")
+      controller.nextTurn() should be(true)
+    }
+    "Set a third Card on input s [Karte]" in {
+      tui.processInputLine("s " + controller.game.getCardText(4, 1) + "green")
+      controller.nextTurn() should be(false)
+    }
+    "Undo another Step" in {
+      tui.processInputLine("u")
+      controller.nextTurn() should be(true)
+    }
+    "Set a fourth Card on input s [Karte]" in {
+      tui.processInputLine("s " + controller.game.getCardText(4, 1) + "yellow")
+      controller.nextTurn() should be(false)
+    }
+    "Undo a third Step" in {
+      tui.processInputLine("u")
+      controller.nextTurn() should be(true)
+    }
+    "Set a fifth Card on input s [Karte]" in {
+      tui.processInputLine("s " + controller.game.getCardText(4, 1) + "red")
+      controller.nextTurn() should be(false)
+    }
+    "Undo a fourth Step" in {
+      tui.processInputLine("u")
+      controller.nextTurn() should be(true)
     }
     "Dont set a Card on wrong input" in{
-      val s3 = controller.gameToString
-      tui.processInputLine("s Hallo")
-      controller.gameToString should be (s3)
+      val old = controller.gameToString
+      tui.processInputLine("s Hi")
+      controller.gameToString should be (old)
     }
-    "Get no Card on input 'g' if not possible" in {
+    "Get a Card on input 'g'" in {
+      val old = controller.gameToString
       tui.processInputLine("g")
+      controller.gameToString should not be (old)
     }
-    "Get a Card on input 'g' if possible" in {
-      /*val s4 = controller.game.cardsCovered.head.toString
-      tui.processInputLine("s " + controller.game.player.handCards.head.toString)
-      tui.processInputLine("s " + controller.game.player.handCards.head.toString)
-      tui.processInputLine("s " + controller.game.player.handCards.head.toString)
-      tui.processInputLine("s " + controller.game.player.handCards.head.toString)
-      tui.processInputLine("g")
-      controller.game.player.handCards(1).toString should be(s4)*/
-      tui.processInputLine("g")
-    }
-    "Undo a Step on Input 'u' if possible" in {
-      /*val s5 = controller.game.player.handCards(1).toString
+    "Undo a fifth Step" in {
       tui.processInputLine("u")
-      controller.game.cardsCovered.head.toString should be(s5)*/
-      tui.processInputLine("u")
+      controller.nextTurn() should be(true)
     }
     "Redo a Step on Input 'r' if possible" in {
-      /*val s6 = controller.game.cardsCovered.head.toString
+      val old = controller.gameToString
       tui.processInputLine("r")
-      controller.game.player.handCards(1).toString should be(s6)*/
-      tui.processInputLine("r")
+      controller.gameToString should not be (old)
     }
   }
 }

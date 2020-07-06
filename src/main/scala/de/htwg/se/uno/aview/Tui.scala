@@ -12,6 +12,10 @@ class Tui(controller: ControllerInterface) extends Reactor {
   def processInputLine(input: String): Try[String] = {
     val wf:Array[String] = input.split("[^a-z^A-Z^ß^ä^ö^ü^Ä^Ö^Ü^0-9/+]+")
     wf(0) match {
+      case "q" => {
+      System.exit(0)
+      Success("Valid Command: " + input)
+      }
       case "n" => {
         if (wf.length == 2) {
           controller.createGame(wf(1).toInt)
@@ -20,10 +24,6 @@ class Tui(controller: ControllerInterface) extends Reactor {
           controller.createGame()
           Success("Valid Command: " + input)
         }
-      }
-      case "q" => {
-        System.exit(0)
-        Success("Valid Command: " + input)
       }
       case "t" => {
         controller.createTestGame()

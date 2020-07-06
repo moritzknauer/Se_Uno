@@ -25,8 +25,12 @@ case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends Ga
     init = init.initializeGame(numOfPlayers)
     activePlayer = numOfPlayers - 1
     direction = true
+    anotherPull = false
     special.popAll()
     special.push(0)
+    color = 0
+    hv = false
+    hv2 = false
     this
   }
   def createTestGame() : Game = {
@@ -34,8 +38,12 @@ case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends Ga
     init = init.initializeGame(numOfPlayers)
     activePlayer = numOfPlayers - 1
     direction = true
+    anotherPull = false
     special.popAll()
     special.push(0)
+    color = 0
+    hv = false
+    hv2 = false
     this
   }
 

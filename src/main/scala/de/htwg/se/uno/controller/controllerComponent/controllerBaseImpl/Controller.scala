@@ -35,7 +35,7 @@ class Controller @Inject() (var game: GameInterface) extends ControllerInterface
     publish(new GameSizeChanged)
   }
   def createTestGame():Unit = {
-    game = injector.instance[GameInterface](Names.named("2 Players"))
+    game = injector.instance[GameInterface](Names.named("4 Players"))
     game = game.createTestGame()
     hs2 = ""
     undoManager = new UndoManager
