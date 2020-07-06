@@ -55,7 +55,7 @@ case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends Ga
       }
       hv = false
       init.player = init.player.pushMove(string, color, this)
-    } else {
+    } else if (special.top == -1) {
       special.push(0)
       init.player.stack1.push("Suspend")
       init.player.stack2.push(-1)
@@ -69,7 +69,7 @@ case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends Ga
     if(special.top != - 1) {
       hv = false
       init.player = init.player.pullMove(this)
-    } else {
+    } else if (special.top == -1) {
       special.push(0)
       init.player.stack1.push("Suspend")
       init.player.stack2.push(-1)
@@ -83,7 +83,7 @@ case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends Ga
     if (special.top != - 1) {
       hv = false
       init.enemy = init.enemy.enemy(this)
-    } else {
+    } else if (special.top == -1) {
       special.push(0)
       init.enemy.stack1.push("Suspend")
       init.enemy.stack2.push(-1)
@@ -95,7 +95,7 @@ case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends Ga
     if (special.top != - 1) {
       hv = false
       init.enemy2 = init.enemy2.enemy(this)
-    } else {
+    } else if (special.top == -1) {
       special.push(0)
       init.enemy2.stack1.push("Suspend")
       init.enemy2.stack2.push(-1)
@@ -107,7 +107,7 @@ case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends Ga
     if (special.top != - 1) {
       hv = false
       init.enemy3 = init.enemy3.enemy(this)
-    } else {
+    } else if (special.top == -1) {
       special.push(0)
       init.enemy3.stack1.push("Suspend")
       init.enemy3.stack2.push(-1)
