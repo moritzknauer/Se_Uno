@@ -60,7 +60,8 @@ class CardPanel (list: Int, index: Int, controller: ControllerInterface) extends
       } else if (list == 4) {
         controller.set(cardText(list, index))
       } else {
-        controller.notPush
+        controller.gameStatus("pushCardNotAllowed")
+        controller.publish(new GameNotChanged)
       }
     }
     if ((controller.getNumOfPlayers == 2 && list == 3 && index != 2) || (controller.getNumOfPlayers == 2 &&

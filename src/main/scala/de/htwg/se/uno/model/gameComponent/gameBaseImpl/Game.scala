@@ -29,7 +29,6 @@ case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends Ga
     special.push(0)
     this
   }
-
   def createTestGame() : Game = {
     init = InitializeGameStrategy(1)
     init = init.initializeGame(numOfPlayers)
@@ -40,6 +39,37 @@ case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends Ga
     this
   }
 
+  def pushMove(string : String, color : Int) : Game = {
+    if(special.top != - 1) {
+      if (color != 0) {
+        this.color = color
+      }
+      hv = false
+      init.player = init.player.pushMove(string, color, this)
+    } else {
+      special.push(0)
+      init.player.stack1.push("Suspend")
+      init.player.stack2.push(-1)
+      init.player.stack4.push(false)
+      hv = true
+      setActivePlayer()
+    }
+    this
+  }
+  def pullMove() : Game = {
+    if(special.top != - 1) {
+      hv = false
+      init.player = init.player.pullMove(this)
+    } else {
+      special.push(0)
+      init.player.stack1.push("Suspend")
+      init.player.stack2.push(-1)
+      init.player.stack4.push(false)
+      hv = true
+      setActivePlayer()
+    }
+    this
+  }
   def enemy() : Game = {
     if (special.top != - 1) {
       hv = false
@@ -52,7 +82,6 @@ case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends Ga
     }
     this
   }
-
   def enemy2() : Game = {
     if (special.top != - 1) {
       hv = false
@@ -65,7 +94,6 @@ case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends Ga
     }
     this
   }
-
   def enemy3() : Game = {
     if (special.top != - 1) {
       hv = false
@@ -77,6 +105,72 @@ case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends Ga
       hv = false
     }
     this
+  }
+
+  def enemyUndo() : Game = {
+    init.enemy = init.enemy.undo(this)
+    this
+  }
+  def enemyUndo2() : Game = {
+    init.enemy2 = init.enemy2.undo(this)
+    this
+  }
+  def enemyUndo3() : Game = {
+    init.enemy3 = init.enemy3.undo(this)
+    this
+  }
+  def playerUndo() : Game = {
+    init.player = init.player.undo(this)
+    this
+  }
+
+  def getLength(list:Integer) : Int = {
+    if (list == 0)
+      init.enemy.enemyCards.length
+    else if (list == 1)
+      init.enemy2.enemyCards.length
+    else if (list == 2)
+      init.enemy3.enemyCards.length
+    else
+      init.player.handCards.length
+  }
+  def getCardText(list : Int, index : Int) : String = {
+    if (list == 3 && index == 1) {
+      init.cardsRevealed.head.toString
+    } else if (list == 3 && index == 2) {
+      "Do Step"
+    } else if (list == 4) {
+      init.player.handCards(index).toString
+    } else {
+      "Uno"
+    }
+  }
+  def getGuiCardText(list : Int, index : Int) : String = {
+    if (list == 3 && index == 1) {
+      init.cardsRevealed.head.toGuiString
+    } else if (list == 3 && index == 2) {
+      "Do Step"
+    } else if (list == 4) {
+      init.player.handCards(index).toGuiString
+    } else {
+      "Uno"
+    }
+  }
+  def getNumOfPlayers() : Int = {
+    numOfPlayers
+  }
+  def getColor() : Color = {
+    if (color == 1) {
+      new Color(0, 0, 255)
+    } else if (color == 2) {
+      new Color(0, 255, 0)
+    } else if (color == 3) {
+      new Color(255, 255, 0)
+    } else if (color == 4) {
+      new Color(255, 0, 0)
+    } else {
+      new Color(128, 128, 128)
+    }
   }
 
   def nextEnemy() : Int = {
@@ -114,143 +208,14 @@ case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends Ga
       }
     }
   }
-
-  def enemyUndo() : Game = {
-    init.enemy = init.enemy.undo(this)
-    this
-  }
-
-  def enemyUndo2() : Game = {
-    init.enemy2 = init.enemy2.undo(this)
-    this
-  }
-
-  def enemyUndo3() : Game = {
-    init.enemy3 = init.enemy3.undo(this)
-    this
-  }
-
-  def pushMove(string : String, color : Int) : Game = {
-    if(special.top != - 1) {
-      if (color != 0) {
-        this.color = color
-      }
-      hv = false
-      init.player = init.player.pushMove(string, color, this)
-    } else {
-      special.push(0)
-      init.player.stack1.push("Suspend")
-      init.player.stack2.push(-1)
-      init.player.stack4.push(false)
-      hv = true
-      setActivePlayer()
-    }
-    this
-  }
-
-  def pullMove() : Game = {
-    if(special.top != - 1) {
-      hv = false
-      init.player = init.player.pullMove(this)
-    } else {
-      special.push(0)
-      init.player.stack1.push("Suspend")
-      init.player.stack2.push(-1)
-      init.player.stack4.push(false)
-      hv = true
-      setActivePlayer()
-    }
-    this
-  }
-
-  def playerUndo() : Game = {
-    init.player = init.player.undo(this)
-    this
-  }
-
-  def getLength(list:Integer) : Int = {
-    if (list == 0)
-      init.enemy.enemyCards.length
-    else if (list == 1)
-      init.enemy2.enemyCards.length
-    else if (list == 2)
-      init.enemy3.enemyCards.length
-    else
-      init.player.handCards.length
-  }
-
-  def getCardText(list : Int, index : Int) : String = {
-    if (list == 3 && index == 1) {
-      init.cardsRevealed.head.toString
-    } else if (list == 3 && index == 2) {
-      "Do Step"
-    } else if (list == 4) {
-      init.player.handCards(index).toString
-    } else {
-      "Uno"
-    }
-  }
-
-  def getGuiCardText(list : Int, index : Int) : String = {
-     if (list == 3 && index == 1) {
-      init.cardsRevealed.head.toGuiString
-    } else if (list == 3 && index == 2) {
-       "Do Step"
-     } else if (list == 4) {
-      init.player.handCards(index).toGuiString
-    } else {
-      "Uno"
-    }
-  }
-
-  def getNumOfPlayers() : Int = {
-    numOfPlayers
-  }
-
   def nextTurn() : Boolean = {
     if ((activePlayer == 1 && (!direction || numOfPlayers == 2)) ||
-        (activePlayer == 2 && direction && numOfPlayers == 3) || (activePlayer == 3 && direction && numOfPlayers== 4)) {
+      (activePlayer == 2 && direction && numOfPlayers == 3) || (activePlayer == 3 && direction && numOfPlayers== 4)) {
       true
     } else {
       false
     }
   }
-
-  def setActivePlayer() : Game = {
-    if (nextTurn()) {
-      activePlayer = 0
-    } else {
-      activePlayer = nextEnemy()
-    }
-    this
-  }
-
-  def setDirection() : Game = {
-    if (direction) {
-      direction = false
-    } else {
-      direction = true
-    }
-    this
-  }
-
-  def getActivePlayer() : Int = activePlayer
-  def getDirection() : Boolean = direction
-
-  def getColor() : Color = {
-    if (color == 1) {
-      new Color(0, 0, 255)
-    } else if (color == 2) {
-      new Color(0, 255, 0)
-    } else if (color == 3) {
-      new Color(255, 255, 0)
-    } else if (color == 4) {
-      new Color(255, 0, 0)
-    } else {
-      new Color(128, 128, 128)
-    }
-  }
-
   def getNextEnemy() : Enemy = {
     val i = nextEnemy()
     if (i == 1) {
@@ -262,54 +227,36 @@ case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends Ga
     }
   }
 
-  def getAnotherPull() : Boolean = anotherPull
-
+  def setActivePlayer() : Game = {
+    if (nextTurn()) {
+      activePlayer = 0
+    } else {
+      activePlayer = nextEnemy()
+    }
+    this
+  }
+  def setDirection() : Game = {
+    if (direction) {
+      direction = false
+    } else {
+      direction = true
+    }
+    this
+  }
   def setAnotherPull(b : Boolean = false) : Game = {
     anotherPull = b
     this
   }
-
-  def getHv() : Boolean = hv
   def setHv(b : Boolean = true) : Game = {
     hv = b
     this
   }
 
+  def getActivePlayer() : Int = activePlayer
+  def getDirection() : Boolean = direction
+  def getAnotherPull() : Boolean = anotherPull
+  def getHv() : Boolean = hv
   def getHv2() : Boolean = hv2
-
-  /*def getNextEnemy() : Enemy = {
-    if (numOfPlayers == 3) {
-      if (activePlayer == 0) {
-        if (direction) {
-          init.enemy2
-        } else {
-          init.enemy
-        }
-      } else if (activePlayer == 1) {
-        init.enemy2
-      } else {
-        init.enemy
-      }
-    } else {
-      if (activePlayer == 0) {
-        init.enemy2
-      } else if (activePlayer == 1) {
-        init.enemy3
-      } else {
-        init.enemy
-      }
-    }
-  }
-
-  def getNextPlayer() : Boolean = {
-    if ((activePlayer == 0 && numOfPlayers == 2) ||
-        ((activePlayer == 1 && direction) || (activePlayer == 2 && !direction) && numOfPlayers == 3) ||
-        (activePlayer == 2 && numOfPlayers== 4)) {
-      true
-    } else {
-      false
-    }
-  }*/
 
   override def toString: String = {
     val a = "┌-------┐  "

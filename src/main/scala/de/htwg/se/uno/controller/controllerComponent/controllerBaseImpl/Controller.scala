@@ -34,7 +34,6 @@ class Controller @Inject() (var game: GameInterface) extends ControllerInterface
     gameStatus("yourTurn")
     publish(new GameSizeChanged)
   }
-
   def createTestGame():Unit = {
     game = injector.instance[GameInterface](Names.named("2 Players"))
     game = game.createTestGame()
@@ -43,8 +42,6 @@ class Controller @Inject() (var game: GameInterface) extends ControllerInterface
     gameStatus("yourTurn")
     publish(new GameSizeChanged)
   }
-
-  def gameToString: String = game.toString
 
   def set(string:String, color : Int = 0): Unit = {
     if (string.charAt(0) != 'S' || color != 0) {
@@ -74,7 +71,6 @@ class Controller @Inject() (var game: GameInterface) extends ControllerInterface
       publish(new ChooseColor)
     }
   }
-
   def get(): Unit = {
     if (game.nextTurn()) {
       val b = game.getAnotherPull()
@@ -97,32 +93,22 @@ class Controller @Inject() (var game: GameInterface) extends ControllerInterface
       publish(new GameNotChanged)
     }
   }
-
   def enemy(): Unit = {
     if (game.nextEnemy() == 1) {
       game = game.setActivePlayer()
       undoManager.doStep(new EnemyCommand(this))
-      if (game.nextTurn()) {
-        gameStatus("yourTurn")
-      } else {
-        gameStatus("enemyTurn")
-      }
     } else if (game.nextEnemy() == 2) {
       game = game.setActivePlayer()
       undoManager.doStep(new EnemyCommand2(this))
-      if (game.nextTurn()) {
-        gameStatus("yourTurn")
-      } else {
-        gameStatus("enemyTurn")
-      }
     } else {
       game = game.setActivePlayer()
       undoManager.doStep(new EnemyCommand3(this))
-      if (game.nextTurn()) {
-        gameStatus("yourTurn")
-      } else {
-        gameStatus("enemyTurn")
-      }
+
+    }
+    if (game.nextTurn()) {
+      gameStatus("yourTurn")
+    } else {
+      gameStatus("enemyTurn")
     }
     if (game.getAnotherPull()) {
       game.setDirection()
@@ -148,7 +134,6 @@ class Controller @Inject() (var game: GameInterface) extends ControllerInterface
     publish(new GameChanged)
     won
   }
-
   def redo: Unit = {
     game = game.setHv()
     game.setActivePlayer()
@@ -181,11 +166,7 @@ class Controller @Inject() (var game: GameInterface) extends ControllerInterface
     }
   }
 
-  def notPush : Unit = {
-    gameStatus("pushCardNotAllowed")
-    publish(new GameNotChanged)
-  }
-
+  def gameToString: String = game.toString
   def getCardText(list : Int, index : Int) : String = game.getCardText(list, index)
   def getGuiCardText(list : Int, index : Int) : String = game.getGuiCardText(list, index)
   def getLength(list : Int) : Int = game.getLength(list)
@@ -214,11 +195,11 @@ class Controller @Inject() (var game: GameInterface) extends ControllerInterface
         hs
       }
       case "yourTurn" => {
-        hs = "Du bist dran. Mögliche Befehle: q, n [2 | 3 | 4], t, s [Karte], g, u, r, d"
+        hs = "Du bist dran. Mögliche Befehle: q, n [2 | 3 | 4], t, s Karte [Farbe], g, u, r, d"
         hs
       }
       case "won" => {
-        hs = "Glückwunsch du hast gewonnen"
+        hs = "Glückwunsch, du hast gewonnen!"
         hs
       }
       case "lost" => {

@@ -19,7 +19,6 @@ class Player() {
     }
     this
   }
-
   def pullMove(game:Game) : Player = {
     if (!game.anotherPull) {
       pull(game)
@@ -94,6 +93,25 @@ class Player() {
     this
   }
 
+  def pushable(card: Card, game: Game) : Boolean = {
+    if (game.init.cardsRevealed.head.value == Value.PlusTwo && card.value != Value.PlusTwo && game.special.top > 0) {
+      return false
+    } else if (game.init.cardsRevealed.head.value == Value.PlusFour && card.value != Value.PlusFour && game.special.top > 0) {
+      return false
+    } else if (card.value == Value.PlusFour) {
+      for (i <- 1 to handCards.length) {
+        if (handCards(i - 1).color == game.init.cardsRevealed.head.color &&
+          game.init.cardsRevealed.head.color != Color.Schwarz && game.init.cardsRevealed.head.value != Value.PlusFour) {
+          return false
+        }
+      }
+      return true
+    } else if (card.color == game.init.cardsRevealed.head.color || card.value == game.init.cardsRevealed.head.value
+      || card.value == Value.ColorChange || game.init.cardsRevealed.head.color == Color.Schwarz) {
+      return true
+    }
+    false
+  }
   def pushCard(card: Card, color : Int, game: Game) : Player = {
     var c = 0
     var myCard = card
@@ -137,27 +155,6 @@ class Player() {
     game.anotherPull = false
     this
   }
-
-  def pushable(card: Card, game: Game) : Boolean = {
-    if (game.init.cardsRevealed.head.value == Value.PlusTwo && card.value != Value.PlusTwo && game.special.top > 0) {
-      return false
-    } else if (game.init.cardsRevealed.head.value == Value.PlusFour && card.value != Value.PlusFour && game.special.top > 0) {
-      return false
-    } else if (card.value == Value.PlusFour) {
-      for (i <- 1 to handCards.length) {
-        if (handCards(i - 1).color == game.init.cardsRevealed.head.color &&
-            game.init.cardsRevealed.head.color != Color.Schwarz && game.init.cardsRevealed.head.value != Value.PlusFour) {
-          return false
-        }
-      }
-      return true
-    } else if (card.color == game.init.cardsRevealed.head.color || card.value == game.init.cardsRevealed.head.value
-      || card.value == Value.ColorChange || game.init.cardsRevealed.head.color == Color.Schwarz) {
-      return true
-    }
-    false
-  }
-
   def pull(game: Game) : Player = {
     stack1.push(game.init.cardsCovered.head.toString)
     stack2.push(-1)
@@ -189,7 +186,6 @@ class Player() {
     }
     false
   }
-
   def getCard(s: String): Card = {
     var c = 0
     for (i <- 1 to handCards.length) {

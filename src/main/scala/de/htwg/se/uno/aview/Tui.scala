@@ -1,6 +1,6 @@
 package de.htwg.se.uno.aview
 
-import de.htwg.se.uno.controller.controllerComponent.{ControllerInterface, GameChanged, GameEnded, GameNotChanged, GameSizeChanged}
+import de.htwg.se.uno.controller.controllerComponent.{ChooseColor, ControllerInterface, GameChanged, GameEnded, GameNotChanged, GameSizeChanged}
 
 import scala.swing.Reactor
 import scala.util.{Failure, Success, Try}
@@ -30,7 +30,19 @@ class Tui(controller: ControllerInterface) extends Reactor {
         Success("Valid Command: " + input)
       }
       case "s" => {
-        controller.set(input.substring(2))
+        if (input.length() > 5) {
+          if(input.substring(6).equals("blue")) {
+            controller.set(input.substring(2, 5), 1)
+          } else if (input.substring(6).equals("green")) {
+            controller.set(input.substring(2, 5), 2)
+          } else if (input.substring(6).equals("yellow")) {
+            controller.set(input.substring(2, 5), 3)
+          } else {
+            controller.set(input.substring(2, 5), 4)
+          }
+        } else {
+          controller.set(input.substring(2))
+        }
         Success("valid command: " + input)
       }
       case "g" => {
@@ -55,15 +67,17 @@ class Tui(controller: ControllerInterface) extends Reactor {
         Success("Valid Command: " + input)
       }
       case _ => controller.gameStatus("unknownCommand")
-        Failure(new IllegalArgumentException("Wrong input: " + input))
+        Success("Unknown Command: " + input)
+        //Failure(new IllegalArgumentException("Wrong input: " + input))
     }
   }
 
   reactions += {
-      case event: GameSizeChanged => printTui
-      case event: GameChanged => printTui
-      case event: GameNotChanged => println(controller.gameStatus("idle"))
-      case event: GameEnded => {
+      case a: GameSizeChanged => printTui
+      case b: GameChanged => printTui
+      case c: GameNotChanged => println(controller.gameStatus("idle"))
+      case d: ChooseColor => println(controller.gameStatus("chooseColor"))
+      case e: GameEnded => {
         println(controller.gameStatus("idle"))
         println("Starte neues Spiel oder beende")
       }

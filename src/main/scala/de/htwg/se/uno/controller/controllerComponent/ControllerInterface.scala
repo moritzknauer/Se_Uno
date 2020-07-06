@@ -13,7 +13,6 @@ trait ControllerInterface extends Publisher {
   def undo(): Unit
   def redo(): Unit
   def won(): Unit
-  def notPush() : Unit
   def getCardText(list : Int, index : Int) : String
   def getGuiCardText(list : Int, index : Int) : String
   def getLength(list : Int) : Int

@@ -10,6 +10,78 @@ class Enemy() {
   var stack3 = Stack[Card]()
   var stack4 = Stack[Boolean]()
 
+
+  def enemy(game: Game) : Enemy = {
+    val s = game.toString
+    if(game.nextTurn()) {
+      if (game.init.player.handCards.length <= 3) {
+        ki(game)
+      }
+    } else if (game.getNextEnemy().enemyCards.length <= 3) {
+      ki(game)
+    }
+    if (!game.toString.equals(s))
+      return this
+
+
+    for (i <- 1 to enemyCards.length) {
+      if(pushable1(enemyCards(i-1), game)) {
+        return pushCardEnemy(enemyCards(i-1), game)
+      }
+    }
+    for (i <- 1 to enemyCards.length) {
+      if(pushable2(enemyCards(i-1), game)) {
+        return pushCardEnemy(enemyCards(i-1), game)
+      }
+    }
+    for (i <- 1 to enemyCards.length) {
+      if(pushable3(enemyCards(i-1), game)) {
+        return pushCardEnemy(enemyCards(i-1), game)
+      }
+    }
+    for (i <- 1 to enemyCards.length) {
+      if(pushable4(enemyCards(i-1), game)) {
+        return pushCardEnemy(enemyCards(i-1), game)
+      }
+    }
+    for (i <- 1 to enemyCards.length) {
+      if(pushable5(enemyCards(i-1), game)) {
+        return pushCardEnemy(enemyCards(i-1), game)
+      }
+    }
+    for (i <- 1 to enemyCards.length) {
+      if(pushable6(enemyCards(i-1), game)) {
+        return pushCardEnemy(enemyCards(i-1), game)
+      }
+    }
+    if (!game.anotherPull) {
+      if (enemyCards.length >= 4) {
+        return pullEnemy(game)
+      }
+      for (i <- 1 to enemyCards.length) {
+        if(pushable7(enemyCards(i-1), game)) {
+          return pushCardEnemy(enemyCards(i-1), game)
+        }
+      }
+      for (i <- 1 to enemyCards.length) {
+        if(pushable8(enemyCards(i-1), game)) {
+          return pushCardEnemy(enemyCards(i-1), game)
+        }
+      }
+      for (i <- 1 to enemyCards.length) {
+        if(pushable9(enemyCards(i-1), game)) {
+          return pushCardEnemy(enemyCards(i-1), game)
+        }
+      }
+      return pullEnemy(game)
+    }
+    game.anotherPull = false
+    game.special.push(0)
+    stack1.push("Suspend")
+    stack2.push(-1)
+    this
+  }
+
   def undo(game: Game) : Enemy = {
     if(stack1.top.equals(" ")) {
       enemyCards = enemyCards.take(stack2.top) :+ stack3.top :++ enemyCards.drop(stack2.top)
@@ -170,7 +242,6 @@ class Enemy() {
     game.anotherPull = false
     this
   }
-
   def pullEnemy(game: Game) : Enemy = {
     stack1.push(game.init.cardsCovered.head.toString)
     stack2.push(-1)
@@ -191,77 +262,6 @@ class Enemy() {
       stack4.push(true)
     }
     game.special.push(0)
-    this
-  }
-
-  def enemy(game: Game) : Enemy = {
-    val s = game.toString
-    if(game.nextTurn()) {
-      if (game.init.player.handCards.length <= 3) {
-        ki(game)
-      }
-    } else if (game.getNextEnemy().enemyCards.length <= 3) {
-      ki(game)
-    }
-    if (!game.toString.equals(s))
-      return this
-
-
-    for (i <- 1 to enemyCards.length) {
-      if(pushable1(enemyCards(i-1), game)) {
-        return pushCardEnemy(enemyCards(i-1), game)
-      }
-    }
-    for (i <- 1 to enemyCards.length) {
-      if(pushable2(enemyCards(i-1), game)) {
-        return pushCardEnemy(enemyCards(i-1), game)
-      }
-    }
-    for (i <- 1 to enemyCards.length) {
-      if(pushable3(enemyCards(i-1), game)) {
-        return pushCardEnemy(enemyCards(i-1), game)
-      }
-    }
-    for (i <- 1 to enemyCards.length) {
-      if(pushable4(enemyCards(i-1), game)) {
-        return pushCardEnemy(enemyCards(i-1), game)
-      }
-    }
-    for (i <- 1 to enemyCards.length) {
-      if(pushable5(enemyCards(i-1), game)) {
-        return pushCardEnemy(enemyCards(i-1), game)
-      }
-    }
-    for (i <- 1 to enemyCards.length) {
-      if(pushable6(enemyCards(i-1), game)) {
-        return pushCardEnemy(enemyCards(i-1), game)
-      }
-    }
-    if (!game.anotherPull) {
-      if (enemyCards.length >= 4) {
-        return pullEnemy(game)
-      }
-      for (i <- 1 to enemyCards.length) {
-        if(pushable7(enemyCards(i-1), game)) {
-          return pushCardEnemy(enemyCards(i-1), game)
-        }
-      }
-      for (i <- 1 to enemyCards.length) {
-        if(pushable8(enemyCards(i-1), game)) {
-          return pushCardEnemy(enemyCards(i-1), game)
-        }
-      }
-      for (i <- 1 to enemyCards.length) {
-        if(pushable9(enemyCards(i-1), game)) {
-          return pushCardEnemy(enemyCards(i-1), game)
-        }
-      }
-      return pullEnemy(game)
-    }
-    game.anotherPull = false
-    game.special.push(0)
-    stack1.push("Suspend")
-    stack2.push(-1)
     this
   }
 

@@ -7,6 +7,7 @@ import scala.swing._
 import scala.swing.event.Key
 import scala.swing.Swing.LineBorder
 import de.htwg.se.uno.Uno.gui
+import javax.swing.JFrame
 
 class SwingGui(controller: ControllerInterface) extends Frame {
 
@@ -267,7 +268,12 @@ class SwingGui(controller: ControllerInterface) extends Frame {
   }
 
   visible = true
+  /*size = new Dimension(1950,1080)
+  maximumSize = new Dimension(1950, 1080)
+  minimumSize = new Dimension(1950, 1080)
+   */
   redraw
+
 
   reactions += {
     case event: GameSizeChanged => redraw
