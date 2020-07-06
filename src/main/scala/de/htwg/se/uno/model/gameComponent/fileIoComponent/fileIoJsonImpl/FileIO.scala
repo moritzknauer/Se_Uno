@@ -6,8 +6,10 @@ import net.codingwell.scalaguice.InjectorExtensions._
 import de.htwg.se.uno.UnoModule
 import de.htwg.se.uno.model.gameComponent.GameInterface
 import de.htwg.se.uno.model.gameComponent.fileIoComponent.FileIOInterface
+import de.htwg.se.uno.model.gameComponent.gameBaseImpl.{Card, Color, Value}
 import play.api.libs.json._
 
+import scala.collection.mutable.ListBuffer
 import scala.io.Source
 
 class FileIO extends  FileIOInterface{
@@ -40,11 +42,21 @@ class FileIO extends  FileIOInterface{
     val color = (json \ "game" \ "color").get.toString.toInt
     game = game.setColor(color)
 
+    var cards = new ListBuffer[Card]()
+    for (color <- Color.values) {
+      for (value <- Value.values) {
+        cards += Card(color, value)
+      }
+    }
+
     for {
       listNumber <- 0 until 5
       cardNumber <- 0 until game.getLength(listNumber)
     } yield {
-
+      for (i <- 0 to cards.length) {
+        //if (cards(i).toString ==
+      }
+      game = game.setAllCards(listNumber, cards)
     }
 
     game
