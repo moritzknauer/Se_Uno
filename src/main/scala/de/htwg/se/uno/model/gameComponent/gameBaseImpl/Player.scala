@@ -8,7 +8,7 @@ class Player() {
   var stack1 = Stack[String]("Start")
   var stack2 = Stack[Integer](-1)
   var stack3 = Stack[Card]()
-  var stack4 = Stack[Boolean](false)
+  var stack4 = Stack[Boolean]()
 
   def pushMove(string:String, color : Int, game: Game) : Player = {
     if(equalsCard(string)) {

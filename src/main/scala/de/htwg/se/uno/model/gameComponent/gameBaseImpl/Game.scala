@@ -12,7 +12,7 @@ case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends Ga
 
   init.initializeGame(numOfPlayers)
 
-  private var activePlayer = numOfPlayers - 1
+  var activePlayer = numOfPlayers - 1
   private var direction = true
   var anotherPull = false
   var special = mutable.Stack[Integer](0)
@@ -136,7 +136,6 @@ case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends Ga
   def setLength(i : Integer) : Unit = {
     this.i = i
   }
-
   def getLength(list:Integer) : Int = {
     if (list == 0) {
       if (i == 1) {
@@ -204,9 +203,9 @@ case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends Ga
   }
 
   def nextEnemy() : Int = {
-    if (numOfPlayers == 2) {
+    if (numOfPlayers == 2) { // ||(activePlayer == 0 && direction) ||(numOfPlayers == 3 && activePlayer == 2)||(numOfPlayers == 4 && activePlayer == 2 && direction)
       1
-    } else if (numOfPlayers == 3) {
+    } else if ((numOfPlayers == 3)) {
       if (activePlayer == 0) {
         if (direction) {
           1
