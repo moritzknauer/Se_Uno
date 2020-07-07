@@ -7,6 +7,7 @@ import de.htwg.se.uno.UnoModule
 import de.htwg.se.uno.controller.controllerComponent._
 import net.codingwell.scalaguice.InjectorExtensions._
 import de.htwg.se.uno.model.gameComponent.GameInterface
+import de.htwg.se.uno.model.gameComponent.fileIoComponent.FileIOInterface
 import de.htwg.se.uno.util.UndoManager
 
 import scala.swing.{Color, Publisher}
@@ -15,6 +16,7 @@ import scala.swing.{Color, Publisher}
 class Controller @Inject() (var game: GameInterface) extends ControllerInterface with Publisher {
   private var undoManager = new UndoManager
   val injector: Injector = Guice.createInjector(new UnoModule)
+  val fileIo = injector.instance[FileIOInterface]
   private var hs = "Du bist dran. Mögliche Befehle: q, n, t, s [Karte], g, u, r"
   private var hs2 = ""
   private var color = 0
@@ -148,6 +150,18 @@ class Controller @Inject() (var game: GameInterface) extends ControllerInterface
     won
   }
 
+  def save: Unit = {
+    fileIo.save(game)
+    gameStatus("save")
+    publish(new GameChanged)
+  }
+
+  def load: Unit = {
+    game = fileIo.load
+    gameStatus("load")
+    publish(new GameChanged)
+  }
+
   def won: Unit = {
     if(game.getLength(4) == 0) {
       gameStatus("won")
@@ -212,6 +226,14 @@ class Controller @Inject() (var game: GameInterface) extends ControllerInterface
       }
       case "redo" => {
         hs = "Zug wiederhergestellt"
+        hs
+      }
+      case "save" => {
+        hs = "Spiel gespeichert"
+        hs
+      }
+      case "load" => {
+        hs = "Spiel geladen"
         hs
       }
       case "chooseColor" => {
