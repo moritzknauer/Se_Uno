@@ -50,16 +50,17 @@ class FileIO extends  FileIOInterface{
       }
     }
 
-    for {
-      listNumber <- 0 until 5
-      cardNumber <- 0 until game.getLength(listNumber)
-    } yield {
-      val card = (json \\ "card")(listNumber)(cardNumber).as[String]
-      for (i <- 0 to cards.length) {
-        if (cards(i).toString.equals(card)) {
-          game = game.setAllCards(listNumber, cards(i))
-          break
+    var i = 0
+    for (listNumber <- 0 to 5) {
+      for (cardNumber <- 0 until game.getLength(listNumber)) {
+        val card = (json \\ "card")(i).as[String]
+        for (i <- cards.indices) {
+          if (cards(i).toString.equals(card)) {
+            game = game.setAllCards(listNumber, cards(i))
+            break
+          }
         }
+        i += 1
       }
     }
 
@@ -76,13 +77,13 @@ class FileIO extends  FileIOInterface{
         "color" -> JsNumber(game.getColorNumber()),
         "playerCards" -> Json.toJson(
           for {
-            listNumber <- 0 until 5
+            listNumber <- 0 to 5
             cardNumber <- 0 until game.getLength(listNumber)
           } yield {
             Json.obj(
               "listNumber" -> listNumber,
               "cardNumber" -> cardNumber,
-              "card" -> Json.toJson(game.getAllCards(listNumber, cardNumber))
+              "card" -> JsString(game.getAllCards(listNumber, cardNumber))
             )
           }
         )
