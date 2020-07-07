@@ -6,9 +6,9 @@ import org.scalatest.{Matchers, WordSpec}
 
 import scala.swing.Color
 
-class CellPanelSpec extends WordSpec with Matchers {
+class CardPanelSpec extends WordSpec with Matchers {
   "A CardPanel" when {
-    var controller = new Controller(new Game(4))
+    val controller = new Controller(new Game(4))
     "created" should {
       controller.createTestGame()
       var cardPanel = new CardPanel(4, 0, controller)
@@ -42,9 +42,11 @@ class CellPanelSpec extends WordSpec with Matchers {
       }
       "Have another type of Cards" in {
         cardPanel = new CardPanel(3, 0,controller)
+        cardPanel.cardColor(3,0) should be(new Color(0,0,0))
       }
       "Have a third type of Card" in {
         cardPanel = new CardPanel(3, 2,controller)
+        cardPanel.cardColor(3,2) should be(new Color(255,255,255))
       }
     }
   }

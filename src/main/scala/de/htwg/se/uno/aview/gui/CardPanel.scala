@@ -60,8 +60,7 @@ class CardPanel (list: Int, index: Int, controller: ControllerInterface) extends
         controller.publish(new GameNotChanged)
       }
     }
-    if ((list == 3 && index != 2) || (controller.getNumOfPlayers == 2 &&
-          list != 3) || (list == 4 && controller.getNumOfPlayers == 3)) {
+    if ((list == 3 && index != 2) || (controller.getNumOfPlayers == 2 && list != 3) || (list == 4 && controller.getNumOfPlayers == 3)) {
       button.font = new Font("Verdana", 5, 25)
       button.preferredSize_=(new Dimension(100,180))
       button.maximumSize_= (new Dimension(100, 180))
