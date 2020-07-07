@@ -29,6 +29,7 @@ trait GameInterface {
   def setDirection() : Game
   def getActivePlayer() : Int
   def getDirection() : Boolean
+  def getColorNumber() : Int
   def getColor() : Color
   def setColor(int: Int) : Game
   def getAnotherPull() : Boolean
