@@ -15,6 +15,7 @@ trait GameInterface {
   def getLength(list:Integer) : Int
   def getAllCards(list: Int, index: Int) : String
   def setAllCards(list: Int, card: Card) : Game
+  def clearAllLists() : Game
   def getCardText(list : Int, index : Int) : String
   def getGuiCardText(list : Int, index : Int) : String
   def getNumOfPlayers() : Int

@@ -49,6 +49,7 @@ class FileIO extends  FileIOInterface{
       }
     }
 
+    game = game.clearAllLists()
     var i = 0
     for (listNumber <- 0 to 5) {
       for (cardNumber <- 0 until game.getLength(listNumber)) {
