@@ -129,7 +129,13 @@ case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends Ga
     this
   }
   def playerUndo() : Game = {
+    val s = this.toString
     init.player = init.player.undo(this)
+    if (s.equals(this.toString)) {
+      anotherPull = true
+      if (special.top == -1)
+        anotherPull = false
+    }
     this
   }
 
@@ -187,19 +193,6 @@ case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends Ga
   }
   def getNumOfPlayers() : Int = {
     numOfPlayers
-  }
-  def getColor() : Color = {
-    if (color == 1) {
-      new Color(0, 0, 255)
-    } else if (color == 2) {
-      new Color(0, 255, 0)
-    } else if (color == 3) {
-      new Color(255, 255, 0)
-    } else if (color == 4) {
-      new Color(255, 0, 0)
-    } else {
-      new Color(128, 128, 128)
-    }
   }
 
   def nextEnemy() : Int = {

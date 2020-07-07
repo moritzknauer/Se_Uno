@@ -236,7 +236,7 @@ class SwingGui(controller: ControllerInterface) extends Frame {
     }
   }
 
-  var statusline = new TextField(controller.gameStatus("idle"),30) {
+  var statusline = new TextField(controller.controllerEvent("idle"),30) {
     preferredSize = new Dimension(1,100)
     font = new Font("Verdana", 5, 36)
     background = java.awt.Color.WHITE
@@ -278,13 +278,13 @@ class SwingGui(controller: ControllerInterface) extends Frame {
   reactions += {
     case event: GameSizeChanged => redraw
     case event: GameChanged => redraw
-    case event: GameNotChanged => statusline.text = controller.gameStatus("idle")
+    case event: GameNotChanged => redraw
     case event: GameEnded => ended
     case event: ChooseColor => special
   }
 
   def redraw = {
-    statusline.text = controller.gameStatus("idle")
+    statusline.text = controller.controllerEvent("idle")
     contents = new BorderPanel {
       //add(pushpanel, BorderPanel.Position.North)
       add(gamePanel, BorderPanel.Position.Center)
@@ -294,7 +294,7 @@ class SwingGui(controller: ControllerInterface) extends Frame {
   }
 
   def special : Unit = {
-    statusline.text = controller.gameStatus("idle")
+    statusline.text = controller.controllerEvent("idle")
     contents = new BorderPanel {
       add(pushpanel, BorderPanel.Position.North)
       add(gamePanel, BorderPanel.Position.Center)
@@ -321,7 +321,7 @@ class SwingGui(controller: ControllerInterface) extends Frame {
   }
 
   def ended: Unit = {
-    statusline.text = controller.gameStatus("idle")
+    statusline.text = controller.controllerEvent("idle")
     contents = new BorderPanel {
       add(statusline, BorderPanel.Position.North)
       add(buttons, BorderPanel.Position.Center)

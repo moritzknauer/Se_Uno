@@ -16,11 +16,10 @@ trait ControllerInterface extends Publisher {
   def getCardText(list : Int, index : Int) : String
   def getGuiCardText(list : Int, index : Int) : String
   def getLength(list : Int) : Int
-  def gameStatus(string : String) : String
+  def controllerEvent(string : String) : String
   def getNumOfPlayers: Int
   def nextTurn() : Boolean
   def getHs2: String
-  def getColor: Color
   def nextEnemy() : Int
 }
 

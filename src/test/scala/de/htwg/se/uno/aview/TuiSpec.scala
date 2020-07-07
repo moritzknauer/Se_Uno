@@ -34,7 +34,7 @@ class TuiSpec extends WordSpec with Matchers{
     }
     "Not do anything on input d if it's your turn" in {
       tui.processInputLine("d")
-      controller.gameStatus("idle") should be(controller.gameStatus("yourTurn"))
+      controller.controllerEvent("idle") should be(controller.controllerEvent("yourTurn"))
     }
     "Not set a card on input 's S...' without color" in {
       val old = controller.gameToString

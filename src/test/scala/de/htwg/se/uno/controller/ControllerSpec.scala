@@ -41,7 +41,7 @@ class ControllerSpec extends WordSpec with Matchers {
       }
       "be able to push a Special Card with a color" in {
         controller.set(controller.getCardText(4,1), 4)
-        controller.gameStatus("idle") should be(controller.gameStatus("enemyTurn"))
+        controller.controllerEvent("idle") should be(controller.controllerEvent("enemyTurn"))
       }
       "not push a Card if it's not the players turn" in {
         val old = controller.gameToString
@@ -57,28 +57,28 @@ class ControllerSpec extends WordSpec with Matchers {
 
       "Should be able to undo a Step" in {
         controller.undo
-        controller.gameStatus("idle") should be(controller.gameStatus("undo"))
+        controller.controllerEvent("idle") should be(controller.controllerEvent("undo"))
       }
 
 
       "Pull a Card if it is allowed" in {
         controller.get()
-        controller.gameStatus("idle") should be(controller.gameStatus("yourTurn"))
+        controller.controllerEvent("idle") should be(controller.controllerEvent("yourTurn"))
       }
       "Not Pull another Card if a Card was already Pulled" in {
         controller.get()
-        controller.gameStatus("idle") should be(controller.gameStatus(("enemyTurn")))
+        controller.controllerEvent("idle") should be(controller.controllerEvent(("enemyTurn")))
       }
 
       "Do the enemy's runs if it's the enemys turn" in {
         controller.enemy()
         controller.enemy()
         controller.enemy()
-        controller.gameStatus("idle") should be(controller.gameStatus("yourTurn"))
+        controller.controllerEvent("idle") should be(controller.controllerEvent("yourTurn"))
       }
       "Should be able to undo another Step" in {
         controller.undo
-        controller.gameStatus("idle") should be(controller.gameStatus("undo"))
+        controller.controllerEvent("idle") should be(controller.controllerEvent("undo"))
       }
       "Do the enemy's run so that the enemy pulls and then can't do anything" in {
         controller.set("S C", 1)
@@ -100,33 +100,33 @@ class ControllerSpec extends WordSpec with Matchers {
 
       "Should be able to redo a Step" in{
         controller.redo
-        controller.gameStatus("idle") should be(controller.gameStatus("redo"))
+        controller.controllerEvent("idle") should be(controller.controllerEvent("redo"))
       }
       "Should be able to check if nobody has won" in {
         controller.won
-        controller.gameStatus("idle") should be(controller.gameStatus("redo"))
+        controller.controllerEvent("idle") should be(controller.controllerEvent("redo"))
       }
 
       "Should be able to check if the enemy 1 has won" in {
         controller.game.setLength(1)
         controller.won
-        controller.gameStatus("idle") should be(controller.gameStatus("lost"))
+        controller.controllerEvent("idle") should be(controller.controllerEvent("lost"))
       }
       "Should be able to check if the player has won" in {
         controller.game.setLength(4)
         controller.won
-        controller.gameStatus("idle") should be(controller.gameStatus("won"))
+        controller.controllerEvent("idle") should be(controller.controllerEvent("won"))
       }
       "Should be able to check if the enemy 2 has won" in {
         controller.game.setLength(2)
         controller.won
-        controller.gameStatus("idle") should be(controller.gameStatus("lost"))
+        controller.controllerEvent("idle") should be(controller.controllerEvent("lost"))
       }
       "Should be able to check if the enemy 3 has won" in {
         controller.game.setLength(3)
-        controller.gameStatus("yourTurn")
+        controller.controllerEvent("yourTurn")
         controller.won
-        controller.gameStatus("idle") should be(controller.gameStatus("lost"))
+        controller.controllerEvent("idle") should be(controller.controllerEvent("lost"))
       }
 
 
@@ -151,9 +151,6 @@ class ControllerSpec extends WordSpec with Matchers {
       "Should be able to return the Help String 2 of the controller" in {
         controller.getHs2() should be("S C")
       }
-      "Should be able to get the Color of a card" in {
-        controller.getColor() should be(new Color(128,128,128))
-      }
       "Should be able to get the next Enemy" in {
         controller.nextEnemy() should be(2)
       }
@@ -162,47 +159,47 @@ class ControllerSpec extends WordSpec with Matchers {
 
 
       "Should be able to update the state to pushCardNotAllowed Event" in {
-        controller.gameStatus("pushCardNotAllowed")
-        controller.gameStatus("idle") should be("Du kannst diese Karte nicht legen")
+        controller.controllerEvent("pushCardNotAllowed")
+        controller.controllerEvent("idle") should be("Du kannst diese Karte nicht legen")
       }
       "Should be able to update the state to enemys turn" in {
-        controller.gameStatus("enemyTurn")
-        controller.gameStatus("idle") should be("Gegner ist an der Reihe")
+        controller.controllerEvent("enemyTurn")
+        controller.controllerEvent("idle") should be("Gegner ist an der Reihe")
       }
       "Should be able to update the state to pullCardNotAllowed Event" in {
-        controller.gameStatus("pullCardNotAllowed")
-        controller.gameStatus("idle") should be("Du kannst keine Karte ziehen")
+        controller.controllerEvent("pullCardNotAllowed")
+        controller.controllerEvent("idle") should be("Du kannst keine Karte ziehen")
       }
       "Should be able to update the state to unknownCommand Event" in {
-        controller.gameStatus("unknownCommand")
-        controller.gameStatus("idle") should be("Befehl nicht bekannt")
+        controller.controllerEvent("unknownCommand")
+        controller.controllerEvent("idle") should be("Befehl nicht bekannt")
       }
       "Should be able to update the state to your turn" in {
-        controller.gameStatus("yourTurn")
-        controller.gameStatus("idle") should be("Du bist dran. Mögliche Befehle: q, n [2 | 3 | 4], t, s Karte [Farbe], g, u, r, d")
+        controller.controllerEvent("yourTurn")
+        controller.controllerEvent("idle") should be("Du bist dran. Mögliche Befehle: q, n [2 | 3 | 4], t, s Karte [Farbe], g, u, r, d")
       }
       "Should be able to update the state to won Event" in {
-        controller.gameStatus("won")
-        controller.gameStatus("idle") should be("Glückwunsch, du hast gewonnen!")
+        controller.controllerEvent("won")
+        controller.controllerEvent("idle") should be("Glückwunsch, du hast gewonnen!")
       }
       "Should be able to update the state to lost Event" in {
-        controller.gameStatus("lost")
-        controller.gameStatus("idle") should be("Du hast leider verloren")
+        controller.controllerEvent("lost")
+        controller.controllerEvent("idle") should be("Du hast leider verloren")
       }
       "Should be able to update the state to undo Event" in {
-        controller.gameStatus("undo")
-        controller.gameStatus("idle") should be("Zug rückgängig gemacht")
+        controller.controllerEvent("undo")
+        controller.controllerEvent("idle") should be("Zug rückgängig gemacht")
       }
       "Should be able to update the state to redo Event" in {
-        controller.gameStatus("redo")
-        controller.gameStatus("idle") should be("Zug wiederhergestellt")
+        controller.controllerEvent("redo")
+        controller.controllerEvent("idle") should be("Zug wiederhergestellt")
       }
       "Schould be able to update the state to chooseColor Event" in {
-        controller.gameStatus("chooseColor")
-        controller.gameStatus("idle") should be(controller.gameStatus("chooseColor"))
+        controller.controllerEvent("chooseColor")
+        controller.controllerEvent("idle") should be(controller.controllerEvent("chooseColor"))
       }
       "Should not chamge the state on input idle" in {
-        controller.gameStatus("idle") should be(controller.gameStatus("chooseColor"))
+        controller.controllerEvent("idle") should be(controller.controllerEvent("chooseColor"))
       }
     }
   }

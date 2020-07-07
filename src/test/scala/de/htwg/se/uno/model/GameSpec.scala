@@ -147,27 +147,6 @@ class GameSpec extends WordSpec {
         newGame.getNumOfPlayers() should be(2)
       }
 
-      "Should be able to get get a Color" in {
-        newGame.color = 1
-        newGame.getColor() should be(new Color(0,0,255))
-      }
-      "Should be able to get get another Color" in {
-        newGame.color = 2
-        newGame.getColor() should be(new Color(0,255,0))
-      }
-      "Should be able to get get a third Color" in {
-        newGame.color = 3
-        newGame.getColor() should be(new Color(255,255,0))
-      }
-      "Should be able to get get a fourth Color" in {
-        newGame.color = 4
-        newGame.getColor() should be(new Color(255,0,0))
-      }
-      "Should be able to get get a fifth Color" in {
-        newGame.color = 5
-        newGame.getColor() should be(new Color(128,128,128))
-      }
-
       "Should be able to get the next Enemy" in {
         newGame.nextEnemy() should be (1)
       }
