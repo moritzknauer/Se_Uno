@@ -8,7 +8,6 @@ import de.htwg.se.uno.model.gameComponent.GameInterface
 import de.htwg.se.uno.model.gameComponent.fileIoComponent.FileIOInterface
 import de.htwg.se.uno.model.gameComponent.gameBaseImpl.{Card, Color, Value}
 import play.api.libs.json._
-import scala.util.control.Breaks._
 
 import scala.collection.mutable.ListBuffer
 import scala.io.Source
@@ -57,7 +56,6 @@ class FileIO extends  FileIOInterface{
         for (i <- cards.indices) {
           if (cards(i).toString.equals(card)) {
             game = game.setAllCards(listNumber, cards(i))
-            break
           }
         }
         i += 1
