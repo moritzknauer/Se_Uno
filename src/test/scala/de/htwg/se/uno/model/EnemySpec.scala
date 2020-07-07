@@ -4,6 +4,8 @@ import de.htwg.se.uno.model.gameComponent.gameBaseImpl.{Card, Color, Game, Initi
 import org.scalatest._
 import org.scalatest.Matchers._
 
+import scala.collection.mutable.ListBuffer
+
 class EnemySpec extends WordSpec {
   "A Enemy" when {
     "new" should {
@@ -25,159 +27,168 @@ class EnemySpec extends WordSpec {
       "Be able to do the enemy's run a third time" in {
         newGame = newGame.createTestGame()
         newGame.pushMove("R+2", 0)
-        newGame.activePlayer = 0
+        newGame.activePlayer = 1
         newGame.init.enemy.enemy(newGame) should be (newGame.init.enemy)
       }
       "Be able to do the enemy's run a fourth time" in {
         newGame = newGame.createTestGame()
-        newGame.activePlayer = 0
+        newGame.activePlayer = 1
         newGame.init.enemy.enemy(newGame) should be (newGame.init.enemy)
       }
       "Be able to do the enemy's run a fifth time" in {
         newGame = newGame.createTestGame()
         newGame.init.enemy.enemyCards = newGame.init.enemy.enemyCards.take(2) ++ newGame.init.enemy.enemyCards.drop(4)
-        newGame.activePlayer = 0
+        newGame.activePlayer = 1
         newGame.init.enemy.enemy(newGame) should be (newGame.init.enemy)
       }
       "Be able to do the enemy's run a sixth time" in {
         newGame = newGame.createTestGame()
         newGame.init.cardsRevealed = Card(Color.Blue, Value.Four) +: newGame.init.cardsRevealed
-        newGame.activePlayer = 0
+        newGame.activePlayer = 1
         newGame.init.enemy.enemy(newGame) should be (newGame.init.enemy)
       }
       "Be able to do the enemy's run a seventh time" in {
         newGame = newGame.createTestGame()
         newGame.init.cardsRevealed = Card(Color.Blue, Value.DirectionChange) +: newGame.init.cardsRevealed
-        newGame.activePlayer = 0
+        newGame.activePlayer = 1
         newGame.init.enemy.enemy(newGame) should be (newGame.init.enemy)
       }
       "Be able to do the enemy's run a eigth time" in{
         newGame = newGame.createTestGame()
         newGame.init.enemy.enemyCards = Card(Color.Schwarz, Value.ColorChange) +: newGame.init.enemy.enemyCards.drop(9)
-        newGame.activePlayer = 0
+        newGame.activePlayer = 1
         newGame.init.enemy.enemy(newGame) should be (newGame.init.enemy)
       }
       "Be able to do the enemy's run a nineth time" in{
         newGame = newGame.createTestGame()
         newGame.init.enemy.enemyCards = newGame.init.enemy.enemyCards.drop(3)
         newGame.init.cardsRevealed = Card(Color.Blue, Value.Five) +: newGame.init.cardsRevealed
-        newGame.activePlayer = 0
+        newGame.activePlayer = 1
         newGame.init.enemy.enemy(newGame) should be (newGame.init.enemy)
       }
       "Be able to do the enemy's run a tenth time" in{
         newGame = newGame.createTestGame()
         newGame.init.cardsRevealed = Card(Color.Schwarz, Value.ColorChange) +: newGame.init.cardsRevealed
         newGame.init.enemy.enemyCards = newGame.init.enemy.enemyCards.drop(7)
-        newGame.activePlayer = 0
+        newGame.activePlayer = 1
         newGame.init.enemy.enemy(newGame) should be (newGame.init.enemy)
       }
       "Be able to do the enemy's run a eleventh time" in{
         newGame = newGame.createTestGame()
-        //newGame.init.cardsRevealed = Card(Color.Red, Value.Zero) +: newGame.init.cardsRevealed
         newGame.init.enemy.enemyCards = newGame.init.enemy.enemyCards.drop(8)
-        newGame.activePlayer = 0
+        newGame.activePlayer = 1
+        newGame.init.enemy.enemy(newGame) should be (newGame.init.enemy)
+      }
+      "Be able to do the enemy's run a twelth time" in{
+        newGame = newGame.createTestGame()
+        newGame.init.enemy.enemyCards = newGame.init.enemy.enemyCards.take(1)
+        newGame.activePlayer = 1
+        newGame.init.enemy.enemy(newGame) should be (newGame.init.enemy)
+      }
+      "Be able to do the enemy's run a thirteenth time" in{
+        newGame = newGame.createTestGame()
+        newGame.init.cardsRevealed = Card(Color.Blue, Value.Five) +: newGame.init.cardsRevealed
+        newGame.init.enemy.enemyCards = newGame.init.enemy.enemyCards.drop(7)
+        newGame.activePlayer = 1
+        newGame.init.enemy.enemy(newGame) should be (newGame.init.enemy)
+      }
+      "Be able to do the enemy's run a fourteenth time" in{
+        newGame = newGame.createTestGame()
+        newGame.init.cardsRevealed = Card(Color.Blue, Value.Five) +: newGame.init.cardsRevealed
+        newGame.init.enemy.enemyCards = newGame.init.enemy.enemyCards.drop(7)
+        newGame.activePlayer = 1
+        newGame.anotherPull = true
         newGame.init.enemy.enemy(newGame) should be (newGame.init.enemy)
       }
 
-
-
-
-
-
-
-
-
-
-
-
-
-      /*
-      "be able to check if a Card of the Enemys Card List can be pushed" in{
-        newGame.init.enemy.pushable1(Card(newGame.init.enemy.enemyCards(4).color, newGame.init.enemy.enemyCards(4).value), newGame) should be (false)
+      "Be able to undo a move" in {
+        newGame = newGame.createTestGame()
+        newGame.init.enemy.stack1.push(" ")
+        newGame.init.enemy.stack2.push(2)
+        newGame.init.enemy.stack3.push(Card(Color.Blue, Value.DirectionChange))
+        newGame.special.push(0)
+        newGame.init.enemy.undo(newGame) should be(newGame.init.enemy)
       }
-      "be able to check if a second Card of the Enemys Card List can be pushed" in{
-        newGame.init.enemy.pushable1(Card(newGame.init.enemy.enemyCards(1).color, newGame.init.enemy.enemyCards(1).value), newGame) should be (false)
+      "Be able to undo a second move" in {
+        newGame = newGame.createTestGame()
+        newGame.init.enemy.stack1.push("Start")
+        newGame.init.enemy.stack2.push(-1)
+        newGame.special.push(0)
+        newGame.init.enemy.undo(newGame) should be(newGame.init.enemy)
       }
-
-
-      "be able to check if a third Card of the Enemys Card List can be pushed" in{
-        newGame.init.enemy.pushable1(Card(newGame.init.enemy.enemyCards(0).color, newGame.init.enemy.enemyCards(0).value), newGame) should be (true)
+      "Be able to undo a third move" in {
+        newGame = newGame.createTestGame()
+        newGame.init.enemy.stack1.push("R 1")
+        newGame.init.enemy.stack2.push(-1)
+        newGame.init.enemy.stack4.push(true)
+        newGame.special.push(0)
+        newGame.init.enemy.undo(newGame) should be(newGame.init.enemy)
       }
-      "be able to push a Card of the Enemys Card List" in{
-        newGame.init.enemy.pushCardEnemy(Card(newGame.init.enemy.enemyCards.head.color, newGame.init.enemy.enemyCards.head.value), newGame) should be(newGame.init.enemy)
-      }
-
-
-      "be able to check if a fourth Card of the Enemys Card List can be pushed" in{
-        newGame.init.enemy.pushable1(Card(newGame.init.enemy.enemyCards(0).color, newGame.init.enemy.enemyCards(0).value), newGame) should be (true)
-      }
-      "be able to push a second Card of the Enemys Card List" in{
-        newGame.init.enemy.pushCardEnemy(Card(newGame.init.enemy.enemyCards.head.color, newGame.init.enemy.enemyCards.head.value), newGame) should be(newGame.init.enemy)
-      }
-
-
-      "be able to check if a fifth Card of the Enemys Card List can be pushed" in{
-        newGame.init.enemy.pushable1(Card(newGame.init.enemy.enemyCards(1).color, newGame.init.enemy.enemyCards(1).value), newGame) should be (true)
-      }
-      "be able to push a third Card of the Enemys Card List" in{
-        newGame.init.enemy.pushCardEnemy(Card(newGame.init.enemy.enemyCards(1).color, newGame.init.enemy.enemyCards(1).value), newGame) should be(newGame.init.enemy)
+      "Be able to undo a fourth move" in {
+        newGame = newGame.createTestGame()
+        newGame.init.enemy.stack1.push("Start")
+        newGame.init.enemy.stack2.push(-1)
+        newGame.init.enemy.stack4.push(true)
+        newGame.special.push(4)
+        newGame.special.push(0)
+        newGame.init.enemy.stack1.push("R 1")
+        newGame.init.enemy.stack2.push(-1)
+        newGame.init.enemy.stack1.push("R S")
+        newGame.init.enemy.stack2.push(-1)
+        newGame.init.enemy.stack1.push("R+2")
+        newGame.init.enemy.stack2.push(-1)
+        newGame.init.enemy.undo(newGame) should be(newGame.init.enemy)
       }
 
 
-      "be able to check if a sixth Card of the Enemys Card List can be pushed" in{
-        newGame.init.enemy.pushable1(Card(newGame.init.enemy.enemyCards(0).color, newGame.init.enemy.enemyCards(0).value), newGame) should be (true)
+      "Be able to push a Card of the Enemy's Cards" in {
+        newGame = newGame.createTestGame()
+        newGame.init.enemy.enemyCards = Card(Color.Yellow, Value.Six) +: newGame.init.enemy.enemyCards.take(2) :++
+          Card(Color.Yellow, Value.Seven) +: newGame.init.enemy.enemyCards.drop(2) :++ Card(Color.Green, Value.Seven) +:
+          ListBuffer[Card](Card(Color.Blue, Value.Seven))
+        newGame.init.enemy.pushCardEnemy(Card(Color.Schwarz, Value.ColorChange), newGame) should be(newGame.init.enemy)
       }
-      "be able to push a fourth Card of the Enemys Card List" in{
-        newGame.init.enemy.pushCardEnemy(Card(newGame.init.enemy.enemyCards(0).color, newGame.init.enemy.enemyCards(0).value), newGame) should be(newGame.init.enemy)
+      "Be able to push another Card of the Enemy's Cards" in {
+        newGame = newGame.createTestGame()
+        newGame.init.enemy.pushCardEnemy(Card(Color.Red, Value.PlusTwo), newGame) should be(newGame.init.enemy)
+      }
+      "Be able to push a third Card of the Enemy's Cards" in {
+        newGame = newGame.createTestGame()
+        newGame.init.enemy.pushCardEnemy(Card(Color.Red, Value.Suspend), newGame) should be(newGame.init.enemy)
+      }
+      "Be able to push a fourth Card of the Enemy's Cards" in {
+        newGame = newGame.createTestGame()
+        newGame.init.enemy.pushCardEnemy(Card(Color.Red, Value.DirectionChange), newGame) should be(newGame.init.enemy)
+      }
+      "Be able to push a fifth Card of the Enemy's Cards" in {
+        newGame = newGame.createTestGame()
+        newGame.init.enemy.pushCardEnemy(Card(Color.Schwarz, Value.PlusFour), newGame) should be(newGame.init.enemy)
       }
 
-
-      "be able to check if a seventh Card of the Enemys Card List can be pushed" in{
-        newGame.init.enemy.pushable1(Card(newGame.init.enemy.enemyCards.head.color, newGame.init.enemy.enemyCards.head.value), newGame) should be (true)
-      }
-      "be able to push a fifth Card of the Enemys Card List" in{
-        newGame.init.enemy.pushCardEnemy(Card(newGame.init.enemy.enemyCards.head.color, newGame.init.enemy.enemyCards.head.value), newGame) should be(newGame.init.enemy)
-      }
-
-
-      "be able to do the Enemys Run" in{
-        newGame.init.enemy.enemy(newGame) should be (newGame.init.enemy)
-      }
-      "be able to do the Enemys Run again" in{
-        newGame.init.enemy.enemy(newGame) should be (newGame.init.enemy)
-      }
-
-      "be able to pull a Card to the Enemys Card List" in {
+      "Be able to pull a Card" in {
+        newGame = newGame.createTestGame()
         newGame.init.enemy.pullEnemy(newGame) should be(newGame.init.enemy)
       }
-      "be able to pull another Card to the Enemys Card List" in {
+      "Be able to pull another Card" in {
+        newGame = newGame.createTestGame()
+        newGame.special.push(4)
         newGame.init.enemy.pullEnemy(newGame) should be(newGame.init.enemy)
       }
-      "be able to pull a third Card to the Enemys Card List" in {
-        newGame.init.enemy.pullEnemy(newGame) should be(newGame.init.enemy)
+
+      "Should have a ki" in {
+        newGame = newGame.createTestGame()
+        newGame.init.enemy.enemyCards = newGame.init.enemy.enemyCards.take(2)
+        newGame.init.enemy.ki(newGame) should be(newGame.init.enemy)
       }
-      "be able to Undo a Step" in {
-        newGame.init.enemy.undo(newGame) should be (newGame.init.enemy)
+      "Should have a second ki" in {
+        newGame = newGame.createTestGame()
+        newGame.init.enemy.ki(newGame) should be(newGame.init.enemy)
       }
-      "be able to Undo another Step" in {
-        newGame.init.enemy.undo(newGame) should be (newGame.init.enemy)
+      "Should have a third ki" in {
+        newGame = newGame.createTestGame()
+        newGame.init.enemy.enemyCards = newGame.init.enemy.enemyCards.take(8)
+        newGame.init.enemy.ki(newGame) should be(newGame.init.enemy)
       }
-      "be able to Undo a third Step" in {
-        newGame.init.enemy.undo(newGame) should be (newGame.init.enemy)
-      }
-      "be able to Undo a fourth Step" in {
-        newGame.init.enemy.undo(newGame) should be (newGame.init.enemy)
-      }
-      "be able to Undo a fifth Step" in {
-        newGame.init.enemy.undo(newGame) should be (newGame.init.enemy)
-      }
-      "be able to Undo a sixth Step" in {
-        newGame.init.enemy.undo(newGame) should be (newGame.init.enemy)
-      }
-      "be able to Undo a seventh Step" in {
-        newGame.init.enemy.undo(newGame) should be (newGame.init.enemy)
-      }
-       */
     }
   }
 }

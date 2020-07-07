@@ -33,23 +33,17 @@ class InitializeRandomGameStrategy extends InitializeGameStrategy {
       n -= 1
     }
     for (i <- 1 to 7) {
-      player.handCards = cardsCovered(0) +: player.handCards
+      player.handCards = cardsCovered.head +: player.handCards
       cardsCovered = cardsCovered.drop(1)
-      if (numOfPlayers == 2) {
-        enemy.enemyCards = cardsCovered(0) +: enemy.enemyCards
+      enemy.enemyCards = cardsCovered.head +: enemy.enemyCards
+      cardsCovered = cardsCovered.drop(1)
+      if(numOfPlayers >= 3) {
+        enemy2.enemyCards = cardsCovered.head +: enemy2.enemyCards
         cardsCovered = cardsCovered.drop(1)
-      } else if(numOfPlayers == 3) {
-        enemy.enemyCards = cardsCovered(0) +: enemy.enemyCards
-        cardsCovered = cardsCovered.drop(1)
-        enemy2.enemyCards = cardsCovered(0) +: enemy2.enemyCards
-        cardsCovered = cardsCovered.drop(1)
-      } else {
-        enemy.enemyCards = cardsCovered(0) +: enemy.enemyCards
-        cardsCovered = cardsCovered.drop(1)
-        enemy2.enemyCards = cardsCovered(0) +: enemy2.enemyCards
-        cardsCovered = cardsCovered.drop(1)
-        enemy3.enemyCards = cardsCovered(0) +: enemy3.enemyCards
-        cardsCovered = cardsCovered.drop(1)
+        if (numOfPlayers == 4) {
+          enemy3.enemyCards = cardsCovered.head +: enemy3.enemyCards
+          cardsCovered = cardsCovered.drop(1)
+        }
       }
     }
     cardsRevealed = cardsCovered(0) +: cardsRevealed
