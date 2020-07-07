@@ -5,6 +5,7 @@ import com.google.inject.name.Named
 import de.htwg.se.uno.model.gameComponent.GameInterface
 
 import scala.collection.mutable
+import scala.collection.mutable.ListBuffer
 import scala.swing.Color
 
 case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends GameInterface{
@@ -279,6 +280,63 @@ case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends Ga
   def getAnotherPull() : Boolean = anotherPull
   def getHv() : Boolean = hv
   def getHv2() : Boolean = hv2
+
+
+  def getAllCards(list: Int, index: Int) : String = {
+    if (list == 0)
+      init.enemy.enemyCards(index).toString
+    else if (list == 1)
+      init.enemy2.enemyCards(index).toString
+    else if (list == 2)
+      init.enemy3.enemyCards(index).toString
+    else if (list == 3)
+      init.player.handCards(index).toString
+    else if (list == 4)
+      init.cardsCovered(index).toString
+    else
+      init.cardsRevealed(index).toString
+  }
+
+  def getIOLengths(list : Integer) : Int = {
+    if (list == 0)
+      init.enemy.enemyCards.length
+    else if (list == 1)
+      init.enemy2.enemyCards.length
+    else if (list == 2)
+      init.enemy3.enemyCards.length
+    else if (list == 3)
+      init.player.handCards.length
+    else if (list == 4)
+      init.cardsCovered.length
+    else
+      init.cardsRevealed.length
+  }
+
+  def setAllCards(list: Int, card: Card) : Game = {
+    if (list == 0)
+      init.enemy.enemyCards = card +: init.enemy.enemyCards
+    else if (list == 1)
+      init.enemy2.enemyCards = card +: init.enemy2.enemyCards
+    else if (list == 2)
+      init.enemy3.enemyCards = card +: init.enemy3.enemyCards
+    else if (list == 3)
+      init.player.handCards = card +: init.player.handCards
+    else if (list == 4)
+      init.cardsCovered = card +: init.cardsCovered
+    else
+      init.cardsRevealed = card +: init.cardsRevealed
+    this
+  }
+
+  def clearAllLists() : Game = {
+    init.enemy.enemyCards = new ListBuffer[Card]()
+    init.enemy2.enemyCards = new ListBuffer[Card]()
+    init.enemy3.enemyCards = new ListBuffer[Card]()
+    init.player.handCards = new ListBuffer[Card]()
+    init.cardsCovered = new ListBuffer[Card]()
+    init.cardsRevealed = new ListBuffer[Card]()
+    this
+  }
 
   override def toString: String = {
     val a = "┌-------┐  "

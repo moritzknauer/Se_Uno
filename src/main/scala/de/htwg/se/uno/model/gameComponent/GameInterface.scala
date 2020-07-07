@@ -1,6 +1,6 @@
 package de.htwg.se.uno.model.gameComponent
 
-import de.htwg.se.uno.model.gameComponent.gameBaseImpl.Game
+import de.htwg.se.uno.model.gameComponent.gameBaseImpl.{Card, Game}
 
 import scala.swing.Color
 
@@ -33,4 +33,8 @@ trait GameInterface {
   def setHv(b : Boolean = true) : Game
   def getHv2() : Boolean
   def setLength(i:Integer) : Unit
+  def getAllCards(list: Int, index: Int) : String
+  def getIOLengths(list : Integer) : Int
+  def setAllCards(list: Int, card: Card) : Game
+  def clearAllLists() : Game
 }
