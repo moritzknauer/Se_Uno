@@ -54,9 +54,9 @@ class FileIO extends  FileIOInterface{
       cardNumber <- 0 until game.getLength(listNumber)
     } yield {
       for (i <- 0 to cards.length) {
-        if (cards(i).toString ==
+        //if (cards(i).toString ==
       }
-      game = game.setAllCards(listNumber, cards)
+      //game = game.setAllCards(listNumber, cards)
     }
 
     game
@@ -69,7 +69,7 @@ class FileIO extends  FileIOInterface{
         "activePlayer" -> JsNumber(game.getActivePlayer()),
         "direction" -> JsBoolean(game.getDirection()),
         "anotherPull" -> JsBoolean(game.getAnotherPull()),
-        "color" -> Json.toJson(game.getColor()),
+        "color" -> JsNumber(game.getColorNumber()),
         "playerCards" -> Json.toJson(
           for {
             listNumber <- 0 until 5
