@@ -8,6 +8,7 @@ import de.htwg.se.uno.model.gameComponent.GameInterface
 import de.htwg.se.uno.model.gameComponent.fileIoComponent.FileIOInterface
 import de.htwg.se.uno.model.gameComponent.gameBaseImpl.{Card, Color, Value}
 import play.api.libs.json._
+import scala.util.control.Breaks._
 
 import scala.collection.mutable.ListBuffer
 import scala.io.Source
@@ -53,10 +54,13 @@ class FileIO extends  FileIOInterface{
       listNumber <- 0 until 5
       cardNumber <- 0 until game.getLength(listNumber)
     } yield {
+      val card = (json \\ "card")(listNumber)(cardNumber).as[String]
       for (i <- 0 to cards.length) {
-        //if (cards(i).toString ==
+        if (cards(i).toString.equals(card)) {
+          game = game.setAllCards(listNumber, cards(i))
+          break
+        }
       }
-      //game = game.setAllCards(listNumber, cards)
     }
 
     game
