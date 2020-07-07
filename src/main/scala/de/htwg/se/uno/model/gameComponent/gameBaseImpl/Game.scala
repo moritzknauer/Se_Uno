@@ -203,6 +203,11 @@ case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends Ga
   def getNumOfPlayers() : Int = {
     numOfPlayers
   }
+
+  def getColorNumber() : Int = {
+    color
+  }
+
   def getColor() : Color = {
     if (color == 1) {
       new Color(0, 0, 255)

@@ -53,10 +53,10 @@ class FileIO extends  FileIOInterface{
       listNumber <- 0 until 5
       cardNumber <- 0 until game.getLength(listNumber)
     } yield {
-      //for (i <- 0 to cards.length) {
-        //if (cards(i).toString ==
-      //}
-      //game = game.setAllCards(listNumber, cards)
+      for (i <- 0 to cards.length) {
+        if (cards(i).toString ==
+      }
+      game = game.setAllCards(listNumber, cards)
     }
 
     game
