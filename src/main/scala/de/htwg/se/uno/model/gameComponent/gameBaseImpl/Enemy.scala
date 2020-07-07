@@ -331,7 +331,7 @@ class Enemy() {
     }
   }
   def pushable9(card : Card, game : Game) : Boolean = {
-    if (card.value == Value.PlusFour && game.init.cardsRevealed.head.value != Value.PlusTwo) {
+    if (card.value == Value.PlusFour && (game.init.cardsRevealed.head.value != Value.PlusTwo)) {
       for (i <- 1 to enemyCards.length) {
         if (enemyCards(i - 1).color == game.init.cardsRevealed.head.color &&
             game.init.cardsRevealed.head.color != Color.Schwarz && game.init.cardsRevealed.head.value != Value.PlusFour) {
@@ -346,7 +346,7 @@ class Enemy() {
 
   def ki(game : Game) : Enemy = {
     for (i <- 1 to enemyCards.length) {
-      if(pushable7(enemyCards(i - 1), game) && game.init.cardsRevealed.head.value != Value.PlusTwo) {
+      if(pushable9(enemyCards(i - 1), game)) {
         return pushCardEnemy(enemyCards(i-1), game)
       }
     }
