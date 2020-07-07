@@ -5,6 +5,7 @@ import com.google.inject.name.Named
 import de.htwg.se.uno.model.gameComponent.GameInterface
 
 import scala.collection.mutable
+import scala.collection.mutable.ListBuffer
 import scala.swing.Color
 
 case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends GameInterface{
@@ -175,6 +176,16 @@ case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends Ga
       init.cardsCovered = card +: init.cardsCovered
     else
       init.cardsRevealed = card +: init.cardsRevealed
+    this
+  }
+
+  def clearAllLists() : Game = {
+    init.enemy.enemyCards = new ListBuffer[Card]()
+    init.enemy2.enemyCards = new ListBuffer[Card]()
+    init.enemy3.enemyCards = new ListBuffer[Card]()
+    init.player.handCards = new ListBuffer[Card]()
+    init.cardsCovered = new ListBuffer[Card]()
+    init.cardsRevealed = new ListBuffer[Card]()
     this
   }
 
