@@ -53,13 +53,13 @@ class EnemySpec extends WordSpec {
       }
       "Be able to do the enemy's run a eigth time" in{
         newGame = newGame.createTestGame()
-        newGame.init.enemy.enemyCards = newGame.init.enemy.enemyCards.take(1) ++ newGame.init.enemy.enemyCards.drop(2)
+        newGame.init.enemy.enemyCards = Card(Color.Schwarz, Value.ColorChange) +: newGame.init.enemy.enemyCards.drop(9)
         newGame.activePlayer = 0
         newGame.init.enemy.enemy(newGame) should be (newGame.init.enemy)
       }
       "Be able to do the enemy's run a nineth time" in{
         newGame = newGame.createTestGame()
-        newGame.init.enemy.enemyCards = newGame.init.enemy.enemyCards.take(2)
+        newGame.init.enemy.enemyCards = newGame.init.enemy.enemyCards.drop(3)
         newGame.init.cardsRevealed = Card(Color.Blue, Value.Five) +: newGame.init.cardsRevealed
         newGame.activePlayer = 0
         newGame.init.enemy.enemy(newGame) should be (newGame.init.enemy)
@@ -67,7 +67,14 @@ class EnemySpec extends WordSpec {
       "Be able to do the enemy's run a tenth time" in{
         newGame = newGame.createTestGame()
         newGame.init.cardsRevealed = Card(Color.Schwarz, Value.ColorChange) +: newGame.init.cardsRevealed
-        newGame.init.enemy.enemyCards = newGame.init.enemy.enemyCards.take(2) ++ newGame.init.enemy.enemyCards.drop(4)
+        newGame.init.enemy.enemyCards = newGame.init.enemy.enemyCards.drop(7)
+        newGame.activePlayer = 0
+        newGame.init.enemy.enemy(newGame) should be (newGame.init.enemy)
+      }
+      "Be able to do the enemy's run a eleventh time" in{
+        newGame = newGame.createTestGame()
+        //newGame.init.cardsRevealed = Card(Color.Red, Value.Zero) +: newGame.init.cardsRevealed
+        newGame.init.enemy.enemyCards = newGame.init.enemy.enemyCards.drop(8)
         newGame.activePlayer = 0
         newGame.init.enemy.enemy(newGame) should be (newGame.init.enemy)
       }
