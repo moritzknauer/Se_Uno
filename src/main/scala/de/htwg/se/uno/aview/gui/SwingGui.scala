@@ -86,10 +86,10 @@ class SwingGui(controller: ControllerInterface) extends Frame {
       if (controller.nextTurn()) {
         contents += new GridPanel(1,1) {
           border = LineBorder(java.awt.Color.GREEN, 1)
-          contents += new GridPanel(1, controller.getLength(3)) {
+          contents += new GridPanel(1, controller.getLength(4)) {
             border = LineBorder(java.awt.Color.WHITE, 19)
             background = java.awt.Color.WHITE
-            for (player <- 1 to controller.getLength(3)) {
+            for (player <- 1 to controller.getLength(4)) {
               val cardPanel = new CardPanel(4, player - 1, controller)
               contents += cardPanel.card
               listenTo(cardPanel)
@@ -97,10 +97,10 @@ class SwingGui(controller: ControllerInterface) extends Frame {
           }
         }
       } else {
-        contents += new GridPanel(1, controller.getLength(3)) {
+        contents += new GridPanel(1, controller.getLength(4)) {
           border = LineBorder(java.awt.Color.WHITE, 19)
           background = java.awt.Color.WHITE
-          for (player <- 1 to controller.getLength(3)) {
+          for (player <- 1 to controller.getLength(4)) {
             val cardPanel = new CardPanel(4, player - 1, controller)
             contents += cardPanel.card
             listenTo(cardPanel)
@@ -209,10 +209,10 @@ class SwingGui(controller: ControllerInterface) extends Frame {
             if (controller.nextTurn()) {
               contents += new GridPanel(1,1) {
                 border = LineBorder(java.awt.Color.GREEN, 1)
-                contents += new GridPanel(1, controller.getLength(3)) {
+                contents += new GridPanel(1, controller.getLength(4)) {
                   border = LineBorder(java.awt.Color.WHITE, 19)
                   background = java.awt.Color.WHITE
-                  for (player <- 1 to controller.getLength(3)) {
+                  for (player <- 1 to controller.getLength(4)) {
                     val cardPanel = new CardPanel(4, player - 1, controller)
                     contents += cardPanel.card
                     listenTo(cardPanel)
@@ -220,10 +220,10 @@ class SwingGui(controller: ControllerInterface) extends Frame {
                 }
               }
             } else {
-              contents += new GridPanel(1, controller.getLength(3)) {
+              contents += new GridPanel(1, controller.getLength(4)) {
                 border = LineBorder(java.awt.Color.WHITE, 19)
                 background = java.awt.Color.WHITE
-                for (player <- 1 to controller.getLength(3)) {
+                for (player <- 1 to controller.getLength(4)) {
                   val cardPanel = new CardPanel(4, player - 1, controller)
                   contents += cardPanel.card
                   listenTo(cardPanel)

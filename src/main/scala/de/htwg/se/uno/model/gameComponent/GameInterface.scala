@@ -34,7 +34,9 @@ trait GameInterface {
   def getHv2() : Boolean
   def setLength(i:Integer) : Unit
   def getAllCards(list: Int, index: Int) : String
-  def getIOLengths(list : Integer) : Int
   def setAllCards(list: Int, card: Card) : Game
   def clearAllLists() : Game
+  def shuffle() : Game
+  def unshuffle() : Game
+  def reshuffle() : Game
 }
