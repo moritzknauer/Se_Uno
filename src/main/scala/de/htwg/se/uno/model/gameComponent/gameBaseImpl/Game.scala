@@ -4,9 +4,7 @@ import com.google.inject.Inject
 import com.google.inject.name.Named
 import de.htwg.se.uno.model.gameComponent.GameInterface
 
-import scala.collection.mutable
-import scala.collection.mutable.ListBuffer
-import scala.swing.Color
+import scala.collection.mutable.{ListBuffer, Stack}
 
 case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends GameInterface{
   var init = InitializeGameStrategy()
@@ -16,11 +14,13 @@ case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends Ga
   var activePlayer = numOfPlayers - 1
   private var direction = true
   var anotherPull = false
-  var special = mutable.Stack[Integer](0)
-  var color = 0
+  var special = Stack[Integer](0)
   var hv = false
   var hv2 = false
   private var i = 0
+  private var shuffled = Stack[ListBuffer[Card]]()
+  private var unshuffled = Stack[ListBuffer[Card]]()
+  private var reshuffled = Stack[ListBuffer[Card]]()
 
   def createGame() : Game = {
     init = InitializeGameStrategy()
@@ -30,7 +30,6 @@ case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends Ga
     anotherPull = false
     special.popAll()
     special.push(0)
-    color = 0
     hv = false
     hv2 = false
     this
@@ -43,7 +42,6 @@ case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends Ga
     anotherPull = false
     special.popAll()
     special.push(0)
-    color = 0
     hv = false
     hv2 = false
     this
@@ -51,9 +49,6 @@ case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends Ga
 
   def pushMove(string : String, color : Int) : Game = {
     if(special.top != - 1) {
-      if (color != 0) {
-        this.color = color
-      }
       hv = false
       init.player = init.player.pushMove(string, color, this)
     } else if (special.top == -1) {
@@ -162,12 +157,21 @@ case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends Ga
         i
       } else
         init.enemy3.enemyCards.length
-    } else {
+    } else if (list == 3) {
+      init.cardsRevealed.length
+    } else if (list == 4) {
       if (i == 4) {
         i = 0
         i
       } else
         init.player.handCards.length
+    } else {
+      if (i==5) {
+        i = 0
+        i
+      } else {
+        init.cardsCovered.length
+      }
     }
   }
   def getCardText(list : Int, index : Int) : String = {
@@ -297,21 +301,6 @@ case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends Ga
       init.cardsRevealed(index).toString
   }
 
-  def getIOLengths(list : Integer) : Int = {
-    if (list == 0)
-      init.enemy.enemyCards.length
-    else if (list == 1)
-      init.enemy2.enemyCards.length
-    else if (list == 2)
-      init.enemy3.enemyCards.length
-    else if (list == 3)
-      init.player.handCards.length
-    else if (list == 4)
-      init.cardsCovered.length
-    else
-      init.cardsRevealed.length
-  }
-
   def setAllCards(list: Int, card: Card) : Game = {
     if (list == 0)
       init.enemy.enemyCards = card +: init.enemy.enemyCards
@@ -337,6 +326,47 @@ case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends Ga
     init.cardsRevealed = new ListBuffer[Card]()
     this
   }
+
+  def shuffle() : Game = {
+    unshuffled.push(init.cardsRevealed.drop(1))
+    var cards = init.cardsCovered ++ init.cardsRevealed.drop(1)
+    var n = cards.length
+    for (_ <- 0 to cards.length - 1) {
+      val r = new scala.util.Random
+      val p = 1 + r.nextInt(n)
+      init.cardsCovered = cards(p - 1) +: init.cardsCovered
+      cards = cards.take(p - 1) ++ cards.drop(p)
+      n -= 1
+    }
+    init.cardsRevealed = init.cardsRevealed.take(1)
+    shuffled.push(init.cardsCovered)
+    this
+  }
+
+  def unshuffle() : Game = {
+    init.cardsRevealed = init.cardsRevealed(init.cardsRevealed.length - 1) +: unshuffled.top
+    unshuffled.pop()
+    reshuffled.push(init.cardsCovered)
+    init.cardsCovered = shuffled.top
+    shuffled.pop()
+    this
+  }
+
+  def reshuffle() : Game = {
+    shuffled.push(init.cardsCovered)
+    unshuffled.push(init.cardsRevealed.drop(1))
+    init.cardsCovered = reshuffled.top
+    reshuffled.pop()
+    init.cardsRevealed = init.cardsRevealed.take(1)
+    this
+  }
+
+
+
+
+
+
+
 
   override def toString: String = {
     val a = "┌-------┐  "

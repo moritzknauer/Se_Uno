@@ -170,7 +170,6 @@ class Enemy() {
     var c = 0
     var max = 0
     var myCard = card
-    var color = 0
     if (card.color == Color.Schwarz) {
       for (i <- 0 to 3) {
         c = 0
@@ -197,24 +196,19 @@ class Enemy() {
           if (i == 0) {
             max = c
             myCard = Card(Color.Blue, card.value)
-            color = i + 1
           } else if (i == 1) {
             max = c
             myCard = Card(Color.Green, card.value)
-            color = i + 1
           } else if (i == 2) {
             max = c
             myCard = Card(Color.Yellow, card.value)
-            color = i + 1
           } else {
             max = c
             myCard = Card(Color.Red, card.value)
-            color = i + 1
           }
         }
       }
     }
-    game.color = color
     c = 0
     stack3.push(card)
     for (i <- 2 to enemyCards.length) {

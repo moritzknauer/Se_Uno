@@ -75,7 +75,9 @@ class Controller @Inject() (var game: GameInterface) extends ControllerInterface
     if (game.nextTurn()) {
       val b = game.getAnotherPull()
       game = game.setActivePlayer()
+      val activePlayer = game.getActivePlayer()
       undoManager.doStep(new PullCommand(this))
+      val activePlayer2 = game.getActivePlayer()
       controllerEvent("enemyTurn")
       if (b) {
         game = game.setAnotherPull()
@@ -86,8 +88,14 @@ class Controller @Inject() (var game: GameInterface) extends ControllerInterface
         game = game.setDirection()
         controllerEvent("yourTurn")
       }
+      if (activePlayer != activePlayer2) {
+        game = game.setDirection()
+        game = game.setActivePlayer()
+        game = game.setDirection()
+        controllerEvent("pullCardNotAllowed")
+      }
       publish(new GameChanged)
-      won
+      shuffle
     } else {
       controllerEvent("enemyTurn")
       publish(new GameNotChanged)
@@ -117,6 +125,7 @@ class Controller @Inject() (var game: GameInterface) extends ControllerInterface
       controllerEvent("enemyTurn")
     }
     publish(new GameChanged)
+    shuffle
     won
   }
 
@@ -145,6 +154,7 @@ class Controller @Inject() (var game: GameInterface) extends ControllerInterface
     }
     controllerEvent("redo")
     publish(new GameChanged)
+    shuffle
     won
   }
 
@@ -173,6 +183,16 @@ class Controller @Inject() (var game: GameInterface) extends ControllerInterface
     } else if (game.getNumOfPlayers() >= 4 &&game.getLength(2) == 0) {
       controllerEvent("lost")
       publish(new GameEnded)
+    } else {
+      controllerEvent("idle")
+    }
+  }
+
+  def shuffle: Unit = {
+    if(game.getLength(5) <= 16) {
+      undoManager.doStep(new ShuffleCommand(this))
+      controllerEvent("shuffled")
+      publish(new GameChanged)
     } else {
       controllerEvent("idle")
     }
@@ -235,6 +255,10 @@ class Controller @Inject() (var game: GameInterface) extends ControllerInterface
       }
       case "chooseColor" => {
         hs = "Wähle eine Farbe"
+        hs
+      }
+      case "shuffled" => {
+        hs = "Verdeckter Kartenstapel wurde neu gemischt"
         hs
       }
       case "idle" => hs
