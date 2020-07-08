@@ -52,7 +52,8 @@ class FileIO extends  FileIOInterface{
     game = game.clearAllLists()
     var i = 0
     for (listNumber <- 0 to 5) {
-      for (cardNumber <- 0 until game.getLength(listNumber)) {
+      val listLength = (json \\ "length")(listNumber).as[Int]
+      for (_ <- 0 until listLength) {
         val card = (json \\ "card")(i).as[String]
         for (i <- cards.indices) {
           if (cards(i).toString.equals(card)) {
