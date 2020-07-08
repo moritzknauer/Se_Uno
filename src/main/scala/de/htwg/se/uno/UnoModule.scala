@@ -20,6 +20,7 @@ class UnoModule extends AbstractModule with ScalaModule {
     bind[GameInterface].annotatedWithName("3 Players").toInstance(new Game(3))
     bind[GameInterface].annotatedWithName("4 Players").toInstance(new Game(4))
 
-    bind[FileIOInterface].to[fileIoJsonImpl.FileIO]
+    //bind[FileIOInterface].to[fileIoJsonImpl.FileIO]
+    bind[FileIOInterface].to[fileIoXmlImpl.FileIO]
   }
 }
