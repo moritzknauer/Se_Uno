@@ -293,27 +293,27 @@ class GameSpec extends WordSpec {
 
       "Should be able to set all Cards" in {
         newGame.setAllCards(0,Card(Color.Red, Value.Five))
-        newGame.init.enemy.enemyCards.head.toString should be("R 5")
+        newGame.init.enemy.enemyCards(newGame.init.enemy.enemyCards.length - 1).toString should be("R 5")
       }
       "Should be able to set all Cards a second time" in {
         newGame.setAllCards(1,Card(Color.Red, Value.Five))
-        newGame.init.enemy2.enemyCards.head.toString should be("R 5")
+        newGame.init.enemy2.enemyCards(newGame.init.enemy2.enemyCards.length - 1).toString should be("R 5")
       }
       "Should be able to set all Cards a third time" in {
         newGame.setAllCards(2,Card(Color.Red, Value.Five))
-        newGame.init.enemy3.enemyCards.head.toString should be("R 5")
+        newGame.init.enemy3.enemyCards(newGame.init.enemy3.enemyCards.length - 1).toString should be("R 5")
       }
       "Should be able to set all Cards a fourth time" in {
         newGame.setAllCards(3,Card(Color.Red, Value.Five))
-        newGame.init.cardsRevealed.head.toString should be("R 5")
+        newGame.init.cardsRevealed(newGame.init.cardsRevealed.length - 1).toString should be("R 5")
       }
       "Should be able to set all Cards a fifth time" in {
         newGame.setAllCards(4,Card(Color.Red, Value.Five))
-        newGame.init.player.handCards.head.toString should be("R 5")
+        newGame.init.player.handCards(newGame.init.player.handCards.length - 1).toString should be("R 5")
       }
       "Should be able to set all Cards a sixth time" in {
         newGame.setAllCards(5,Card(Color.Red, Value.Five))
-        newGame.init.cardsCovered.head.toString should be("R 5")
+        newGame.init.cardsCovered(newGame.init.cardsCovered.length - 1).toString should be("R 5")
       }
 
       "Should be able to clear all Lists" in {

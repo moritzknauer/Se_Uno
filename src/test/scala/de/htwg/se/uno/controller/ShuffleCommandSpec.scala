@@ -1,0 +1,23 @@
+package de.htwg.se.uno.controller
+
+import de.htwg.se.uno.controller.controllerComponent.controllerBaseImpl.{Controller, ShuffleCommand}
+import de.htwg.se.uno.model.gameComponent.gameBaseImpl.Game
+import org.scalatest.{Matchers, WordSpec}
+
+class ShuffleCommandSpec extends WordSpec with Matchers {
+  "A ShuffleCommand" when {
+    "new" should {
+      val controller = new Controller(new Game(4))
+      val command = new ShuffleCommand(controller)
+      "Be able to do a Step" in {
+        command.doStep
+      }
+      "Be able to undo a Step" in {
+        command.undoStep
+      }
+      "Be able to redo a Step" in {
+        command.redoStep
+      }
+    }
+  }
+}
