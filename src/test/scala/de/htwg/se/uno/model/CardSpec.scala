@@ -20,6 +20,7 @@ class CardSpec extends WordSpec {
         newCard.toString should be("B 0")
       }
       "Have a nice GuiString representation for a Card" in {
+        newCard = Card(Color.Blue, Value.Seven)
         newCard.toGuiString should be(" 7 ")
       }
       "Have a nice GuiString representation for another Card" in {
