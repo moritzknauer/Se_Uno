@@ -9,7 +9,7 @@ class CardSpec extends WordSpec {
 
   "A Card" when {
     "new" should {
-      val newCard = Card(Color.Blue, Value.Zero)
+      var newCard = Card(Color.Blue, Value.Zero)
       "have color Blue" in {
         newCard.color should be(Color.Blue)
       }
@@ -19,8 +19,20 @@ class CardSpec extends WordSpec {
       "have a nice String representation" in{
         newCard.toString should be("B 0")
       }
-      "Have a nice GuiString representation for every Card" in {
+      "Have a nice GuiString representation for a Card" in {
         newCard.toGuiString should be(" 7 ")
+      }
+      "Have a nice GuiString representation for another Card" in {
+        newCard = Card(Color.Blue, Value.Eight)
+        newCard.toGuiString should be(" 8 ")
+      }
+      "Have a nice GuiString representation for a third Card" in {
+        newCard = Card(Color.Blue, Value.Nine)
+        newCard.toGuiString should be(" 9 ")
+      }
+      "Have a nice GuiString representation for a third Card" in {
+        newCard = Card(Color.Blue, Value.Five)
+        newCard.toGuiString should be(" 5 ")
       }
     }
   }
