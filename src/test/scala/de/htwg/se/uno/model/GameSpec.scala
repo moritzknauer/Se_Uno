@@ -1,6 +1,6 @@
 package de.htwg.se.uno.model
 
-import de.htwg.se.uno.model.gameComponent.gameBaseImpl.Game
+import de.htwg.se.uno.model.gameComponent.gameBaseImpl.{Card, Color, Game, Value}
 import org.scalatest.Matchers._
 import org.scalatest._
 
@@ -28,12 +28,12 @@ class GameSpec extends WordSpec {
         newGame.getLength(4) should be(8)
       }
       "Should be able to do a pullMove" in {
-        newGame = newGame.pullMove
+        newGame = newGame.pullMove()
         newGame.getLength(4) should be(9)
       }
       "Should not be able to do a pullMove" in {
         newGame.special.push(-1)
-        newGame = newGame.pullMove
+        newGame = newGame.pullMove()
         newGame.getLength(4) should be(9)
       }
       "Should be able to do the enemy's run" in {
@@ -76,6 +76,8 @@ class GameSpec extends WordSpec {
         newGame.getLength(2) should be(8)
       }
       "Should be able to undo the player's move" in {
+        newGame.special.push(-1)
+        newGame.special.push(-1)
         newGame = newGame.playerUndo()
         newGame.getLength(4) should be(9)
       }
@@ -107,14 +109,26 @@ class GameSpec extends WordSpec {
       "Should be able to get the Length a sixth time" in {
         newGame.getLength(2) should be(newGame.init.enemy3.enemyCards.length)
       }
+      "Should be able to get the Length a seventh time" in {
+        newGame.getLength(3) should be(newGame.init.cardsRevealed.length)
+      }
       "Should be able to set the Length a fourth time" in {
         newGame.setLength(4)
       }
-      "Should be able to get the Length a seventh timt" in {
-        newGame.getLength(3) should be(0)
+      "Should be able to get the Length a eighth time" in {
+        newGame.getLength(4) should be(0)
       }
-      "Should be able to get the Length a eigth time" in {
-        newGame.getLength(3) should be(newGame.init.player.handCards.length)
+      "Should be able to get the Length a nineth time" in {
+        newGame.getLength(4) should be(newGame.init.player.handCards.length)
+      }
+      "Should be able to set the Length a fifth time" in {
+        newGame.setLength(5)
+      }
+      "Should be able to get the Length a tenth time" in {
+        newGame.getLength(5) should be(0)
+      }
+      "Should be able to get the Length a elenth time" in {
+        newGame.getLength(5) should be(newGame.init.cardsCovered.length)
       }
 
       "Should be able to get the Text of a Card" in {
@@ -257,7 +271,75 @@ class GameSpec extends WordSpec {
         newGame.getHv2() should be(newGame.hv2)
       }
 
+      "Should be able to get the string representation of all cards" in {
+        newGame = newGame.createTestGame()
+        newGame.getAllCards(0,2) should be("R 1")
+      }
+      "Should be able to get the string representation of all cards a second time" in {
+        newGame.getAllCards(1,2) should be("R 2")
+      }
+      "Should be able to get the string representation of all cards a third time" in {
+        newGame.getAllCards(2,2) should be("R 2")
+      }
+      "Should be able to get the string representation of all cards a fourth time" in {
+        newGame.getAllCards(3,0) should be("R 0")
+      }
+      "Should be able to get the string representation of all cards a fifth time" in {
+        newGame.getAllCards(4,2) should be("R 1")
+      }
+      "Should be able to get the string representation of all cards a sixth time" in {
+        newGame.getAllCards(5,0) should be("R 5")
+      }
+
+      "Should be able to set all Cards" in {
+        newGame.setAllCards(0,Card(Color.Red, Value.Five))
+        newGame.init.enemy.enemyCards.head.toString should be("R 5")
+      }
+      "Should be able to set all Cards a second time" in {
+        newGame.setAllCards(1,Card(Color.Red, Value.Five))
+        newGame.init.enemy2.enemyCards.head.toString should be("R 5")
+      }
+      "Should be able to set all Cards a third time" in {
+        newGame.setAllCards(2,Card(Color.Red, Value.Five))
+        newGame.init.enemy3.enemyCards.head.toString should be("R 5")
+      }
+      "Should be able to set all Cards a fourth time" in {
+        newGame.setAllCards(3,Card(Color.Red, Value.Five))
+        newGame.init.cardsRevealed.head.toString should be("R 5")
+      }
+      "Should be able to set all Cards a fifth time" in {
+        newGame.setAllCards(4,Card(Color.Red, Value.Five))
+        newGame.init.player.handCards.head.toString should be("R 5")
+      }
+      "Should be able to set all Cards a sixth time" in {
+        newGame.setAllCards(5,Card(Color.Red, Value.Five))
+        newGame.init.cardsCovered.head.toString should be("R 5")
+      }
+
+      "Should be able to clear all Lists" in {
+        newGame.clearAllLists()
+        newGame.init.cardsRevealed.length should be(0)
+      }
+
+      "Should be able to shuffle the covered Cards" in {
+        newGame = newGame.createTestGame()
+        newGame.shuffle()
+        newGame.init.cardsRevealed.length should be(1)
+      }
+      "Should be able to undo the shuffle of the covered cards" in {
+        newGame.unshuffle()
+        newGame.init.cardsRevealed.length should be(1)
+      }
+      "Should be able to redo the shuffle of the covered cards" in {
+        newGame.reshuffle()
+        newGame.init.cardsRevealed.length should be(1)
+      }
+
+
+
+
       "Have a nice String representation" in{
+        newGame = newGame.createTestGame()
         newGame.toString
       }
     }

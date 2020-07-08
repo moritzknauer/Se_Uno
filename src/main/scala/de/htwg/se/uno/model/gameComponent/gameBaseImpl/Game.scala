@@ -30,6 +30,9 @@ case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends Ga
     anotherPull = false
     special.popAll()
     special.push(0)
+    shuffled.popAll()
+    unshuffled.popAll()
+    reshuffled.popAll()
     hv = false
     hv2 = false
     this
@@ -42,6 +45,9 @@ case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends Ga
     anotherPull = false
     special.popAll()
     special.push(0)
+    shuffled.popAll()
+    unshuffled.popAll()
+    reshuffled.popAll()
     hv = false
     hv2 = false
     this
@@ -138,6 +144,7 @@ case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends Ga
   def setLength(i : Integer) : Unit = {
     this.i = i
   }
+
   def getLength(list:Integer) : Int = {
     if (list == 0) {
       if (i == 1) {
@@ -294,11 +301,11 @@ case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends Ga
     else if (list == 2)
       init.enemy3.enemyCards(index).toString
     else if (list == 3)
-      init.player.handCards(index).toString
-    else if (list == 4)
-      init.cardsCovered(index).toString
-    else
       init.cardsRevealed(index).toString
+    else if (list == 4)
+      init.player.handCards(index).toString
+    else
+      init.cardsCovered(index).toString
   }
 
   def setAllCards(list: Int, card: Card) : Game = {
@@ -309,11 +316,11 @@ case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends Ga
     else if (list == 2)
       init.enemy3.enemyCards = card +: init.enemy3.enemyCards
     else if (list == 3)
-      init.player.handCards = card +: init.player.handCards
-    else if (list == 4)
-      init.cardsCovered = card +: init.cardsCovered
-    else
       init.cardsRevealed = card +: init.cardsRevealed
+    else if (list == 4)
+    init.player.handCards = card +: init.player.handCards
+    else
+      init.cardsCovered = card +: init.cardsCovered
     this
   }
 
@@ -360,13 +367,6 @@ case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends Ga
     init.cardsRevealed = init.cardsRevealed.take(1)
     this
   }
-
-
-
-
-
-
-
 
   override def toString: String = {
     val a = "┌-------┐  "
