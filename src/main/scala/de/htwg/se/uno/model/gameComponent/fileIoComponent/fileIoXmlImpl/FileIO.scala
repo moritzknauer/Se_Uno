@@ -24,7 +24,6 @@ class FileIO extends FileIOInterface{
       case 3 => game = injector.instance[GameInterface](Names.named("3 Players"))
       case 4 => game = injector.instance[GameInterface](Names.named("4 Players"))
     }
-    println(numOfPlayers)
 
     val activePlayer = (file \\ "game" \ "@activePlayer").text.toInt
     while (activePlayer != game.getActivePlayer()) {
@@ -51,35 +50,24 @@ class FileIO extends FileIOInterface{
     val specialTop = (file \\ "game" \ "@specialTop").text.toInt
     game = game.setSpecialTop(specialTop)
 
-    /*
-    var i = 0
-    for (listNumber <- 0 to 5) {
-      val listLength = (file \\ "length").text.toInt
-      for (_ <- 0 until listLength) {
-        val card = (file \\ "card")(i)
-        for (i <- cards.indices) {
-          if (cards(i).toString.equals(card)) {
-            game = game.setAllCards(listNumber, cards(i))
-          }
-        }
-        i += 1
-      }
-    }*/
-    val listLength = (file \\ "listLength")
+    val listLength = (file \\ "length")
     var lengths = new ListBuffer[Int]()
     for (length <- listLength) {
       val l = (length \ "@length").text.toInt
       lengths = lengths :+ l
     }
 
-    val cardNodes = (file \\ "cardList")
+    val cardNodes = (file \\ "card")
     var i = 0
     var j = 0
     for (card <- cardNodes) {
       if (i == lengths(j)) {
-        j += 1
+        do {
+          j += 1
+        } while (lengths(j) == 0)
+        i = 0
       }
-      val c = (card \ "@card").text.toString
+      val c = (card \ "@card").text
       for (x <- cards.indices) {
         if (cards(x).toString.equals(c)) {
           game = game.setAllCards(j, cards(x))
