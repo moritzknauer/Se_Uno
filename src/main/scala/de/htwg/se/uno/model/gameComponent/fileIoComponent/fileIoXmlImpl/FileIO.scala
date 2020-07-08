@@ -33,6 +33,9 @@ class FileIO extends FileIOInterface{
       game = game.setDirection()
     }
 
+    val anotherPull = (file \\ "game" \ "@anotherPull").text.toBoolean
+    game = game.setAnotherPull(anotherPull)
+
 
 
 
