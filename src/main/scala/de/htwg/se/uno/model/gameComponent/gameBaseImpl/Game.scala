@@ -30,6 +30,9 @@ case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends Ga
     anotherPull = false
     special.popAll()
     special.push(0)
+    shuffled.popAll()
+    unshuffled.popAll()
+    reshuffled.popAll()
     hv = false
     hv2 = false
     this
@@ -42,6 +45,9 @@ case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends Ga
     anotherPull = false
     special.popAll()
     special.push(0)
+    shuffled.popAll()
+    unshuffled.popAll()
+    reshuffled.popAll()
     hv = false
     hv2 = false
     this
@@ -138,6 +144,7 @@ case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends Ga
   def setLength(i : Integer) : Unit = {
     this.i = i
   }
+
   def getLength(list:Integer) : Int = {
     if (list == 0) {
       if (i == 1) {
@@ -311,7 +318,7 @@ case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends Ga
     else if (list == 3)
       init.cardsRevealed = init.cardsRevealed :+ card
     else if (list == 4)
-      init.player.handCards = init.player.handCards :+ card
+    init.player.handCards = init.player.handCards :+ card
     else
       init.cardsCovered = init.cardsCovered :+ card
     this
@@ -360,13 +367,6 @@ case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends Ga
     init.cardsRevealed = init.cardsRevealed.take(1)
     this
   }
-
-
-
-
-
-
-
 
   override def toString: String = {
     val a = "┌-------┐  "
