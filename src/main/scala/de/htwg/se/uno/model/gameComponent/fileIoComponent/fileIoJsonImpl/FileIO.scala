@@ -73,15 +73,19 @@ class FileIO extends  FileIOInterface{
         "activePlayer" -> JsNumber(game.getActivePlayer()),
         "direction" -> JsBoolean(game.getDirection()),
         "anotherPull" -> JsBoolean(game.getAnotherPull()),
-        //"color" -> JsNumber(game.getColorNumber()),
-        "playerCards" -> Json.toJson(
+        "listLengths" -> Json.toJson(
+          for (i <- 0 to 5) {
+            Json.obj(
+              "length" -> JsNumber(game.getLength(i))
+            )
+          }
+        ),
+        "cardLists" -> Json.toJson(
           for {
             listNumber <- 0 to 5
             cardNumber <- 0 until game.getLength(listNumber)
           } yield {
             Json.obj(
-              //"listNumber" -> listNumber,
-              //"cardNumber" -> cardNumber,
               "card" -> JsString(game.getAllCards(listNumber, cardNumber))
             )
           }
