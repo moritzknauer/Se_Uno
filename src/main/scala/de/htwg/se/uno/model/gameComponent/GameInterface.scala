@@ -39,4 +39,6 @@ trait GameInterface {
   def shuffle() : Game
   def unshuffle() : Game
   def reshuffle() : Game
+  def getSpecialTop() : Int
+  def setSpecialTop(io : Int) : Game
 }
