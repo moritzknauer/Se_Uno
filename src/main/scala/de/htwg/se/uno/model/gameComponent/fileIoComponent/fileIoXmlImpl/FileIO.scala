@@ -21,8 +21,14 @@ class FileIO extends FileIOInterface{
       case 4 => game = injector.instance[GameInterface](Names.named("4 Players"))
     }
 
+
+
     game
   }
 
-  override def save(grid: GameInterface): Unit = ???
+  override def save(game: GameInterface): Unit = saveString(game)
+
+  def saveString(game: GameInterface): Unit = {
+
+  }
 }

@@ -4,5 +4,5 @@ import de.htwg.se.uno.model.gameComponent.GameInterface
 
 trait FileIOInterface {
   def load: GameInterface
-  def save(grid: GameInterface): Unit
+  def save(game: GameInterface): Unit
 }
