@@ -31,7 +31,7 @@ class CardSpec extends WordSpec {
         newCard = Card(Color.Blue, Value.Nine)
         newCard.toGuiString should be(" 9 ")
       }
-      "Have a nice GuiString representation for a third Card" in {
+      "Have a nice GuiString representation for a fourth Card" in {
         newCard = Card(Color.Blue, Value.Five)
         newCard.toGuiString should be(" 5 ")
       }
