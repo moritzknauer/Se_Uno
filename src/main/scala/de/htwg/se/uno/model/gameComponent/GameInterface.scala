@@ -36,6 +36,8 @@ trait GameInterface {
   def getAllCards(list: Int, index: Int) : String
   def setAllCards(list: Int, card: Card) : Game
   def clearAllLists() : Game
+  def getSpecialTop() : Int
+  def setSpecialTop(io: Int) : Game
   def shuffle() : Game
   def unshuffle() : Game
   def reshuffle() : Game

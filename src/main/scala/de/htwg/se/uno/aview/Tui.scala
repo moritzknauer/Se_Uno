@@ -50,11 +50,19 @@ class Tui(controller: ControllerInterface) extends Reactor {
         Success("Valid Command: " + input)
       }
       case "r" => {
-        controller.redo
+        controller.redo()
         Success("Valid Command: " + input)
       }
       case "u" => {
-        controller.undo
+        controller.undo()
+        Success("Valid Command: " + input)
+      }
+      case "sv" => {
+        controller.save()
+        Success("Valid Command: " + input)
+      }
+      case "ld" => {
+        controller.load()
         Success("Valid Command: " + input)
       }
       case "d" => {

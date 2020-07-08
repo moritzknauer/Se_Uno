@@ -12,6 +12,8 @@ trait ControllerInterface extends Publisher {
   def enemy(): Unit
   def undo(): Unit
   def redo(): Unit
+  def save(): Unit
+  def load(): Unit
   def won(): Unit
   def getCardText(list : Int, index : Int) : String
   def getGuiCardText(list : Int, index : Int) : String
