@@ -331,6 +331,22 @@ case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends Ga
     init.player.handCards = new ListBuffer[Card]()
     init.cardsCovered = new ListBuffer[Card]()
     init.cardsRevealed = new ListBuffer[Card]()
+    special.popAll()
+    special.push(0)
+    shuffled.popAll()
+    unshuffled.popAll()
+    reshuffled.popAll()
+    hv = false
+    hv2 = false
+    this
+  }
+
+  def getSpecialTop() : Int = {
+    special.top
+  }
+
+  def setSpecialTop(io: Int) : Game = {
+    special.push(io)
     this
   }
 
