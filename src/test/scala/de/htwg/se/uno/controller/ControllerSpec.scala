@@ -5,99 +5,201 @@ import de.htwg.se.uno.model.gameComponent.gameBaseImpl.Game
 import org.scalatest.{Matchers, WordSpec}
 
 import scala.language.reflectiveCalls
+import scala.swing.Color
 
 class ControllerSpec extends WordSpec with Matchers {
 
   "A Controller" when {
-    "observed by an Observer" should {
-      val game = new Game(1)
+    "it's a Publisher" should {
+      val game = new Game(2)
       val controller = new Controller(game)
-      "Should notify its Observer after creation" in {
-        controller.createGame(1)
-        controller.game.getLength(1) should be(1)
+      "Be able to create a game with 2 Players" in {
+        controller.createGame(2)
+        controller.getNumOfPlayers() should be(2)
       }
-      "Should be able to create a new Game" in{
-        controller.createGame()
-        controller.game.getLength(1) should be(7)
+      "Be able to create a new Game with 4 Players" in{
+        controller.createGame(4)
+        controller.getNumOfPlayers() should be(4)
       }
-      "Should be able to create a new Test Game" in{
+      "Be able to create a new Game with 3 Players" in{
+        controller.createGame(3)
+        controller.getNumOfPlayers() should be(3)
+      }
+      "Be able to create a new Test Game" in{
         controller.createTestGame()
-        controller.game.getLength(1) should be(5)
+        controller.getNumOfPlayers() should be(4)
       }
+
+      "Not Push a Special card without a color" in {
+        controller.set(controller.getCardText(4, 1))
+        controller.getHs2() should be(controller.getCardText(4, 1))
+      }
+      "not push a Card if the Card is not pushable" in {
+        val old = controller.gameToString
+        controller.set(controller.getCardText(4, 4))
+        controller.gameToString should be(old)
+      }
+      "be able to push a Special Card with a color" in {
+        controller.set(controller.getCardText(4,1), 4)
+        controller.controllerEvent("idle") should be(controller.controllerEvent("enemyTurn"))
+      }
+      "not push a Card if it's not the players turn" in {
+        val old = controller.gameToString
+        controller.set(controller.getCardText(4, 1))
+        controller.gameToString should be(old)
+      }
+      "Not pull a Card if it's not the players turn" in {
+        val old = controller.gameToString
+        controller.get()
+        controller.gameToString should be(old)
+      }
+
+
+      "Should be able to undo a Step" in {
+        controller.undo
+        controller.controllerEvent("idle") should be(controller.controllerEvent("undo"))
+      }
+
+
+      "Pull a Card if it is allowed" in {
+        controller.get()
+        controller.controllerEvent("idle") should be(controller.controllerEvent("yourTurn"))
+      }
+      "Not Pull another Card if a Card was already Pulled" in {
+        controller.get()
+        controller.controllerEvent("idle") should be(controller.controllerEvent(("enemyTurn")))
+      }
+
+      "Do the enemy's runs if it's the enemys turn" in {
+        controller.enemy()
+        controller.enemy()
+        controller.enemy()
+        controller.controllerEvent("idle") should be(controller.controllerEvent("yourTurn"))
+      }
+      "Should be able to undo another Step" in {
+        controller.undo
+        controller.controllerEvent("idle") should be(controller.controllerEvent("undo"))
+      }
+      "Do the enemy's run so that the enemy pulls and then can't do anything" in {
+        controller.set("S C", 1)
+        controller.enemy()
+        controller.enemy()
+        controller.enemy()
+        controller.set("R+2")
+        controller.enemy()
+        controller.enemy()
+        controller.enemy()
+        controller.get()
+        controller.enemy()
+        controller.enemy()
+        controller.enemy()
+        controller.set("Y 4")
+        controller.enemy()
+        controller.enemy()
+      }
+
+      "Should be able to redo a Step" in{
+        controller.redo
+        controller.controllerEvent("idle") should be(controller.controllerEvent("redo"))
+      }
+      "Should be able to check if nobody has won" in {
+        controller.won
+        controller.controllerEvent("idle") should be(controller.controllerEvent("redo"))
+      }
+
+      "Should be able to check if the enemy 1 has won" in {
+        controller.game.setLength(1)
+        controller.won
+        controller.controllerEvent("idle") should be(controller.controllerEvent("lost"))
+      }
+      "Should be able to check if the player has won" in {
+        controller.game.setLength(4)
+        controller.won
+        controller.controllerEvent("idle") should be(controller.controllerEvent("won"))
+      }
+      "Should be able to check if the enemy 2 has won" in {
+        controller.game.setLength(2)
+        controller.won
+        controller.controllerEvent("idle") should be(controller.controllerEvent("lost"))
+      }
+      "Should be able to check if the enemy 3 has won" in {
+        controller.game.setLength(3)
+        controller.controllerEvent("yourTurn")
+        controller.won
+        controller.controllerEvent("idle") should be(controller.controllerEvent("lost"))
+      }
+
+
       "Should Have a String Representation of the game" in {
         controller.gameToString should be (controller.game.toString)
       }
-      "Should be able to initialize a Test Game" in {
-        controller.game.createTestGame()
+      "Should be able to get the cardText of a Card" in {
+        controller.getCardText(0,0) should be("Uno")
       }
-      "Should be able to push a Card" in {
-        controller.set(controller.game.getCardText(2, 0))
+      "Should be able to get the guiCardText of a Card" in {
+        controller.getGuiCardText(0,0) should be("Uno")
       }
-      "Should be able to push Cards" in {
-        controller.set(controller.game.getCardText(2, 0))
-        controller.set(controller.game.getCardText(2, 1))
-        controller.set(controller.game.getCardText(2, 0))
-        controller.set(controller.game.getCardText(2, 0))
-        controller.get()
+      "Should be able to get the Length of a List" in {
+        controller.getLength(1) should be(6)
       }
-      /*
-      "Should be able to test if the game is won" in{
-        controller.won
-        State.state should be(wonEvent().won)
+      "Should be able to get the number of Players" in {
+        controller.getNumOfPlayers() should be(4)
       }
-
-       */
-
-
-
-      "Should be able to let the enemy run" in{
-        controller.enemy()
+      "Should be able to check if it's the players turn" in {
+        controller.nextTurn() should be(false)
       }
-      "Should be able to undo a Step" in {
-        controller.undo
+      "Should be able to return the Help String 2 of the controller" in {
+        controller.getHs2() should be("S C")
       }
-      "Should be able to redo a Step" in{
-        controller.redo
+      "Should be able to get the next Enemy" in {
+        controller.nextEnemy() should be(2)
       }
 
 
 
 
-      "Should be able to update the state to your turn" in {
-        controller.gameStatus("yourTurn")
-        controller.gameStatus("idle") should be("Du bist dran. Mögliche Befehle: q, n, t, s [Karte], g, u, r")
+      "Should be able to update the state to pushCardNotAllowed Event" in {
+        controller.controllerEvent("pushCardNotAllowed")
+        controller.controllerEvent("idle") should be("Du kannst diese Karte nicht legen")
       }
       "Should be able to update the state to enemys turn" in {
-        controller.gameStatus("enemyTurn")
-        controller.gameStatus("idle") should be("Gegner ist an der Reihe")
-      }
-      "Should be able to update the state to pushCardNotAllowed Event" in {
-        controller.gameStatus("pushCardNotAllowed")
-        controller.gameStatus("idle") should be("Du kannst diese Karte nicht legen")
+        controller.controllerEvent("enemyTurn")
+        controller.controllerEvent("idle") should be("Gegner ist an der Reihe")
       }
       "Should be able to update the state to pullCardNotAllowed Event" in {
-        controller.gameStatus("pullCardNotAllowed")
-        controller.gameStatus("idle") should be("Du kannst keine Karte ziehen, da du eine Karte legen kannst")
+        controller.controllerEvent("pullCardNotAllowed")
+        controller.controllerEvent("idle") should be("Du kannst keine Karte ziehen")
       }
       "Should be able to update the state to unknownCommand Event" in {
-        controller.gameStatus("unknownCommand")
-        controller.gameStatus("idle") should be("Befehl nicht bekannt")
+        controller.controllerEvent("unknownCommand")
+        controller.controllerEvent("idle") should be("Befehl nicht bekannt")
+      }
+      "Should be able to update the state to your turn" in {
+        controller.controllerEvent("yourTurn")
+        controller.controllerEvent("idle") should be("Du bist dran. Mögliche Befehle: q, n [2 | 3 | 4], t, s Karte [Farbe], g, u, r, d")
       }
       "Should be able to update the state to won Event" in {
-        controller.gameStatus("won")
-        controller.gameStatus("idle") should be("Glückwunsch du hast gewonnen")
+        controller.controllerEvent("won")
+        controller.controllerEvent("idle") should be("Glückwunsch, du hast gewonnen!")
       }
       "Should be able to update the state to lost Event" in {
-        controller.gameStatus("lost")
-        controller.gameStatus("idle") should be("Du hast leider verloren")
+        controller.controllerEvent("lost")
+        controller.controllerEvent("idle") should be("Du hast leider verloren")
       }
       "Should be able to update the state to undo Event" in {
-        controller.gameStatus("undo")
-        controller.gameStatus("idle") should be("Zug rückgängig gemacht")
+        controller.controllerEvent("undo")
+        controller.controllerEvent("idle") should be("Zug rückgängig gemacht")
       }
       "Should be able to update the state to redo Event" in {
-        controller.gameStatus("redo")
-        controller.gameStatus("idle") should be("Zug wiederhergestellt")
+        controller.controllerEvent("redo")
+        controller.controllerEvent("idle") should be("Zug wiederhergestellt")
+      }
+      "Schould be able to update the state to chooseColor Event" in {
+        controller.controllerEvent("chooseColor")
+        controller.controllerEvent("idle") should be(controller.controllerEvent("chooseColor"))
+      }
+      "Should not chamge the state on input idle" in {
+        controller.controllerEvent("idle") should be(controller.controllerEvent("chooseColor"))
       }
     }
   }

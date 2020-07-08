@@ -67,14 +67,14 @@ class Tui(controller: ControllerInterface) extends Reactor {
       }
       case "d" => {
         if (controller.nextTurn()) {
-          controller.gameStatus("yourTurn")
+          controller.controllerEvent("yourTurn")
           controller.publish(new GameNotChanged)
         } else {
           controller.enemy()
         }
         Success("Valid Command: " + input)
       }
-      case _ => controller.gameStatus("unknownCommand")
+      case _ => controller.controllerEvent("unknownCommand")
         Success("Unknown Command: " + input)
         //Failure(new IllegalArgumentException("Wrong input: " + input))
     }
@@ -83,16 +83,16 @@ class Tui(controller: ControllerInterface) extends Reactor {
   reactions += {
       case a: GameSizeChanged => printTui
       case b: GameChanged => printTui
-      case c: GameNotChanged => println(controller.gameStatus("idle"))
-      case d: ChooseColor => println(controller.gameStatus("chooseColor"))
+      case c: GameNotChanged => println(controller.controllerEvent("idle"))
+      case d: ChooseColor => println(controller.controllerEvent("chooseColor"))
       case e: GameEnded => {
-        println(controller.gameStatus("idle"))
+        println(controller.controllerEvent("idle"))
         println("Starte neues Spiel oder beende")
       }
   }
 
   def printTui: Unit = {
     println(controller.gameToString)
-    println(controller.gameStatus("idle"))
+    println(controller.controllerEvent("idle"))
   }
 }

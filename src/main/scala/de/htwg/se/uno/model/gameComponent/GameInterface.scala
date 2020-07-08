@@ -13,9 +13,6 @@ trait GameInterface {
   def playerUndo() : Game
   def pushMove(string : String, color : Int) : Game
   def getLength(list:Integer) : Int
-  def getAllCards(list: Int, index: Int) : String
-  def setAllCards(list: Int, card: Card) : Game
-  def clearAllLists() : Game
   def getCardText(list : Int, index : Int) : String
   def getGuiCardText(list : Int, index : Int) : String
   def getNumOfPlayers() : Int
@@ -30,12 +27,14 @@ trait GameInterface {
   def setDirection() : Game
   def getActivePlayer() : Int
   def getDirection() : Boolean
-  def getColorNumber() : Int
-  def getColor() : Color
-  def setColor(int: Int) : Game
   def getAnotherPull() : Boolean
   def setAnotherPull(b : Boolean = false) : Game
   def getHv() : Boolean
   def setHv(b : Boolean = true) : Game
   def getHv2() : Boolean
+  def setLength(i:Integer) : Unit
+  def getAllCards(list: Int, index: Int) : String
+  def getIOLengths(list : Integer) : Int
+  def setAllCards(list: Int, card: Card) : Game
+  def clearAllLists() : Game
 }

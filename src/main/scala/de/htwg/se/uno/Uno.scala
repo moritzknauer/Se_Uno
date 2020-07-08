@@ -17,7 +17,7 @@ object Uno {
     var input: String = ""
 
     println(controller.gameToString)
-    println(controller.gameStatus("idle"))
+    println(controller.controllerEvent("idle"))
 
     gui.open()
 

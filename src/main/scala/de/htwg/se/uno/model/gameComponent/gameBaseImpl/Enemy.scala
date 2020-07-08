@@ -140,6 +140,10 @@ class Enemy() {
             }
           }
           if(c == 0) {
+            stack1.pop()
+            stack2.pop()
+            game.special.pop()
+            game.hv2 = true
             return this
           }
           val card = enemyCards(c-1)
@@ -335,7 +339,7 @@ class Enemy() {
       for (i <- 1 to enemyCards.length) {
         if (enemyCards(i - 1).color == game.init.cardsRevealed.head.color &&
             game.init.cardsRevealed.head.color != Color.Schwarz && game.init.cardsRevealed.head.value != Value.PlusFour) {
-          false
+          return false
         }
       }
       true
@@ -346,7 +350,7 @@ class Enemy() {
 
   def ki(game : Game) : Enemy = {
     for (i <- 1 to enemyCards.length) {
-      if(pushable7(enemyCards(i - 1), game) && game.init.cardsRevealed.head.value != Value.PlusTwo) {
+      if(pushable9(enemyCards(i - 1), game)) {
         return pushCardEnemy(enemyCards(i-1), game)
       }
     }
@@ -361,7 +365,7 @@ class Enemy() {
       if((enemyCards(i - 1).value == Value.Suspend || enemyCards(i - 1).value == Value.DirectionChange) &&
         ((game.init.cardsRevealed.head.value != Value.PlusTwo &&
           game.init.cardsRevealed.head.value != Value.PlusFour) || game.special.top <= 0) &&
-        (enemyCards(i - 1).value == game.init.cardsRevealed.head.value ||
+          (enemyCards(i - 1).value == game.init.cardsRevealed.head.value ||
           enemyCards(i - 1).color == game.init.cardsRevealed.head.color)) {
         return pushCardEnemy(enemyCards(i-1), game)
       }

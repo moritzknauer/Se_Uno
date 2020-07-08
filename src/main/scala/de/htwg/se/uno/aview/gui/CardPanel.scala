@@ -38,11 +38,7 @@ class CardPanel (list: Int, index: Int, controller: ControllerInterface) extends
     } else if (cardTextColor(list, index) == 'B') {
       blueColor
     } else {
-      if (list == 4) {
-        specialColor
-      } else {
-        controller.getColor
-      }
+      specialColor
     }
   }
 
@@ -52,7 +48,7 @@ class CardPanel (list: Int, index: Int, controller: ControllerInterface) extends
         controller.get
       } else if (list == 3 && index == 2) {
         if (controller.nextTurn()) {
-          controller.gameStatus("yourTurn")
+          controller.controllerEvent("yourTurn")
           controller.publish(new GameNotChanged)
         } else {
           controller.enemy()
@@ -60,12 +56,11 @@ class CardPanel (list: Int, index: Int, controller: ControllerInterface) extends
       } else if (list == 4) {
         controller.set(cardText(list, index))
       } else {
-        controller.gameStatus("pushCardNotAllowed")
+        controller.controllerEvent("pushCardNotAllowed")
         controller.publish(new GameNotChanged)
       }
     }
-    if ((controller.getNumOfPlayers == 2 && list == 3 && index != 2) || (controller.getNumOfPlayers == 2 &&
-          list != 3) || (list == 3 && index != 2) || (list == 4 && controller.getNumOfPlayers == 3)) {
+    if ((list == 3 && index != 2) || (controller.getNumOfPlayers == 2 && list != 3) || (list == 4 && controller.getNumOfPlayers == 3)) {
       button.font = new Font("Verdana", 5, 25)
       button.preferredSize_=(new Dimension(100,180))
       button.maximumSize_= (new Dimension(100, 180))

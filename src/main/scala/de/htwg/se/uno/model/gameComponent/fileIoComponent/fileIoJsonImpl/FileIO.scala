@@ -39,8 +39,8 @@ class FileIO extends  FileIOInterface{
     val anotherPull = (json \ "game" \ "anotherPull").get.toString.toBoolean
     game = game.setAnotherPull(anotherPull)
 
-    val color = (json \ "game" \ "color").get.toString.toInt
-    game = game.setColor(color)
+    //val color = (json \ "game" \ "color").get.toString.toInt
+    //game = game.setColor(color)
 
     var cards = new ListBuffer[Card]()
     for (color <- Color.values) {
@@ -73,15 +73,15 @@ class FileIO extends  FileIOInterface{
         "activePlayer" -> JsNumber(game.getActivePlayer()),
         "direction" -> JsBoolean(game.getDirection()),
         "anotherPull" -> JsBoolean(game.getAnotherPull()),
-        "color" -> JsNumber(game.getColorNumber()),
+        //"color" -> JsNumber(game.getColorNumber()),
         "playerCards" -> Json.toJson(
           for {
             listNumber <- 0 to 5
             cardNumber <- 0 until game.getLength(listNumber)
           } yield {
             Json.obj(
-              "listNumber" -> listNumber,
-              "cardNumber" -> cardNumber,
+              //"listNumber" -> listNumber,
+              //"cardNumber" -> cardNumber,
               "card" -> JsString(game.getAllCards(listNumber, cardNumber))
             )
           }
