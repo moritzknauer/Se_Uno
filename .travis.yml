@@ -6,7 +6,8 @@ env:
   - DISPLAY=:99.0
 
 before_install:
-  -e /etc/init.d/xvfb start
+  -sh -e /etc/init.d/xvfb start
+  -sleep 3
 
 script:
   - sbt clean coverage test coverageReport
