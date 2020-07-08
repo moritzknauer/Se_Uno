@@ -2,8 +2,6 @@ package de.htwg.se.uno.model.gameComponent
 
 import de.htwg.se.uno.model.gameComponent.gameBaseImpl.{Card, Game}
 
-import scala.swing.Color
-
 trait GameInterface {
   def toString: String
   def createTestGame(): Game
