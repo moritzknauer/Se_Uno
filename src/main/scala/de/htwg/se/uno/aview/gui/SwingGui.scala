@@ -273,10 +273,6 @@ class SwingGui(controller: ControllerInterface) extends Frame {
   }
 
   visible = true
-  /*size = new Dimension(1950,1080)
-  maximumSize = new Dimension(1950, 1080)
-  minimumSize = new Dimension(1950, 1080)
-   */
   redraw
 
 

@@ -102,6 +102,17 @@ class TuiSpec extends WordSpec with Matchers{
       tui.processInputLine("r")
       controller.gameToString should not be (old)
     }
+    "Save but not change anything on input 'sv'" in {
+      val old = controller.gameToString
+      tui.processInputLine("sv")
+      controller.gameToString should be (old)
+    }
+    "Load and change the game on input 'ld'" in {
+      controller.createGame(3)
+      val old = controller.gameToString
+      tui.processInputLine("ld")
+      controller.gameToString should not be(old)
+    }
     "Do nothing special on Event GameEnded" in {
       controller.publish(new GameEnded)
     }

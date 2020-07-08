@@ -17,7 +17,6 @@ class Controller @Inject() (var game: GameInterface) extends ControllerInterface
   val fileIo = injector.instance[FileIOInterface]
   private var hs = "Du bist dran. Mögliche Befehle: q, n, t, s [Karte], g, u, r"
   private var hs2 = ""
-  private var color = 0
   private var hv = false
 
   def createGame(size: Int):Unit = {
@@ -29,7 +28,6 @@ class Controller @Inject() (var game: GameInterface) extends ControllerInterface
     }
     game = game.createGame()
     hs2 = ""
-    color = 0
     undoManager = new UndoManager
     controllerEvent("yourTurn")
     publish(new GameSizeChanged)
@@ -166,6 +164,8 @@ class Controller @Inject() (var game: GameInterface) extends ControllerInterface
 
   def load: Unit = {
     game = fileIo.load
+    hs2 = ""
+    undoManager = new UndoManager
     controllerEvent("load")
     publish(new GameChanged)
   }

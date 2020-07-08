@@ -24,7 +24,6 @@ class FileIO extends  FileIOInterface{
       case 2 => game = injector.instance[GameInterface](Names.named("2 Players"))
       case 3 => game = injector.instance[GameInterface](Names.named("3 Players"))
       case 4 => game = injector.instance[GameInterface](Names.named("4 Players"))
-      case _ =>
     }
 
     val activePlayer = (json \ "game" \ "activePlayer").get.toString.toInt

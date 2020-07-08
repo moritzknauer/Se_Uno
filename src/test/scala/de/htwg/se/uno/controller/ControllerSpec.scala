@@ -69,14 +69,13 @@ class ControllerSpec extends WordSpec with Matchers {
         controller.get()
         controller.controllerEvent("idle") should be(controller.controllerEvent(("enemyTurn")))
       }
-
       "Do the enemy's runs if it's the enemys turn" in {
         controller.enemy()
         controller.enemy()
         controller.enemy()
         controller.controllerEvent("idle") should be(controller.controllerEvent("yourTurn"))
       }
-      "Should be able to undo another Step" in {
+      "Should be able to undo a second Step" in {
         controller.undo
         controller.controllerEvent("idle") should be(controller.controllerEvent("undo"))
       }
@@ -96,6 +95,19 @@ class ControllerSpec extends WordSpec with Matchers {
         controller.set("Y 4")
         controller.enemy()
         controller.enemy()
+      }
+      "Should be able to undo a third step" in {
+        controller.undo
+        controller.controllerEvent("idle") should be(controller.controllerEvent("undo"))
+      }
+      "Not Pull a Card if the player has to suspend" in {
+        controller.game.setSpecialTop(-1)
+        controller.get()
+        controller.controllerEvent("idle") should be(controller.controllerEvent(("pullCardNotAllowed")))
+      }
+      "Should be able to undo a fourth step" in {
+        controller.undo
+        controller.controllerEvent("idle") should be(controller.controllerEvent("undo"))
       }
 
       "Should be able to redo a Step" in{
@@ -152,10 +164,44 @@ class ControllerSpec extends WordSpec with Matchers {
         controller.getHs2() should be("S C")
       }
       "Should be able to get the next Enemy" in {
-        controller.nextEnemy() should be(2)
+        controller.nextEnemy() should be(1)
       }
 
-
+      "Should be able to save the game" in {
+        controller.save
+        controller.controllerEvent("idle") should be(controller.controllerEvent("save"))
+      }
+      "Should be able to load the game" in {
+        controller.load
+        controller.controllerEvent("idle") should be(controller.controllerEvent("load"))
+      }
+      "Should be able to save the game again" in {
+        controller.game = new Game(2)
+        controller.createGame(2)
+        controller.game.setDirection()
+        controller.game.setActivePlayer()
+        controller.save
+        controller.controllerEvent("idle") should be(controller.controllerEvent("save"))
+      }
+      "Should be able to load the game again" in {
+        controller.load
+        controller.controllerEvent("idle") should be(controller.controllerEvent("load"))
+      }
+      "Should be able to save the game a third time" in {
+        controller.game = new Game(3)
+        controller.createGame(3)
+        controller.save
+        controller.controllerEvent("idle") should be(controller.controllerEvent("save"))
+      }
+      "Should be able to load the game a third time" in {
+        controller.load
+        controller.controllerEvent("idle") should be(controller.controllerEvent("load"))
+      }
+      "Should be able to shuffle the covered cards" in {
+        controller.game.setLength(5)
+        controller.shuffle
+        controller.controllerEvent("idle") should be(controller.controllerEvent("shuffled"))
+      }
 
 
       "Should be able to update the state to pushCardNotAllowed Event" in {
@@ -194,12 +240,24 @@ class ControllerSpec extends WordSpec with Matchers {
         controller.controllerEvent("redo")
         controller.controllerEvent("idle") should be("Zug wiederhergestellt")
       }
-      "Schould be able to update the state to chooseColor Event" in {
+      "Should be able to update the state to chooseColor Event" in {
         controller.controllerEvent("chooseColor")
         controller.controllerEvent("idle") should be(controller.controllerEvent("chooseColor"))
       }
-      "Should not chamge the state on input idle" in {
-        controller.controllerEvent("idle") should be(controller.controllerEvent("chooseColor"))
+      "Should be able to update the state to save Event" in {
+        controller.controllerEvent("save")
+        controller.controllerEvent("idle") should be(controller.controllerEvent("save"))
+      }
+      "Should be able to update the state to load Event" in {
+        controller.controllerEvent("load")
+        controller.controllerEvent("idle") should be(controller.controllerEvent("load"))
+      }
+      "Should be able to update the state to shuffled Event" in {
+        controller.controllerEvent("shuffled")
+        controller.controllerEvent("idle") should be(controller.controllerEvent("shuffled"))
+      }
+      "Should not change the state on input idle" in {
+        controller.controllerEvent("idle") should be(controller.controllerEvent("shuffled"))
       }
     }
   }
