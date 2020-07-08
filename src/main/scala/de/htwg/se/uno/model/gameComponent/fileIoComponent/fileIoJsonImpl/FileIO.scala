@@ -32,8 +32,9 @@ class FileIO extends  FileIOInterface{
     }
 
     val direction = (json \ "game" \ "direction").get.toString.toBoolean
-    if (direction != game.getDirection())
+    if (direction != game.getDirection()) {
       game = game.setDirection()
+    }
 
     val anotherPull = (json \ "game" \ "anotherPull").get.toString.toBoolean
     game = game.setAnotherPull(anotherPull)

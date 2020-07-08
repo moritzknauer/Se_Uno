@@ -15,13 +15,24 @@ class FileIO extends FileIOInterface{
     val file = scala.xml.XML.loadFile("game.xml")
     val injector = Guice.createInjector(new UnoModule)
 
-    val numOfPlayersAttr = (file \\ "game" \ "@numOfPlayers")
-    val numOfPlayers = numOfPlayersAttr.text.toInt
+    val numOfPlayers = (file \\ "game" \ "@numOfPlayers").text.toInt
+    //val numOfPlayers = numOfPlayersAttr.text.toInt
     numOfPlayers match {
       case 2 => game = injector.instance[GameInterface](Names.named("2 Players"))
       case 3 => game = injector.instance[GameInterface](Names.named("3 Players"))
       case 4 => game = injector.instance[GameInterface](Names.named("4 Players"))
     }
+
+    val activePlayer = (file \\ "game" \ "@activePlayer").text.toInt
+    while (activePlayer != game.getActivePlayer()) {
+      game = game.setActivePlayer()
+    }
+
+    val direction = (file \\ "game" \ "@direction").text.toBoolean
+    if (direction != game.getDirection()) {
+      game = game.setDirection()
+    }
+
 
 
 
