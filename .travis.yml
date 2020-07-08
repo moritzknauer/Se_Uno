@@ -2,12 +2,11 @@ language: scala
 scala:
   - 2.12.7
 
+services:
+  - xvfb
+
 env:
   - DISPLAY=:99.0
-
-before_install:
-  - sh -e /etc/init.d/xvfb start
-  - sleep 3
 
 script:
   - export DISPLAY=:0.0
