@@ -18,7 +18,6 @@ class FileIO extends FileIOInterface{
     val injector = Guice.createInjector(new UnoModule)
 
     val numOfPlayers = (file \\ "game" \\ "@numOfPlayers").text.toInt
-    //val numOfPlayers = numOfPlayersAttr.text.toInt
     numOfPlayers match {
       case 2 => game = injector.instance[GameInterface](Names.named("2 Players"))
       case 3 => game = injector.instance[GameInterface](Names.named("3 Players"))
