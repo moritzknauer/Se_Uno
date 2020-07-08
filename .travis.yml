@@ -9,7 +9,6 @@ env:
   - DISPLAY=:99.0
 
 script:
-  - export DISPLAY=:0.0
   - sbt clean coverage test coverageReport
 
 after_success:
