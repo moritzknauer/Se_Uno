@@ -103,6 +103,7 @@ case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends Ga
     }
     this
   }
+
   def enemy3() : Game = {
     if (special.top != - 1) {
       hv = false
