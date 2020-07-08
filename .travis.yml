@@ -3,7 +3,7 @@ scala:
   - 2.12.7
 
 script:
-  - export DISPLAY=:0
+  - setenv DISPLAY=:0.0
   - sbt clean coverage test coverageReport
 
 after_success:
