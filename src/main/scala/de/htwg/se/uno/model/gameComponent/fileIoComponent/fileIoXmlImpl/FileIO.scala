@@ -7,6 +7,8 @@ import de.htwg.se.uno.UnoModule
 import de.htwg.se.uno.model.gameComponent.GameInterface
 import de.htwg.se.uno.model.gameComponent.fileIoComponent.FileIOInterface
 
+import scala.xml.{Node, PrettyPrinter}
+
 class FileIO extends FileIOInterface{
   override def load: GameInterface = {
     var game: GameInterface = null
@@ -29,6 +31,13 @@ class FileIO extends FileIOInterface{
   override def save(game: GameInterface): Unit = saveString(game)
 
   def saveString(game: GameInterface): Unit = {
-
+    import java.io._
+    val pw = new PrintWriter(new File("game.xml"))
+    val prettyPrinter = new PrettyPrinter(120, 4)
+    val xml = prettyPrinter.format(gameToXml(game))
+    pw.write(xml)
+    pw.close()
   }
+
+  def gameToXml(game: GameInterface): Node = ???
 }
