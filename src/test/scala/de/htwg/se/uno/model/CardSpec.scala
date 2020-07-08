@@ -19,6 +19,9 @@ class CardSpec extends WordSpec {
       "have a nice String representation" in{
         newCard.toString should be("B 0")
       }
+      "Have a nice GuiString representation for every Card once" in {
+        newCard.toGuiString should be(" 7 ")
+      }
     }
   }
 }
