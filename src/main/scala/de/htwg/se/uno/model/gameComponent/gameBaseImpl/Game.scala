@@ -303,17 +303,17 @@ case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends Ga
 
   def setAllCards(list: Int, card: Card) : Game = {
     if (list == 0)
-      init.enemy.enemyCards = card +: init.enemy.enemyCards
+      init.enemy.enemyCards = init.enemy.enemyCards :+ card
     else if (list == 1)
-      init.enemy2.enemyCards = card +: init.enemy2.enemyCards
+      init.enemy2.enemyCards = init.enemy2.enemyCards :+ card
     else if (list == 2)
-      init.enemy3.enemyCards = card +: init.enemy3.enemyCards
+      init.enemy3.enemyCards = init.enemy3.enemyCards :+ card
     else if (list == 3)
-      init.cardsRevealed = card +: init.cardsRevealed
+      init.cardsRevealed = init.cardsRevealed :+ card
     else if (list == 4)
-      init.player.handCards = card +: init.player.handCards
+      init.player.handCards = init.player.handCards :+ card
     else
-      init.cardsCovered = card +: init.cardsCovered
+      init.cardsCovered = init.cardsCovered :+ card
     this
   }
 
@@ -321,9 +321,9 @@ case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends Ga
     init.enemy.enemyCards = new ListBuffer[Card]()
     init.enemy2.enemyCards = new ListBuffer[Card]()
     init.enemy3.enemyCards = new ListBuffer[Card]()
-    init.cardsRevealed = new ListBuffer[Card]()
     init.player.handCards = new ListBuffer[Card]()
     init.cardsCovered = new ListBuffer[Card]()
+    init.cardsRevealed = new ListBuffer[Card]()
     this
   }
 
