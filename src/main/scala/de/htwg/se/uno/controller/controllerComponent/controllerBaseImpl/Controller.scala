@@ -160,13 +160,13 @@ class Controller @Inject() (var game: GameInterface) extends ControllerInterface
 
   def save: Unit = {
     fileIo.save(game)
-    gameStatus("save")
+    controllerEvent("save")
     publish(new GameChanged)
   }
 
   def load: Unit = {
     game = fileIo.load
-    gameStatus("load")
+    controllerEvent("load")
     publish(new GameChanged)
   }
 
