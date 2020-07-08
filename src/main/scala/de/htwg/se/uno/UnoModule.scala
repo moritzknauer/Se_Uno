@@ -4,9 +4,10 @@ import com.google.inject.AbstractModule
 import com.google.inject.name.Names
 import net.codingwell.scalaguice.ScalaModule
 import de.htwg.se.uno.controller.controllerComponent._
-import de.htwg.se.uno.model.gameComponent.GameInterface
-import de.htwg.se.uno.model.gameComponent.fileIoComponent._
+import de.htwg.se.uno.model.fileIoComponent.FileIOInterface
+import de.htwg.se.uno.model.fileIoComponent.fileIoXmlImpl.FileIO
 import de.htwg.se.uno.model.gameComponent.gameBaseImpl.Game
+import de.htwg.se.uno.model.gameComponent.GameInterface
 
 class UnoModule extends AbstractModule with ScalaModule {
   val defaultPlayers:Int = 2
@@ -21,6 +22,6 @@ class UnoModule extends AbstractModule with ScalaModule {
     bind[GameInterface].annotatedWithName("4 Players").toInstance(new Game(4))
 
     //bind[FileIOInterface].to[fileIoJsonImpl.FileIO]
-    bind[FileIOInterface].to[fileIoXmlImpl.FileIO]
+    bind[FileIOInterface].to[FileIO]
   }
 }

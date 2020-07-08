@@ -1,6 +1,5 @@
 package de.htwg.se.uno.model.gameComponent.gameBaseImpl
 
-
 import scala.collection.mutable.{ListBuffer, Stack}
 
 class Player() {

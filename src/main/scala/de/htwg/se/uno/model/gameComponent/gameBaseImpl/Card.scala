@@ -1,7 +1,7 @@
 package de.htwg.se.uno.model.gameComponent.gameBaseImpl
 
-import de.htwg.se.uno.model.gameComponent.gameBaseImpl.Color.Color
-import de.htwg.se.uno.model.gameComponent.gameBaseImpl.Value.Values
+import Color.Color
+import Value.Values
 
 case class Card(color:Color, value:Values) {
   override def toString:String = {

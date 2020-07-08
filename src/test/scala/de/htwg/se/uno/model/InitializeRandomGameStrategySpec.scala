@@ -1,6 +1,7 @@
 package de.htwg.se.uno.model
 
-import de.htwg.se.uno.model.gameComponent.gameBaseImpl.{Game, InitializeGameStrategy, InitializeRandomGameStrategy}
+import de.htwg.se.uno.model.gameComponent.gameBaseImpl.InitializeRandomGameStrategy
+import de.htwg.se.uno.model.gameComponent.gameBaseImpl.InitializeRandomGameStrategy
 import org.scalatest.Matchers._
 import org.scalatest._
 

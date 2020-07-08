@@ -1,12 +1,14 @@
-package de.htwg.se.uno.model.gameComponent.fileIoComponent.fileIoXmlImpl
+package de.htwg.se.uno.model.fileIoComponent.fileIoXmlImpl
 
 import com.google.inject.Guice
 import com.google.inject.name.Names
 import net.codingwell.scalaguice.InjectorExtensions._
 import de.htwg.se.uno.UnoModule
-import de.htwg.se.uno.model.gameComponent.GameInterface
-import de.htwg.se.uno.model.gameComponent.fileIoComponent.FileIOInterface
+import de.htwg.se.uno.model.gameComponent.gameBaseImpl
+import de.htwg.se.uno.model.fileIoComponent.FileIOInterface
 import de.htwg.se.uno.model.gameComponent.gameBaseImpl.{Card, Color, Value}
+import de.htwg.se.uno.model.gameComponent.GameInterface
+import de.htwg.se.uno.model.gameComponent.gameBaseImpl.Color
 
 import scala.collection.mutable.ListBuffer
 import scala.xml.{Node, PrettyPrinter}
@@ -40,7 +42,7 @@ class FileIO extends FileIOInterface{
     var cards = new ListBuffer[Card]()
     for (color <- Color.values) {
       for (value <- Value.values) {
-        cards += Card(color, value)
+        cards += gameBaseImpl.Card(color, value)
       }
     }
 
