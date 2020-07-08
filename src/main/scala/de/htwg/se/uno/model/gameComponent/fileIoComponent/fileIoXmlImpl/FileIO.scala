@@ -39,5 +39,32 @@ class FileIO extends FileIOInterface{
     pw.close()
   }
 
-  def gameToXml(game: GameInterface): Node = ???
+  def gameToXml(game: GameInterface): Node = {
+    <game>
+      <numOfPlayers>{ game.getNumOfPlayers().toString }</numOfPlayers>
+      <activePlayer>{ game.getActivePlayer().toString }</activePlayer>
+      <direction>{ game.getDirection().toString }</direction>
+      <anotherPull>{ game.getAnotherPull().toString }</anotherPull>
+      <specialTop>{ game.getSpecialTop().toString }</specialTop>
+      <cardLists>
+        {
+          for {
+            listNumber <- 0 to 5
+            cardNumber <- 0 until game.getLength(listNumber)
+          } yield {
+            <card>{ game.getAllCards(listNumber, cardNumber) }</card>
+          }
+        }
+      </cardLists>
+      <listLengths>
+        {
+          for {
+            i <- 0 to 5
+          } yield {
+            <length>{ game.getLength(i).toString }</length>
+          }
+        }
+      </listLengths>
+    </game>
+  }
 }
