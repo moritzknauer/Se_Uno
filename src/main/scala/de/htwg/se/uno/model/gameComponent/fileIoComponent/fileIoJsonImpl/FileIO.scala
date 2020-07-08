@@ -47,6 +47,10 @@ class FileIO extends  FileIOInterface{
     }
 
     game = game.clearAllLists()
+
+    val specialTop = (json \ "game" \ "specialTop").get.toString.toInt
+    game = game.setSpecialTop(specialTop)
+
     var i = 0
     for (listNumber <- 0 to 5) {
       val listLength = (json \\ "length")(listNumber).as[Int]
@@ -71,6 +75,7 @@ class FileIO extends  FileIOInterface{
         "activePlayer" -> JsNumber(game.getActivePlayer()),
         "direction" -> JsBoolean(game.getDirection()),
         "anotherPull" -> JsBoolean(game.getAnotherPull()),
+        "specialTop" -> JsNumber(game.getSpecialTop()),
         "cardLists" -> Json.toJson(
           for {
             listNumber <- 0 to 5
