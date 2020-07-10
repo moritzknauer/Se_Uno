@@ -175,28 +175,6 @@ class ControllerSpec extends WordSpec with Matchers {
         controller.load
         controller.controllerEvent("idle") should be(controller.controllerEvent("load"))
       }
-      "Should be able to save the game again" in {
-        controller.game = new Game(2)
-        controller.createGame(2)
-        controller.game.setDirection()
-        controller.game.setActivePlayer()
-        controller.save
-        controller.controllerEvent("idle") should be(controller.controllerEvent("save"))
-      }
-      "Should be able to load the game again" in {
-        controller.load
-        controller.controllerEvent("idle") should be(controller.controllerEvent("load"))
-      }
-      "Should be able to save the game a third time" in {
-        controller.game = new Game(3)
-        controller.createGame(3)
-        controller.save
-        controller.controllerEvent("idle") should be(controller.controllerEvent("save"))
-      }
-      "Should be able to load the game a third time" in {
-        controller.load
-        controller.controllerEvent("idle") should be(controller.controllerEvent("load"))
-      }
       "Should be able to shuffle the covered cards" in {
         controller.game.setLength(5)
         controller.shuffle
