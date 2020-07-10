@@ -11,6 +11,8 @@ import javax.swing.JFrame
 
 class SwingGui(controller: ControllerInterface) extends Frame {
 
+  var variableForTests = 0
+
   listenTo(controller)
 
   title = "HTWG Uno"
@@ -35,6 +37,7 @@ class SwingGui(controller: ControllerInterface) extends Frame {
                   }
                 }
               }
+              variableForTests = 1
             } else {
               contents += new GridPanel(1, controller.getLength(i)) {
                 border = LineBorder(java.awt.Color.WHITE, 20)
@@ -60,6 +63,7 @@ class SwingGui(controller: ControllerInterface) extends Frame {
                   }
                 }
               }
+              variableForTests = 2
             } else {
               contents += new GridPanel(1, controller.getLength(i)) {
                 border = LineBorder(java.awt.Color.WHITE, 20)
@@ -96,6 +100,7 @@ class SwingGui(controller: ControllerInterface) extends Frame {
             }
           }
         }
+        variableForTests = 3
       } else {
         contents += new GridPanel(1, controller.getLength(4)) {
           border = LineBorder(java.awt.Color.WHITE, 19)
@@ -126,6 +131,7 @@ class SwingGui(controller: ControllerInterface) extends Frame {
                   }
                 }
               }
+              variableForTests = 4
             } else {
               contents += new GridPanel(1, controller.getLength(i)) {
                 border = LineBorder(java.awt.Color.WHITE, 20)
@@ -151,6 +157,7 @@ class SwingGui(controller: ControllerInterface) extends Frame {
                   }
                 }
               }
+              variableForTests = 5
             } else {
               contents += new GridPanel(1, controller.getLength(i)) {
                 border = LineBorder(java.awt.Color.WHITE, 20)
@@ -193,6 +200,7 @@ class SwingGui(controller: ControllerInterface) extends Frame {
                   }
                 }
               }
+              variableForTests = 6
             } else {
               contents += new GridPanel(1, controller.getLength(2)) {
                 border = LineBorder(java.awt.Color.WHITE, 20)
@@ -219,6 +227,7 @@ class SwingGui(controller: ControllerInterface) extends Frame {
                   }
                 }
               }
+              variableForTests = 7
             } else {
               contents += new GridPanel(1, controller.getLength(4)) {
                 border = LineBorder(java.awt.Color.WHITE, 19)

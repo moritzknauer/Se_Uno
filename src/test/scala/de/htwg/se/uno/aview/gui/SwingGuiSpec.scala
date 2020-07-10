@@ -15,34 +15,35 @@ class SwingGuiSpec extends WordSpec with Matchers {
       var swingGui = new SwingGui(controller)
       "Have a title" in {
         swingGui.title should be("HTWG Uno")
+        swingGui.variableForTests should be(7)
       }
       "Change if the activePlayer changes" in {
         controller.set("R 1")
-        swingGui.title should be("HTWG Uno")
+        swingGui.variableForTests should be(4)
       }
       "Change if the activePlayer changes a second time" in {
         controller.enemy()
-        swingGui.title should be("HTWG Uno")
+        swingGui.variableForTests should be(5)
       }
       "Change if the activePlayer changes a third time" in {
         controller.enemy()
-        swingGui.title should be("HTWG Uno")
+        swingGui.variableForTests should be(6)
       }
       "Change if the activePlayer changes a fourth time" in {
         controller = new Controller(new Game(3))
         controller.createGame(3)
         swingGui = new SwingGui(controller)
-        swingGui.title should be("HTWG Uno")
+        swingGui.variableForTests should be(3)
       }
       "Change if the activePlayer changes a fifth time" in {
         controller.game.setActivePlayer()
         controller.publish(new GameChanged)
-        swingGui.title should be("HTWG Uno")
+        swingGui.variableForTests should be(1)
       }
       "Change if the activePlayer changes a sixth time" in {
         controller.game.setActivePlayer()
         controller.publish(new GameChanged)
-        swingGui.title should be("HTWG Uno")
+        swingGui.variableForTests should be(2)
       }
       "Have a statusline" in {
         swingGui.statusline.text should be(controller.controllerEvent("idle"))
