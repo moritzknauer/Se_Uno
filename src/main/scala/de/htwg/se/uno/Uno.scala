@@ -10,7 +10,7 @@ object Uno {
   val injector: Injector = Guice.createInjector(new UnoModule)
   val controller: ControllerInterface = injector.getInstance(classOf[ControllerInterface])
   val tui = new Tui(controller)
-  //val gui = new SwingGui(controller)
+  val gui = new SwingGui(controller)
   controller.publish(new GameSizeChanged())
 
   def main(args: Array[String]): Unit = {
@@ -19,7 +19,7 @@ object Uno {
     println(controller.gameToString)
     println(controller.controllerEvent("idle"))
 
-    //gui.open()
+    gui.open()
 
     do {
       input = readLine()
