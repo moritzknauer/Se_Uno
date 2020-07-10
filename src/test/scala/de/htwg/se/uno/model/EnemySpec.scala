@@ -104,40 +104,40 @@ class EnemySpec extends WordSpec {
 
       "Be able to undo a move" in {
         newGame = newGame.createTestGame()
-        newGame.init.enemy.stack1.push(" ")
-        newGame.init.enemy.stack2.push(2)
-        newGame.init.enemy.stack3.push(Card(Color.Blue, Value.DirectionChange))
+        newGame.init.enemy.pulledCardsStack.push(" ")
+        newGame.init.enemy.pushedCardIndexStack.push(2)
+        newGame.init.enemy.pushedCardsStack.push(Card(Color.Blue, Value.DirectionChange))
         newGame.special.push(0)
         newGame.init.enemy.undo(newGame) should be(newGame.init.enemy)
       }
       "Be able to undo a second move" in {
         newGame = newGame.createTestGame()
-        newGame.init.enemy.stack1.push("Start")
-        newGame.init.enemy.stack2.push(-1)
+        newGame.init.enemy.pulledCardsStack.push("Start")
+        newGame.init.enemy.pushedCardIndexStack.push(-1)
         newGame.special.push(0)
         newGame.init.enemy.undo(newGame) should be(newGame.init.enemy)
       }
       "Be able to undo a third move" in {
         newGame = newGame.createTestGame()
-        newGame.init.enemy.stack1.push("R 1")
-        newGame.init.enemy.stack2.push(-1)
-        newGame.init.enemy.stack4.push(true)
+        newGame.init.enemy.pulledCardsStack.push("R 1")
+        newGame.init.enemy.pushedCardIndexStack.push(-1)
+        newGame.init.enemy.anotherPullStack.push(true)
         newGame.special.push(0)
         newGame.init.enemy.undo(newGame) should be(newGame.init.enemy)
       }
       "Be able to undo a fourth move" in {
         newGame = newGame.createTestGame()
-        newGame.init.enemy.stack1.push("Start")
-        newGame.init.enemy.stack2.push(-1)
-        newGame.init.enemy.stack4.push(true)
+        newGame.init.enemy.pulledCardsStack.push("Start")
+        newGame.init.enemy.pushedCardIndexStack.push(-1)
+        newGame.init.enemy.anotherPullStack.push(true)
         newGame.special.push(4)
         newGame.special.push(0)
-        newGame.init.enemy.stack1.push("R 1")
-        newGame.init.enemy.stack2.push(-1)
-        newGame.init.enemy.stack1.push("R S")
-        newGame.init.enemy.stack2.push(-1)
-        newGame.init.enemy.stack1.push("R+2")
-        newGame.init.enemy.stack2.push(-1)
+        newGame.init.enemy.pulledCardsStack.push("R 1")
+        newGame.init.enemy.pushedCardIndexStack.push(-1)
+        newGame.init.enemy.pulledCardsStack.push("R S")
+        newGame.init.enemy.pushedCardIndexStack.push(-1)
+        newGame.init.enemy.pulledCardsStack.push("R+2")
+        newGame.init.enemy.pushedCardIndexStack.push(-1)
         newGame.init.enemy.undo(newGame) should be(newGame.init.enemy)
       }
 

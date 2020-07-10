@@ -5,10 +5,10 @@ import scala.swing.Color
 
 class Enemy() {
   var enemyCards = new ListBuffer[Card]()
-  var stack1 = Stack[String]("Start")
-  var stack2 = Stack[Integer](-1)
-  var stack3 = Stack[Card]()
-  var stack4 = Stack[Boolean]()
+  var pulledCardsStack = Stack[String]("Start")
+  var pushedCardIndexStack = Stack[Integer](-1)
+  var pushedCardsStack = Stack[Card]()
+  var anotherPullStack = Stack[Boolean]()
 
 
   def enemy(game: Game) : Enemy = {
@@ -77,35 +77,35 @@ class Enemy() {
     }
     game.anotherPull = false
     game.special.push(0)
-    stack1.push("Suspend")
-    stack2.push(-1)
+    pulledCardsStack.push("Suspend")
+    pushedCardIndexStack.push(-1)
     this
   }
 
   def undo(game: Game) : Enemy = {
-    if(stack1.top.equals(" ")) {
-      enemyCards = enemyCards.take(stack2.top) :+ stack3.top :++ enemyCards.drop(stack2.top)
+    if(pulledCardsStack.top.equals(" ")) {
+      enemyCards = enemyCards.take(pushedCardIndexStack.top) :+ pushedCardsStack.top :++ enemyCards.drop(pushedCardIndexStack.top)
       game.init.cardsRevealed = game.init.cardsRevealed.drop(1)
-      if (stack3.top.value == Value.DirectionChange) {
+      if (pushedCardsStack.top.value == Value.DirectionChange) {
         game.setDirection()
       }
-      stack1.pop()
-      stack2.pop()
-      stack3.pop()
+      pulledCardsStack.pop()
+      pushedCardIndexStack.pop()
+      pushedCardsStack.pop()
       game.special.pop()
-      game.hv2 = true
+      game.undoVariable = true
     } else {
       var c = 0
       for(i <- 1 to enemyCards.length) {
-        if(enemyCards(i - 1).toString.equals(stack1.top) && c == 0) {
+        if(enemyCards(i - 1).toString.equals(pulledCardsStack.top) && c == 0) {
           c = i
         }
       }
       if(c == 0) {
-        stack1.pop()
-        stack2.pop()
+        pulledCardsStack.pop()
+        pushedCardIndexStack.pop()
         game.special.pop()
-        game.hv2 = true
+        game.undoVariable = true
         return this
       }
       val card = enemyCards(c-1)
@@ -120,14 +120,14 @@ class Enemy() {
       if (c == 0) {
         enemyCards = enemyCards.take(enemyCards.length - 1)
       }
-      stack1.pop()
-      stack2.pop()
-      game.hv2 = true
-      if (stack4.top) {
-        game.hv2 = false
+      pulledCardsStack.pop()
+      pushedCardIndexStack.pop()
+      game.undoVariable = true
+      if (anotherPullStack.top) {
+        game.undoVariable = false
         game.anotherPull = false
       }
-      stack4.pop()
+      anotherPullStack.pop()
 
 
       game.special.pop()
@@ -135,15 +135,15 @@ class Enemy() {
         for (_ <- 2 to game.special.top) {
           var c = 0
           for(i <- 1 to enemyCards.length) {
-            if(enemyCards(i - 1).toString.equals(stack1.top) && c == 0) {
+            if(enemyCards(i - 1).toString.equals(pulledCardsStack.top) && c == 0) {
               c = i
             }
           }
           if(c == 0) {
-            stack1.pop()
-            stack2.pop()
+            pulledCardsStack.pop()
+            pushedCardIndexStack.pop()
             game.special.pop()
-            game.hv2 = true
+            game.undoVariable = true
             return this
           }
           val card = enemyCards(c-1)
@@ -158,8 +158,8 @@ class Enemy() {
           if (c == 0) {
             enemyCards = enemyCards.take(enemyCards.length - 1)
           }
-          stack1.pop()
-          stack2.pop()
+          pulledCardsStack.pop()
+          pushedCardIndexStack.pop()
         }
       }
     }
@@ -210,30 +210,30 @@ class Enemy() {
       }
     }
     c = 0
-    stack3.push(card)
+    pushedCardsStack.push(card)
     for (i <- 2 to enemyCards.length) {
       if (enemyCards(i - 2).color == card.color && enemyCards(i - 2).value == card.value && c == 0) {
         game.init.cardsRevealed = myCard +: game.init.cardsRevealed
         enemyCards = enemyCards.take(i - 2) ++ enemyCards.drop(i-1)
         c += 1
-        stack2.push(i-2)
-        stack1.push(" ")
+        pushedCardIndexStack.push(i-2)
+        pulledCardsStack.push(" ")
       }
     }
     if (c == 0) {
       game.init.cardsRevealed = myCard +: game.init.cardsRevealed
       enemyCards = enemyCards.take(enemyCards.length - 1)
-      stack2.push(enemyCards.length - 1)
-      stack1.push(" ")
+      pushedCardIndexStack.push(enemyCards.length - 1)
+      pulledCardsStack.push(" ")
     }
-    if (stack3.top.value == Value.DirectionChange) {
+    if (pushedCardsStack.top.value == Value.DirectionChange) {
       game.setDirection()
       game.special.push(0)
-    } else if (stack3.top.value == Value.PlusTwo) {
+    } else if (pushedCardsStack.top.value == Value.PlusTwo) {
       game.special.push(game.special.top + 2)
-    } else if (stack3.top.value == Value.PlusFour) {
+    } else if (pushedCardsStack.top.value == Value.PlusFour) {
       game.special.push(game.special.top + 4)
-    } else if (stack3.top.value == Value.Suspend) {
+    } else if (pushedCardsStack.top.value == Value.Suspend) {
       game.special.push(-1)
     } else {
       game.special.push(0)
@@ -242,23 +242,23 @@ class Enemy() {
     this
   }
   def pullEnemy(game: Game) : Enemy = {
-    stack1.push(game.init.cardsCovered.head.toString)
-    stack2.push(-1)
+    pulledCardsStack.push(game.init.cardsCovered.head.toString)
+    pushedCardIndexStack.push(-1)
     enemyCards += Card(game.init.cardsCovered.head.color, game.init.cardsCovered.head.value)
     game.init.cardsCovered = game.init.cardsCovered.drop(1)
     if (game.special.top > 0) {
       game.anotherPull = false
-      stack4.push(false)
+      anotherPullStack.push(false)
       for (_ <- 2 to game.special.top) {
-        stack1.push(game.init.cardsCovered.head.toString)
-        stack2.push(-1)
+        pulledCardsStack.push(game.init.cardsCovered.head.toString)
+        pushedCardIndexStack.push(-1)
         enemyCards += Card(game.init.cardsCovered.head.color, game.init.cardsCovered.head.value)
         game.init.cardsCovered = game.init.cardsCovered.drop(1)
       }
     } else {
       game.anotherPull = true
-      game.hv = true
-      stack4.push(true)
+      game.redoVariable = true
+      anotherPullStack.push(true)
     }
     game.special.push(0)
     this

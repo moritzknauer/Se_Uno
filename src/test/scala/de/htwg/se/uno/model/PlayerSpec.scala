@@ -27,33 +27,33 @@ class PlayerSpec extends WordSpec {
 
       "Should be able to undo a Move" in {
         newGame = newGame.createTestGame()
-        newGame.init.player.stack1.push(" ")
-        newGame.init.player.stack2.push(2)
-        newGame.init.player.stack3.push(Card(Color.Blue, Value.DirectionChange))
+        newGame.init.player.pulledCardsStack.push(" ")
+        newGame.init.player.pushedCardIndexStack.push(2)
+        newGame.init.player.pushedCardsStack.push(Card(Color.Blue, Value.DirectionChange))
         newGame.special.push(0)
         newGame.init.player.undo(newGame) should be(newGame.init.player)
       }
       "Should be able to undo a third move" in {
         newGame = newGame.createTestGame()
-        newGame.init.player.stack1.push("R 1")
-        newGame.init.player.stack2.push(-1)
-        newGame.init.player.stack4.push(true)
+        newGame.init.player.pulledCardsStack.push("R 1")
+        newGame.init.player.pushedCardIndexStack.push(-1)
+        newGame.init.player.anotherPullStack.push(true)
         newGame.special.push(0)
         newGame.init.player.undo(newGame) should be(newGame.init.player)
       }
       "Should be able to undo a fourth move" in {
         newGame = newGame.createTestGame()
-        newGame.init.player.stack1.push("Start")
-        newGame.init.player.stack2.push(-1)
-        newGame.init.player.stack4.push(true)
+        newGame.init.player.pulledCardsStack.push("Start")
+        newGame.init.player.pushedCardIndexStack.push(-1)
+        newGame.init.player.anotherPullStack.push(true)
         newGame.special.push(4)
         newGame.special.push(0)
-        newGame.init.player.stack1.push("R 1")
-        newGame.init.player.stack2.push(-1)
-        newGame.init.player.stack1.push("R S")
-        newGame.init.player.stack2.push(-1)
-        newGame.init.player.stack1.push("R+2")
-        newGame.init.player.stack2.push(-1)
+        newGame.init.player.pulledCardsStack.push("R 1")
+        newGame.init.player.pushedCardIndexStack.push(-1)
+        newGame.init.player.pulledCardsStack.push("R S")
+        newGame.init.player.pushedCardIndexStack.push(-1)
+        newGame.init.player.pulledCardsStack.push("R+2")
+        newGame.init.player.pushedCardIndexStack.push(-1)
         newGame.init.player.undo(newGame) should be(newGame.init.player)
       }
 

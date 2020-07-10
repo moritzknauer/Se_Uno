@@ -15,9 +15,9 @@ case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends Ga
   private var direction = true
   var anotherPull = false
   var special = Stack[Integer](0)
-  var hv = false
-  var hv2 = false
-  private var i = 0
+  var redoVariable = false
+  var undoVariable = false
+  private var lengthForTests = 0
   private var shuffled = Stack[ListBuffer[Card]]()
   private var unshuffled = Stack[ListBuffer[Card]]()
   private var reshuffled = Stack[ListBuffer[Card]]()
@@ -33,8 +33,8 @@ case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends Ga
     shuffled.popAll()
     unshuffled.popAll()
     reshuffled.popAll()
-    hv = false
-    hv2 = false
+    redoVariable = false
+    undoVariable = false
     this
   }
   def createTestGame() : Game = {
@@ -48,72 +48,72 @@ case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends Ga
     shuffled.popAll()
     unshuffled.popAll()
     reshuffled.popAll()
-    hv = false
-    hv2 = false
+    redoVariable = false
+    undoVariable = false
     this
   }
 
   def pushMove(string : String, color : Int) : Game = {
     if(special.top != - 1) {
-      hv = false
+      redoVariable = false
       init.player = init.player.pushMove(string, color, this)
     } else if (special.top == -1) {
       special.push(0)
-      init.player.stack1.push("Suspend")
-      init.player.stack2.push(-1)
-      init.player.stack4.push(false)
-      hv = true
+      init.player.pulledCardsStack.push("Suspend")
+      init.player.pushedCardIndexStack.push(-1)
+      init.player.anotherPullStack.push(false)
+      redoVariable = true
       setActivePlayer()
     }
     this
   }
   def pullMove() : Game = {
     if(special.top != - 1) {
-      hv = false
+      redoVariable = false
       init.player = init.player.pullMove(this)
     } else if (special.top == -1) {
       special.push(0)
-      init.player.stack1.push("Suspend")
-      init.player.stack2.push(-1)
-      init.player.stack4.push(false)
-      hv = true
+      init.player.pulledCardsStack.push("Suspend")
+      init.player.pushedCardIndexStack.push(-1)
+      init.player.anotherPullStack.push(false)
+      redoVariable = true
       setActivePlayer()
     }
     this
   }
   def enemy() : Game = {
     if (special.top != - 1) {
-      hv = false
+      redoVariable = false
       init.enemy = init.enemy.enemy(this)
     } else if (special.top == -1) {
       special.push(0)
-      init.enemy.stack1.push("Suspend")
-      init.enemy.stack2.push(-1)
-      hv = false
+      init.enemy.pulledCardsStack.push("Suspend")
+      init.enemy.pushedCardIndexStack.push(-1)
+      redoVariable = false
     }
     this
   }
   def enemy2() : Game = {
     if (special.top != - 1) {
-      hv = false
+      redoVariable = false
       init.enemy2 = init.enemy2.enemy(this)
     } else if (special.top == -1) {
       special.push(0)
-      init.enemy2.stack1.push("Suspend")
-      init.enemy2.stack2.push(-1)
-      hv = false
+      init.enemy2.pulledCardsStack.push("Suspend")
+      init.enemy2.pushedCardIndexStack.push(-1)
+      redoVariable = false
     }
     this
   }
   def enemy3() : Game = {
     if (special.top != - 1) {
-      hv = false
+      redoVariable = false
       init.enemy3 = init.enemy3.enemy(this)
     } else if (special.top == -1) {
       special.push(0)
-      init.enemy3.stack1.push("Suspend")
-      init.enemy3.stack2.push(-1)
-      hv = false
+      init.enemy3.pulledCardsStack.push("Suspend")
+      init.enemy3.pushedCardIndexStack.push(-1)
+      redoVariable = false
     }
     this
   }
@@ -142,40 +142,40 @@ case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends Ga
   }
 
   def setLength(i : Integer) : Unit = {
-    this.i = i
+    this.lengthForTests = i
   }
 
   def getLength(list:Integer) : Int = {
     if (list == 0) {
-      if (i == 1) {
-        i = 0
-        i
+      if (lengthForTests == 1) {
+        lengthForTests = 0
+        lengthForTests
       } else
         init.enemy.enemyCards.length
     } else if (list == 1) {
-      if (i == 2) {
-        i = 0
-        i
+      if (lengthForTests == 2) {
+        lengthForTests = 0
+        lengthForTests
       } else
         init.enemy2.enemyCards.length
     } else if (list == 2) {
-      if (i == 3) {
-        i = 0
-        i
+      if (lengthForTests == 3) {
+        lengthForTests = 0
+        lengthForTests
       } else
         init.enemy3.enemyCards.length
     } else if (list == 3) {
       init.cardsRevealed.length
     } else if (list == 4) {
-      if (i == 4) {
-        i = 0
-        i
+      if (lengthForTests == 4) {
+        lengthForTests = 0
+        lengthForTests
       } else
         init.player.handCards.length
     } else {
-      if (i==5) {
-        i = 0
-        i
+      if (lengthForTests==5) {
+        lengthForTests = 0
+        lengthForTests
       } else {
         init.cardsCovered.length
       }
@@ -282,15 +282,15 @@ case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends Ga
     this
   }
   def setHv(b : Boolean = true) : Game = {
-    hv = b
+    redoVariable = b
     this
   }
 
   def getActivePlayer() : Int = activePlayer
   def getDirection() : Boolean = direction
   def getAnotherPull() : Boolean = anotherPull
-  def getHv() : Boolean = hv
-  def getHv2() : Boolean = hv2
+  def getHv() : Boolean = redoVariable
+  def getHv2() : Boolean = undoVariable
 
 
   def getAllCards(list: Int, index: Int) : String = {
@@ -336,8 +336,8 @@ case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends Ga
     shuffled.popAll()
     unshuffled.popAll()
     reshuffled.popAll()
-    hv = false
-    hv2 = false
+    redoVariable = false
+    undoVariable = false
     this
   }
 

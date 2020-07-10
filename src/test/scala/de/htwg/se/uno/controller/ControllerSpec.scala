@@ -222,7 +222,7 @@ class ControllerSpec extends WordSpec with Matchers {
       }
       "Should be able to update the state to your turn" in {
         controller.controllerEvent("yourTurn")
-        controller.controllerEvent("idle") should be("Du bist dran. Mögliche Befehle: q, n [2 | 3 | 4], t, s Karte [Farbe], g, u, r, d")
+        controller.controllerEvent("idle") should be("Du bist dran. Mögliche Befehle: q, n [2 | 3 | 4], t, s Karte [Farbe], g, u, r, d, sv, ld")
       }
       "Should be able to update the state to won Event" in {
         controller.controllerEvent("won")

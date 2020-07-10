@@ -15,9 +15,8 @@ class Controller @Inject() (var game: GameInterface) extends ControllerInterface
   private var undoManager = new UndoManager
   val injector: Injector = Guice.createInjector(new UnoModule)
   val fileIo = injector.instance[FileIOInterface]
-  private var hs = "Du bist dran. Mögliche Befehle: q, n, t, s [Karte], g, u, r"
-  private var hs2 = ""
-  private var hv = false
+  private var controllerEventString = "Du bist dran. Mögliche Befehle: q, n, t, s [Karte], g, u, r"
+  private var savedSpecialCard = ""
 
   def createGame(size: Int):Unit = {
     size match {
@@ -27,7 +26,7 @@ class Controller @Inject() (var game: GameInterface) extends ControllerInterface
       case _ =>
     }
     game = game.createGame()
-    hs2 = ""
+    savedSpecialCard = ""
     undoManager = new UndoManager
     controllerEvent("yourTurn")
     publish(new GameSizeChanged)
@@ -35,7 +34,7 @@ class Controller @Inject() (var game: GameInterface) extends ControllerInterface
   def createTestGame():Unit = {
     game = injector.instance[GameInterface](Names.named("4 Players"))
     game = game.createTestGame()
-    hs2 = ""
+    savedSpecialCard = ""
     undoManager = new UndoManager
     controllerEvent("yourTurn")
     publish(new GameSizeChanged)
@@ -64,7 +63,7 @@ class Controller @Inject() (var game: GameInterface) extends ControllerInterface
         publish(new GameNotChanged)
       }
     } else {
-      hs2 = string
+      savedSpecialCard = string
       controllerEvent("chooseColor")
       publish(new ChooseColor)
     }
@@ -164,7 +163,7 @@ class Controller @Inject() (var game: GameInterface) extends ControllerInterface
 
   def load: Unit = {
     game = fileIo.load
-    hs2 = ""
+    savedSpecialCard = ""
     undoManager = new UndoManager
     controllerEvent("load")
     publish(new GameChanged)
@@ -204,64 +203,64 @@ class Controller @Inject() (var game: GameInterface) extends ControllerInterface
   def getLength(list : Int) : Int = game.getLength(list)
   def getNumOfPlayers() : Int = game.getNumOfPlayers()
   def nextTurn() : Boolean = game.nextTurn()
-  def getHs2() : String = hs2
+  def getHs2() : String = savedSpecialCard
   def nextEnemy() : Int = game.nextEnemy()
 
   def controllerEvent(string : String) : String = {
     string match {
       case "pushCardNotAllowed" => {
-        hs = "Du kannst diese Karte nicht legen"
-        hs
+        controllerEventString = "Du kannst diese Karte nicht legen"
+        controllerEventString
       }
       case "enemyTurn" => {
-        hs = "Gegner ist an der Reihe"
-        hs
+        controllerEventString = "Gegner ist an der Reihe"
+        controllerEventString
       }
       case "pullCardNotAllowed" => {
-        hs = "Du kannst keine Karte ziehen"
-        hs
+        controllerEventString = "Du kannst keine Karte ziehen"
+        controllerEventString
       }
       case "unknownCommand" => {
-        hs = "Befehl nicht bekannt"
-        hs
+        controllerEventString = "Befehl nicht bekannt"
+        controllerEventString
       }
       case "yourTurn" => {
-        hs = "Du bist dran. Mögliche Befehle: q, n [2 | 3 | 4], t, s Karte [Farbe], g, u, r, d"
-        hs
+        controllerEventString = "Du bist dran. Mögliche Befehle: q, n [2 | 3 | 4], t, s Karte [Farbe], g, u, r, d, sv, ld"
+        controllerEventString
       }
       case "won" => {
-        hs = "Glückwunsch, du hast gewonnen!"
-        hs
+        controllerEventString = "Glückwunsch, du hast gewonnen!"
+        controllerEventString
       }
       case "lost" => {
-        hs = "Du hast leider verloren"
-        hs
+        controllerEventString = "Du hast leider verloren"
+        controllerEventString
       }
       case "undo" => {
-        hs = "Zug rückgängig gemacht"
-        hs
+        controllerEventString = "Zug rückgängig gemacht"
+        controllerEventString
       }
       case "redo" => {
-        hs = "Zug wiederhergestellt"
-        hs
+        controllerEventString = "Zug wiederhergestellt"
+        controllerEventString
       }
       case "save" => {
-        hs = "Spiel gespeichert"
-        hs
+        controllerEventString = "Spiel gespeichert"
+        controllerEventString
       }
       case "load" => {
-        hs = "Spiel geladen"
-        hs
+        controllerEventString = "Spiel geladen"
+        controllerEventString
       }
       case "chooseColor" => {
-        hs = "Wähle eine Farbe"
-        hs
+        controllerEventString = "Wähle eine Farbe"
+        controllerEventString
       }
       case "shuffled" => {
-        hs = "Verdeckter Kartenstapel wurde neu gemischt"
-        hs
+        controllerEventString = "Verdeckter Kartenstapel wurde neu gemischt"
+        controllerEventString
       }
-      case "idle" => hs
+      case "idle" => controllerEventString
     }
   }
 }
