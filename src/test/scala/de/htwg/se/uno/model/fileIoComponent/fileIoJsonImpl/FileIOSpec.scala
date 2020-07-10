@@ -8,7 +8,7 @@ import com.google.inject.{Guice, Inject, Injector}
 import de.htwg.se.uno.UnoModule
 import net.codingwell.scalaguice.InjectorExtensions._
 
-class FileIOSpec  @Inject() extends WordSpec {
+class FileIOSpec @Inject() extends WordSpec {
   "A FileIO" when {
     "new" should {
       val injector: Injector = Guice.createInjector(new UnoModule)

@@ -7,17 +7,21 @@ import org.scalatest.{Matchers, WordSpec}
 class EnemyCommand2Spec extends WordSpec with Matchers {
   "A EnemyCommand" when {
     "new" should {
-      val game = Game(3)
-      val controller = new Controller(game)
+      val controller = new Controller(new Game(4))
+      controller.createTestGame()
       val command = new EnemyCommand2(controller)
       "Be able to do a Step" in {
+        controller.game.setSpecialTop(-1)
         command.doStep
+        controller.game.getHv() should be(false)
       }
       "Be able to undo a Step" in {
         command.undoStep
+        controller.game.getHv2() should be(true)
       }
       "Be able to redo a Step" in {
         command.redoStep
+        controller.game.getHv() should be(false)
       }
     }
   }

@@ -8,15 +8,21 @@ class ShuffleCommandSpec extends WordSpec with Matchers {
   "A ShuffleCommand" when {
     "new" should {
       val controller = new Controller(new Game(4))
+      controller.createTestGame()
       val command = new ShuffleCommand(controller)
       "Be able to do a Step" in {
+        controller.set("R 1")
+        controller.game.getLength(3) should be(2)
         command.doStep
+        controller.game.getLength(3) should be(1)
       }
       "Be able to undo a Step" in {
         command.undoStep
+        controller.game.getLength(3) should be(2)
       }
       "Be able to redo a Step" in {
         command.redoStep
+        controller.game.getLength(3) should be(1)
       }
     }
   }
