@@ -27,9 +27,9 @@ trait GameInterface {
   def getDirection(): Boolean
   def getAnotherPull(): Boolean
   def setAnotherPull(b: Boolean = false): Game
-  def getHv(): Boolean
-  def setHv(b: Boolean = true): Game
-  def getHv2(): Boolean
+  def getRedoVariable(): Boolean
+  def setRedoVariable(b: Boolean = true): Game
+  def getUndoVariable(): Boolean
   def setLength(i: Integer): Unit
   def getAllCards(list: Int, index: Int): String
   def setAllCards(list: Int, card: Card): Game

@@ -129,7 +129,7 @@ class Controller @Inject() (var game: GameInterface) extends ControllerInterface
   def undo: Unit = {
     do {
       undoManager.undoStep
-      if (game.getHv2()) {
+      if (game.getUndoVariable()) {
         game.setDirection()
         game.setActivePlayer()
         game.setDirection()
@@ -141,10 +141,10 @@ class Controller @Inject() (var game: GameInterface) extends ControllerInterface
     won
   }
   def redo: Unit = {
-    game = game.setHv()
+    game = game.setRedoVariable()
     game.setActivePlayer()
     undoManager.redoStep
-    if (game.getHv()) {
+    if (game.getRedoVariable()) {
       game = game.setDirection()
       game = game.setActivePlayer()
       game = game.setDirection()

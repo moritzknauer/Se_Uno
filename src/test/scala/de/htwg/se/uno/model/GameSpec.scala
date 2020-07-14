@@ -252,7 +252,7 @@ class GameSpec extends WordSpec {
         newGame.anotherPull should be (false)
       }
       "Should be able to set the help variable" in {
-        newGame = newGame.setHv()
+        newGame = newGame.setRedoVariable()
         newGame.redoVariable should be (true)
       }
 
@@ -266,10 +266,10 @@ class GameSpec extends WordSpec {
         newGame.getAnotherPull() should be(newGame.anotherPull)
       }
       "Should be able to get the help variable 1" in {
-        newGame.getHv() should be(newGame.redoVariable)
+        newGame.getRedoVariable() should be(newGame.redoVariable)
       }
       "Should be able to get the help variable 2" in {
-        newGame.getHv2() should be(newGame.undoVariable)
+        newGame.getUndoVariable() should be(newGame.undoVariable)
       }
 
       "Should be able to get the string representation of all cards" in {

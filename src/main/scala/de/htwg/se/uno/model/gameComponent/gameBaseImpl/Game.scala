@@ -281,7 +281,7 @@ case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends Ga
     anotherPull = b
     this
   }
-  def setHv(b : Boolean = true) : Game = {
+  def setRedoVariable(b : Boolean = true) : Game = {
     redoVariable = b
     this
   }
@@ -289,8 +289,8 @@ case class Game @Inject() (@Named("DefaultPlayers") numOfPlayers:Int) extends Ga
   def getActivePlayer() : Int = activePlayer
   def getDirection() : Boolean = direction
   def getAnotherPull() : Boolean = anotherPull
-  def getHv() : Boolean = redoVariable
-  def getHv2() : Boolean = undoVariable
+  def getRedoVariable() : Boolean = redoVariable
+  def getUndoVariable() : Boolean = undoVariable
 
 
   def getAllCards(list: Int, index: Int) : String = {
