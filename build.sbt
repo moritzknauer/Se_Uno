@@ -2,9 +2,9 @@ name := "ScalaProject"
 
 organization  := "de.htwg.se"
 
-version := "0.6"
+version := "2.0"
 
-scalaVersion := "2.13.2"
+scalaVersion := "2.13.8"
 
 libraryDependencies += "org.scalactic" %% "scalactic" % "3.2.11"
 libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.11" % "test"

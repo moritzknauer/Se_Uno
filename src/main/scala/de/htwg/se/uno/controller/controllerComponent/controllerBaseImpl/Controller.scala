@@ -126,7 +126,7 @@ class Controller @Inject() (var game: GameInterface) extends ControllerInterface
     won
   }
 
-  def undo: Unit = {
+  def undo(): Unit = {
     do {
       undoManager.undoStep
       if (game.getUndoVariable()) {
@@ -140,7 +140,7 @@ class Controller @Inject() (var game: GameInterface) extends ControllerInterface
     publish(new GameChanged)
     won
   }
-  def redo: Unit = {
+  def redo(): Unit = {
     game = game.setRedoVariable()
     game.setActivePlayer()
     undoManager.redoStep
@@ -155,13 +155,13 @@ class Controller @Inject() (var game: GameInterface) extends ControllerInterface
     won
   }
 
-  def save: Unit = {
+  def save(): Unit = {
     fileIo.save(game)
     controllerEvent("save")
     publish(new GameChanged)
   }
 
-  def load: Unit = {
+  def load(): Unit = {
     game = fileIo.load
     savedSpecialCard = ""
     undoManager = new UndoManager
@@ -169,7 +169,7 @@ class Controller @Inject() (var game: GameInterface) extends ControllerInterface
     publish(new GameChanged)
   }
 
-  def won: Unit = {
+  def won(): Unit = {
     if(game.getLength(4) == 0) {
       controllerEvent("won")
       publish(new GameEnded)
@@ -187,7 +187,7 @@ class Controller @Inject() (var game: GameInterface) extends ControllerInterface
     }
   }
 
-  def shuffle: Unit = {
+  def shuffle(): Unit = {
     if(game.getLength(5) <= 16) {
       undoManager.doStep(new ShuffleCommand(this))
       controllerEvent("shuffled")
@@ -201,9 +201,9 @@ class Controller @Inject() (var game: GameInterface) extends ControllerInterface
   def getCardText(list : Int, index : Int) : String = game.getCardText(list, index)
   def getGuiCardText(list : Int, index : Int) : String = game.getGuiCardText(list, index)
   def getLength(list : Int) : Int = game.getLength(list)
-  def getNumOfPlayers() : Int = game.getNumOfPlayers()
+  def getNumOfPlayers: Int = game.getNumOfPlayers()
   def nextTurn() : Boolean = game.nextTurn()
-  def getHs2() : String = savedSpecialCard
+  def getHs2: String = savedSpecialCard
   def nextEnemy() : Int = game.nextEnemy()
 
   def controllerEvent(string : String) : String = {
