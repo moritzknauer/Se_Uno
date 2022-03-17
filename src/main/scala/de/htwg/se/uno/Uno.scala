@@ -21,9 +21,11 @@ object Uno {
 
     gui.open()
 
-    do {
+    input = readLine()
+    val s = tui.processInputLine(input).get
+    while (input != "q") {
       input = readLine()
       val s = tui.processInputLine(input).get
-    } while (input != "q")
+    }
   }
 }

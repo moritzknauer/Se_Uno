@@ -1,4 +1,12 @@
-[debug] downloaded https://repo1.maven.org/maven2/org/scalameta/semanticdb-scalac_2.13.5/4.4.10/semanticdb-scalac_2.13.5-4.4.10.pom
-[debug] downloaded https://repo1.maven.org/maven2/org/scalameta/semanticdb-scalac_2.13.5/4.4.10/semanticdb-scalac_2.13.5-4.4.10.jar
-[debug] downloaded https://repo1.maven.org/maven2/org/scalameta/semanticdb-scalac_2.13.5/4.4.10/semanticdb-scalac_2.13.5-4.4.10-javadoc.jar
-[debug] downloaded https://repo1.maven.org/maven2/org/scalameta/semanticdb-scalac_2.13.5/4.4.10/semanticdb-scalac_2.13.5-4.4.10-sources.jar
+[debug] downloaded https://repo1.maven.org/maven2/org/scala-lang/scala3-compiler_3/3.0.0/scala3-compiler_3-3.0.0.pom
+[debug] downloaded https://repo1.maven.org/maven2/org/scala-lang/scala3-interfaces/3.0.0/scala3-interfaces-3.0.0.pom
+[debug] downloaded https://repo1.maven.org/maven2/org/scala-lang/tasty-core_3/3.0.0/tasty-core_3-3.0.0.pom
+[debug] downloaded https://repo1.maven.org/maven2/org/scala-lang/scaladoc_3/3.0.0/scaladoc_3-3.0.0.pom
+[debug] downloaded https://repo1.maven.org/maven2/org/scala-lang/scala3-tasty-inspector_3/3.0.0/scala3-tasty-inspector_3-3.0.0.pom
+[debug] downloaded https://repo1.maven.org/maven2/org/scala-lang/scala3-tasty-inspector_3/3.0.0/scala3-tasty-inspector_3-3.0.0.jar
+[debug] downloaded https://repo1.maven.org/maven2/org/scala-lang/tasty-core_3/3.0.0/tasty-core_3-3.0.0.jar
+[debug] downloaded https://repo1.maven.org/maven2/org/scala-lang/scala3-interfaces/3.0.0/scala3-interfaces-3.0.0.jar
+[debug] downloaded https://repo1.maven.org/maven2/org/scala-lang/scaladoc_3/3.0.0/scaladoc_3-3.0.0.jar
+[debug] downloaded https://repo1.maven.org/maven2/org/scala-lang/scala3-library_3/3.0.2/scala3-library_3-3.0.2.jar
+[debug] downloaded https://repo1.maven.org/maven2/org/scala-lang/scala3-library_3/3.0.0/scala3-library_3-3.0.0.jar
+[debug] downloaded https://repo1.maven.org/maven2/org/scala-lang/scala3-compiler_3/3.0.0/scala3-compiler_3-3.0.0.jar

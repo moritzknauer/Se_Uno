@@ -1,12 +1,12 @@
 package de.htwg.se.uno.controller.controllerComponent.controllerBaseImpl
 
-import com.google.inject.{Guice, Inject, Injector}
+import com.google.inject.{Guice, Inject, Injector, Key}
 import com.google.inject.name.Names
 import de.htwg.se.uno.UnoModule
-import de.htwg.se.uno.controller.controllerComponent._
+import de.htwg.se.uno.controller.controllerComponent.*
 import de.htwg.se.uno.model.fileIoComponent.FileIOInterface
 import de.htwg.se.uno.model.gameComponent.GameInterface
-import net.codingwell.scalaguice.InjectorExtensions._
+import net.codingwell.scalaguice.InjectorExtensions.*
 import de.htwg.se.uno.util.UndoManager
 
 import scala.swing.{Color, Publisher}
@@ -14,15 +14,15 @@ import scala.swing.{Color, Publisher}
 class Controller @Inject() (var game: GameInterface) extends ControllerInterface with Publisher {
   private var undoManager = new UndoManager
   val injector: Injector = Guice.createInjector(new UnoModule)
-  val fileIo = injector.instance[FileIOInterface]
+  val fileIo: FileIOInterface = injector.getInstance(classOf[FileIOInterface])
   private var controllerEventString = "Du bist dran. Mögliche Befehle: q, n, t, s [Karte], g, u, r"
   private var savedSpecialCard = ""
 
   def createGame(size: Int):Unit = {
     size match {
-      case 2 => game = injector.instance[GameInterface](Names.named("2 Players"))
-      case 3 => game = injector.instance[GameInterface](Names.named("3 Players"))
-      case 4 => game = injector.instance[GameInterface](Names.named("4 Players"))
+      case 2 => game = injector.getInstance(Key.get(classOf[GameInterface], Names.named("2 Players")))
+      case 3 => game = injector.getInstance(Key.get(classOf[GameInterface], Names.named("3 Players")))
+      case 4 => game = injector.getInstance(Key.get(classOf[GameInterface], Names.named("4 Players")))
       case _ =>
     }
     game = game.createGame()
@@ -32,7 +32,7 @@ class Controller @Inject() (var game: GameInterface) extends ControllerInterface
     publish(new GameSizeChanged)
   }
   def createTestGame():Unit = {
-    game = injector.instance[GameInterface](Names.named("4 Players"))
+    game = injector.getInstance(classOf[GameInterface])
     game = game.createTestGame()
     savedSpecialCard = ""
     undoManager = new UndoManager
@@ -127,7 +127,13 @@ class Controller @Inject() (var game: GameInterface) extends ControllerInterface
   }
 
   def undo(): Unit = {
-    do {
+    undoManager.undoStep()
+    if (game.getUndoVariable()) {
+      game.setDirection()
+      game.setActivePlayer()
+      game.setDirection()
+    }
+    while (!game.nextTurn()) {
       undoManager.undoStep()
       if (game.getUndoVariable()) {
         game.setDirection()
@@ -135,7 +141,6 @@ class Controller @Inject() (var game: GameInterface) extends ControllerInterface
         game.setDirection()
       }
     }
-    while(!game.nextTurn())
     controllerEvent("undo")
     publish(new GameChanged)
     won()

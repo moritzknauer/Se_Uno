@@ -1,8 +1,8 @@
 package de.htwg.se.uno.model.fileIoComponent.fileIoXmlImpl
 
-import com.google.inject.Guice
+import com.google.inject.{Guice, Key}
 import com.google.inject.name.Names
-import net.codingwell.scalaguice.InjectorExtensions._
+import net.codingwell.scalaguice.InjectorExtensions.*
 import de.htwg.se.uno.UnoModule
 import de.htwg.se.uno.model.gameComponent.gameBaseImpl
 import de.htwg.se.uno.model.fileIoComponent.FileIOInterface
@@ -21,9 +21,9 @@ class FileIO extends FileIOInterface{
 
     val numOfPlayers = (file \\ "game" \\ "@numOfPlayers").text.toInt
     numOfPlayers match {
-      case 2 => game = injector.instance[GameInterface](Names.named("2 Players"))
-      case 3 => game = injector.instance[GameInterface](Names.named("3 Players"))
-      case 4 => game = injector.instance[GameInterface](Names.named("4 Players"))
+      case 2 => game = injector.getInstance(Key.get(classOf[GameInterface], Names.named("2 Players")))
+      case 3 => game = injector.getInstance(Key.get(classOf[GameInterface], Names.named("3 Players")))
+      case 4 => game = injector.getInstance(Key.get(classOf[GameInterface], Names.named("4 Players")))
     }
 
     val activePlayer = (file \\ "game" \ "@activePlayer").text.toInt
@@ -63,9 +63,10 @@ class FileIO extends FileIOInterface{
     var j = 0
     for (card <- cardNodes) {
       if (i == lengths(j)) {
-        do {
+        j += 1
+        while (lengths(j) == 0) {
           j += 1
-        } while (lengths(j) == 0)
+        }
         i = 0
       }
       val c = (card \ "@card").text

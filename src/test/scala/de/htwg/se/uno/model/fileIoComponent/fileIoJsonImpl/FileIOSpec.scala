@@ -4,15 +4,15 @@ import com.google.inject.name.Names
 import de.htwg.se.uno.model.gameComponent.GameInterface
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
-import com.google.inject.{Guice, Inject, Injector}
+import com.google.inject.{Guice, Inject, Injector, Key}
 import de.htwg.se.uno.UnoModule
-import net.codingwell.scalaguice.InjectorExtensions._
+import net.codingwell.scalaguice.InjectorExtensions.*
 
 class FileIOSpec @Inject() extends AnyWordSpec with Matchers {
   "A FileIO" when {
     "new" should {
       val injector: Injector = Guice.createInjector(new UnoModule)
-      var game = injector.instance[GameInterface](Names.named("4 Players"))
+      var game = injector.getInstance(Key.get(classOf[GameInterface], Names.named("4 Players")))
       game.createTestGame()
       val fileIo = new FileIO
       "Should be able to save and then load the game" in {
@@ -23,7 +23,7 @@ class FileIOSpec @Inject() extends AnyWordSpec with Matchers {
         game.getActivePlayer() should be (3)
       }
       "Should be able to save and then load the game again" in {
-        game = injector.instance[GameInterface](Names.named("2 Players"))
+        game = injector.getInstance(Key.get(classOf[GameInterface], Names.named("2 Players")))
         game.createGame()
         game.setDirection()
         game.setActivePlayer()
@@ -34,7 +34,7 @@ class FileIOSpec @Inject() extends AnyWordSpec with Matchers {
         game.getActivePlayer() should be(0)
       }
       "Should be able to save and then load the game a third time" in {
-        game = injector.instance[GameInterface](Names.named("3 Players"))
+        game = injector.getInstance(Key.get(classOf[GameInterface], Names.named("3 Players")))
         game.createGame()
         fileIo.save(game)
         game.setDirection()

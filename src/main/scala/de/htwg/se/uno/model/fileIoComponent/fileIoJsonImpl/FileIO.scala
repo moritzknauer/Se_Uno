@@ -1,15 +1,14 @@
 package de.htwg.se.uno.model.fileIoComponent.fileIoJsonImpl
 
-import com.google.inject.Guice
+import com.google.inject.{Guice, Key}
 import com.google.inject.name.Names
-import net.codingwell.scalaguice.InjectorExtensions._
 import de.htwg.se.uno.UnoModule
 import de.htwg.se.uno.model.gameComponent.gameBaseImpl
 import de.htwg.se.uno.model.fileIoComponent.FileIOInterface
 import de.htwg.se.uno.model.gameComponent.gameBaseImpl.{Card, Color, Value}
 import de.htwg.se.uno.model.gameComponent.GameInterface
 import de.htwg.se.uno.model.gameComponent.gameBaseImpl.Color
-import play.api.libs.json._
+import play.api.libs.json.*
 
 import scala.collection.mutable.ListBuffer
 import scala.io.Source
@@ -23,9 +22,9 @@ class FileIO extends  FileIOInterface{
 
     val numOfPlayers = (json \ "game" \ "numOfPlayers").get.toString.toInt
     numOfPlayers match {
-      case 2 => game = injector.instance[GameInterface](Names.named("2 Players"))
-      case 3 => game = injector.instance[GameInterface](Names.named("3 Players"))
-      case 4 => game = injector.instance[GameInterface](Names.named("4 Players"))
+      case 2 => game = injector.getInstance(Key.get(classOf[GameInterface], Names.named("2 Players")))
+      case 3 => game = injector.getInstance(Key.get(classOf[GameInterface], Names.named("3 Players")))
+      case 4 => game = injector.getInstance(Key.get(classOf[GameInterface], Names.named("4 Players")))
     }
 
     val activePlayer = (json \ "game" \ "activePlayer").get.toString.toInt
