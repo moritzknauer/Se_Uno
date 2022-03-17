@@ -2,16 +2,16 @@ package de.htwg.se.uno.controller
 
 import de.htwg.se.uno.controller.controllerComponent.controllerBaseImpl.Controller
 import de.htwg.se.uno.model.gameComponent.gameBaseImpl.Game
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 
 import scala.language.reflectiveCalls
-import scala.swing.Color
 
-class ControllerSpec extends WordSpec with Matchers {
+class ControllerSpec extends AnyWordSpec with Matchers {
 
   "A Controller" when {
     "it's a Publisher" should {
-      val game = new Game(2)
+      val game = Game(2)
       val controller = new Controller(game)
       "Be able to create a game with 2 Players" in {
         controller.createGame(2)
@@ -67,7 +67,7 @@ class ControllerSpec extends WordSpec with Matchers {
       }
       "Not Pull another Card if a Card was already Pulled" in {
         controller.get()
-        controller.controllerEvent("idle") should be(controller.controllerEvent(("enemyTurn")))
+        controller.controllerEvent("idle") should be(controller.controllerEvent("enemyTurn"))
       }
       "Do the enemy's runs if it's the enemys turn" in {
         controller.enemy()
@@ -103,7 +103,7 @@ class ControllerSpec extends WordSpec with Matchers {
       "Not Pull a Card if the player has to suspend" in {
         controller.game.setSpecialTop(-1)
         controller.get()
-        controller.controllerEvent("idle") should be(controller.controllerEvent(("pullCardNotAllowed")))
+        controller.controllerEvent("idle") should be(controller.controllerEvent("pullCardNotAllowed"))
       }
       "Should be able to undo a fourth step" in {
         controller.undo

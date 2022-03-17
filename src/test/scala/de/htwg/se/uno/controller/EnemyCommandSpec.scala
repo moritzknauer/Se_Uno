@@ -2,12 +2,13 @@ package de.htwg.se.uno.controller
 
 import de.htwg.se.uno.controller.controllerComponent.controllerBaseImpl.{Controller, EnemyCommand}
 import de.htwg.se.uno.model.gameComponent.gameBaseImpl.Game
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 
-class EnemyCommandSpec extends WordSpec with Matchers {
+class EnemyCommandSpec extends AnyWordSpec with Matchers {
   "A EnemyCommand" when {
     "new" should {
-      val controller = new Controller(new Game(4))
+      val controller = new Controller(Game(4))
       controller.createTestGame()
       val command = new EnemyCommand(controller)
       "Be able to do a Step" in {

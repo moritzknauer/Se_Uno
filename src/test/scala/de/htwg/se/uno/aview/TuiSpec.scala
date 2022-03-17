@@ -3,9 +3,10 @@ package de.htwg.se.uno.aview
 import de.htwg.se.uno.controller.controllerComponent.GameEnded
 import de.htwg.se.uno.controller.controllerComponent.controllerBaseImpl.Controller
 import de.htwg.se.uno.model.gameComponent.gameBaseImpl.Game
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 
-class TuiSpec extends WordSpec with Matchers{
+class TuiSpec extends AnyWordSpec with Matchers {
 
   "A Game Tui" should {
     val controller = new Controller(Game(2))
@@ -91,7 +92,7 @@ class TuiSpec extends WordSpec with Matchers{
     "Get a Card on input 'g'" in {
       val old = controller.gameToString
       tui.processInputLine("g")
-      controller.gameToString should not be (old)
+      controller.gameToString should not be old
     }
     "Undo a fifth Step" in {
       tui.processInputLine("u")
@@ -100,7 +101,7 @@ class TuiSpec extends WordSpec with Matchers{
     "Redo a Step on Input 'r' if possible" in {
       val old = controller.gameToString
       tui.processInputLine("r")
-      controller.gameToString should not be (old)
+      controller.gameToString should not be old
     }
     "Save but not change anything on input 'sv'" in {
       val old = controller.gameToString
@@ -111,7 +112,7 @@ class TuiSpec extends WordSpec with Matchers{
       controller.createGame(3)
       val old = controller.gameToString
       tui.processInputLine("ld")
-      controller.gameToString should not be(old)
+      controller.gameToString should not be old
     }
     "Do nothing special on Event GameEnded" in {
       controller.publish(new GameEnded)

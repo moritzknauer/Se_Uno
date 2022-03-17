@@ -1,13 +1,10 @@
 package de.htwg.se.uno.model
 
 import de.htwg.se.uno.model.gameComponent.gameBaseImpl.{Card, Color, Game, Value}
-import de.htwg.se.uno.model.gameComponent.gameBaseImpl.Color
-import org.scalatest.Matchers._
-import org.scalatest._
+import org.scalatest.matchers.should.Matchers._
+import org.scalatest.wordspec.AnyWordSpec
 
-import scala.swing.Color
-
-class GameSpec extends WordSpec {
+class GameSpec extends AnyWordSpec {
   "A Game" when {
     "new" should {
       var newGame = Game(2)
@@ -166,7 +163,7 @@ class GameSpec extends WordSpec {
         newGame.nextEnemy() should be (1)
       }
       "Should be able to get the next Enemy a second Time" in {
-        newGame = new Game(3)
+        newGame = Game(3)
         newGame.activePlayer = 0
         newGame.nextEnemy() should be(1)
       }
@@ -183,7 +180,7 @@ class GameSpec extends WordSpec {
         newGame.nextEnemy() should be(1)
       }
       "Should be able to get the next Enemy a sixth Time" in {
-        newGame = new Game(4)
+        newGame = Game(4)
         newGame.activePlayer = 0
         newGame.nextEnemy() should be(1)
       }
@@ -294,27 +291,27 @@ class GameSpec extends WordSpec {
 
       "Should be able to set all Cards" in {
         newGame.setAllCards(0,Card(Color.Red, Value.Five))
-        newGame.init.enemy.enemyCards(newGame.init.enemy.enemyCards.length - 1).toString should be("R 5")
+        newGame.init.enemy.enemyCards.last.toString should be("R 5")
       }
       "Should be able to set all Cards a second time" in {
         newGame.setAllCards(1,Card(Color.Red, Value.Five))
-        newGame.init.enemy2.enemyCards(newGame.init.enemy2.enemyCards.length - 1).toString should be("R 5")
+        newGame.init.enemy2.enemyCards.last.toString should be("R 5")
       }
       "Should be able to set all Cards a third time" in {
         newGame.setAllCards(2,Card(Color.Red, Value.Five))
-        newGame.init.enemy3.enemyCards(newGame.init.enemy3.enemyCards.length - 1).toString should be("R 5")
+        newGame.init.enemy3.enemyCards.last.toString should be("R 5")
       }
       "Should be able to set all Cards a fourth time" in {
         newGame.setAllCards(3,Card(Color.Red, Value.Five))
-        newGame.init.cardsRevealed(newGame.init.cardsRevealed.length - 1).toString should be("R 5")
+        newGame.init.cardsRevealed.last.toString should be("R 5")
       }
       "Should be able to set all Cards a fifth time" in {
         newGame.setAllCards(4,Card(Color.Red, Value.Five))
-        newGame.init.player.handCards(newGame.init.player.handCards.length - 1).toString should be("R 5")
+        newGame.init.player.handCards.last.toString should be("R 5")
       }
       "Should be able to set all Cards a sixth time" in {
         newGame.setAllCards(5,Card(Color.Red, Value.Five))
-        newGame.init.cardsCovered(newGame.init.cardsCovered.length - 1).toString should be("R 5")
+        newGame.init.cardsCovered.last.toString should be("R 5")
       }
 
       "Should be able to clear all Lists" in {

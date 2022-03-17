@@ -1,13 +1,12 @@
 package de.htwg.se.uno.model
 
-import de.htwg.se.uno.model.gameComponent.gameBaseImpl.{Card, Color, Game, InitializeGameStrategy, Value}
-import de.htwg.se.uno.model.gameComponent.gameBaseImpl.Color
-import org.scalatest._
-import org.scalatest.Matchers._
+import de.htwg.se.uno.model.gameComponent.gameBaseImpl._
+import org.scalatest.matchers.should.Matchers._
+import org.scalatest.wordspec.AnyWordSpec
 
 import scala.collection.mutable.ListBuffer
 
-class EnemySpec extends WordSpec {
+class EnemySpec extends AnyWordSpec {
   "A Enemy" when {
     "new" should {
       var newGame = Game(4)

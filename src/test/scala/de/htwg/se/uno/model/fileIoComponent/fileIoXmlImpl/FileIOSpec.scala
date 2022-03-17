@@ -1,19 +1,19 @@
 package de.htwg.se.uno.model.fileIoComponent.fileIoXmlImpl
 
 import de.htwg.se.uno.model.gameComponent.GameInterface
-import org.scalatest.Matchers._
-import org.scalatest._
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import com.google.inject.{Guice, Inject, Injector}
 import de.htwg.se.uno.UnoModule
 import net.codingwell.scalaguice.InjectorExtensions._
 import com.google.inject.name.Names
 
-class FileIOSpec @Inject() extends WordSpec {
+class FileIOSpec @Inject() extends AnyWordSpec with Matchers {
   "A FileIO" when {
     "new" should {
       val injector: Injector = Guice.createInjector(new UnoModule)
       var game = injector.instance[GameInterface](Names.named("4 Players"))
-      game.createTestGame
+      game.createTestGame()
       val fileIo = new FileIO
       "Should be able to save and then load the game" in {
         fileIo.save(game)

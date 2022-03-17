@@ -1,15 +1,14 @@
 package de.htwg.se.uno.aview.gui
 
-import de.htwg.se.uno.controller.controllerComponent.{ChooseColor, GameChanged, GameEnded}
 import de.htwg.se.uno.controller.controllerComponent.controllerBaseImpl.Controller
+import de.htwg.se.uno.controller.controllerComponent.{ChooseColor, GameChanged, GameEnded}
 import de.htwg.se.uno.model.gameComponent.gameBaseImpl.Game
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 
-import scala.swing.{BorderPanel, Color}
-
-class SwingGuiSpec extends WordSpec with Matchers {
+class SwingGuiSpec extends AnyWordSpec with Matchers {
   "A SwingGui" when {
-    var controller = new Controller(new Game(4))
+    var controller = new Controller(Game(4))
     "created" should {
       controller.createTestGame()
       var swingGui = new SwingGui(controller)
@@ -30,7 +29,7 @@ class SwingGuiSpec extends WordSpec with Matchers {
         swingGui.variableForTests should be(6)
       }
       "Change if the activePlayer changes a fourth time" in {
-        controller = new Controller(new Game(3))
+        controller = new Controller(Game(3))
         controller.createGame(3)
         swingGui = new SwingGui(controller)
         swingGui.variableForTests should be(3)

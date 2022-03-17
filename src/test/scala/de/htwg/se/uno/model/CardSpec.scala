@@ -1,11 +1,10 @@
 package de.htwg.se.uno.model
 
 import de.htwg.se.uno.model.gameComponent.gameBaseImpl.{Card, Color, Value}
-import de.htwg.se.uno.model.gameComponent.gameBaseImpl.Color
-import org.scalatest.Matchers._
-import org.scalatest._
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 
-class CardSpec extends WordSpec {
+class CardSpec extends AnyWordSpec with Matchers {
 
   "A Card" when {
     "new" should {

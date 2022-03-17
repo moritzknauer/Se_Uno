@@ -1,10 +1,10 @@
 package de.htwg.se.uno.model
 
 import de.htwg.se.uno.model.gameComponent.gameBaseImpl.InitializeTestGameStrategy
-import org.scalatest.Matchers._
-import org.scalatest._
+import org.scalatest.matchers.should.Matchers._
+import org.scalatest.wordspec.AnyWordSpec
 
-class InitializeTestGameStrategySpec extends WordSpec {
+class InitializeTestGameStrategySpec extends AnyWordSpec {
   "An InitializeRandomGameStrategy" when {
     "new" should {
       var init = new InitializeTestGameStrategy

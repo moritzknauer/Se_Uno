@@ -2,13 +2,13 @@ package de.htwg.se.uno.model.fileIoComponent.fileIoJsonImpl
 
 import com.google.inject.name.Names
 import de.htwg.se.uno.model.gameComponent.GameInterface
-import org.scalatest.Matchers._
-import org.scalatest._
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import com.google.inject.{Guice, Inject, Injector}
 import de.htwg.se.uno.UnoModule
 import net.codingwell.scalaguice.InjectorExtensions._
 
-class FileIOSpec @Inject() extends WordSpec {
+class FileIOSpec @Inject() extends AnyWordSpec with Matchers {
   "A FileIO" when {
     "new" should {
       val injector: Injector = Guice.createInjector(new UnoModule)

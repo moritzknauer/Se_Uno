@@ -2,17 +2,18 @@ package de.htwg.se.uno.util
 
 import de.htwg.se.uno.controller.controllerComponent.controllerBaseImpl.{Controller, PullCommand}
 import de.htwg.se.uno.model.gameComponent.gameBaseImpl.Game
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers._
+import org.scalatest.wordspec.AnyWordSpec
 
-class UndoManagerSpec extends WordSpec with Matchers { {
+class UndoManagerSpec extends AnyWordSpec {
   "A UndoManager" when {
     "new" should {
       val undoManager = new UndoManager()
-      val controller = new Controller(new Game(4))
+      val controller = new Controller(Game(4))
       controller.createTestGame()
       val command = new PullCommand(controller)
       "Not be able to undo a Step" in {
-        undoManager.undoStep
+        undoManager.undoStep()
         controller.game.getActivePlayer() should be(3)
       }
       "Not be able to redo a Step" in {
@@ -26,7 +27,7 @@ class UndoManagerSpec extends WordSpec with Matchers { {
       }
       "be able to undo a Step" in {
         controller.game.setAnotherPull(true)
-        undoManager.undoStep
+        undoManager.undoStep()
         controller.game.getAnotherPull() should be(false)
       }
       "be able to redo a Step" in {
@@ -35,5 +36,4 @@ class UndoManagerSpec extends WordSpec with Matchers { {
       }
     }
   }
-}
 }
