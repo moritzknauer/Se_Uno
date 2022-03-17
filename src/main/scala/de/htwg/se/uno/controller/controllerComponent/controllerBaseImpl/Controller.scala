@@ -6,7 +6,6 @@ import de.htwg.se.uno.UnoModule
 import de.htwg.se.uno.controller.controllerComponent.*
 import de.htwg.se.uno.model.fileIoComponent.FileIOInterface
 import de.htwg.se.uno.model.gameComponent.GameInterface
-import net.codingwell.scalaguice.InjectorExtensions.*
 import de.htwg.se.uno.util.UndoManager
 
 import scala.swing.{Color, Publisher}

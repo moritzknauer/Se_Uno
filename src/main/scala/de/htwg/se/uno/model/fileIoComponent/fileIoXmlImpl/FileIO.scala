@@ -2,7 +2,6 @@ package de.htwg.se.uno.model.fileIoComponent.fileIoXmlImpl
 
 import com.google.inject.{Guice, Key}
 import com.google.inject.name.Names
-import net.codingwell.scalaguice.InjectorExtensions.*
 import de.htwg.se.uno.UnoModule
 import de.htwg.se.uno.model.gameComponent.gameBaseImpl
 import de.htwg.se.uno.model.fileIoComponent.FileIOInterface

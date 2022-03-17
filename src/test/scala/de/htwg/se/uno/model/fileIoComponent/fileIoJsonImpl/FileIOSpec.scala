@@ -6,7 +6,6 @@ import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import com.google.inject.{Guice, Inject, Injector, Key}
 import de.htwg.se.uno.UnoModule
-import net.codingwell.scalaguice.InjectorExtensions.*
 
 class FileIOSpec @Inject() extends AnyWordSpec with Matchers {
   "A FileIO" when {
