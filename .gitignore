@@ -1,6 +1,8 @@
 # Scala
 *.class
 *.log
+game.json
+game.xml
 
 # sbt
 .cache

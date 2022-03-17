@@ -45,7 +45,7 @@ class CardPanel (list: Int, index: Int, controller: ControllerInterface) extends
   val card = new BoxPanel(Orientation.Vertical) {
     val button = Button(controller.getGuiCardText(list, index)) {
       if (list == 3 && index == 0) {
-        controller.get
+        controller.get()
       } else if (list == 3 && index == 2) {
         if (controller.nextTurn()) {
           controller.controllerEvent("yourTurn")

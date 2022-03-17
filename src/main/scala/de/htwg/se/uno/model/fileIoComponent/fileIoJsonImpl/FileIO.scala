@@ -17,7 +17,7 @@ import scala.io.Source
 class FileIO extends  FileIOInterface{
   override def load: GameInterface = {
     var game: GameInterface = null
-    val source: String = Source.fromFile("game.json").getLines.mkString
+    val source: String = Source.fromFile("game.json").getLines().mkString
     val json: JsValue = Json.parse(source)
     val injector = Guice.createInjector(new UnoModule)
 
@@ -29,7 +29,7 @@ class FileIO extends  FileIOInterface{
     }
 
     val activePlayer = (json \ "game" \ "activePlayer").get.toString.toInt
-    while (activePlayer != game.getActivePlayer) {
+    while (activePlayer != game.getActivePlayer()) {
       game = game.setActivePlayer()
     }
 

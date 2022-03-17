@@ -50,7 +50,7 @@ class Controller @Inject() (var game: GameInterface) extends ControllerInterface
           controllerEvent("enemyTurn")
           game = game.setAnotherPull()
           publish(new GameChanged)
-          won
+          won()
         } else {
           game = game.setDirection()
           game = game.setActivePlayer()
@@ -92,7 +92,7 @@ class Controller @Inject() (var game: GameInterface) extends ControllerInterface
         controllerEvent("pullCardNotAllowed")
       }
       publish(new GameChanged)
-      shuffle
+      shuffle()
     } else {
       controllerEvent("enemyTurn")
       publish(new GameNotChanged)
@@ -122,13 +122,13 @@ class Controller @Inject() (var game: GameInterface) extends ControllerInterface
       controllerEvent("enemyTurn")
     }
     publish(new GameChanged)
-    shuffle
-    won
+    shuffle()
+    won()
   }
 
   def undo(): Unit = {
     do {
-      undoManager.undoStep
+      undoManager.undoStep()
       if (game.getUndoVariable()) {
         game.setDirection()
         game.setActivePlayer()
@@ -138,7 +138,7 @@ class Controller @Inject() (var game: GameInterface) extends ControllerInterface
     while(!game.nextTurn())
     controllerEvent("undo")
     publish(new GameChanged)
-    won
+    won()
   }
   def redo(): Unit = {
     game = game.setRedoVariable()
@@ -151,8 +151,8 @@ class Controller @Inject() (var game: GameInterface) extends ControllerInterface
     }
     controllerEvent("redo")
     publish(new GameChanged)
-    shuffle
-    won
+    shuffle()
+    won()
   }
 
   def save(): Unit = {

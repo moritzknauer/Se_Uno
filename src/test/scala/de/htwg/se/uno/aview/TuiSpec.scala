@@ -13,11 +13,11 @@ class TuiSpec extends AnyWordSpec with Matchers {
     val tui = new Tui(controller)
     "create a Game on input 'n'" in {
       tui.processInputLine("n")
-      controller.getNumOfPlayers() should be(2)
+      controller.getNumOfPlayers should be(2)
     }
     "create a Game on input 'n 3'" in {
       tui.processInputLine("n 3")
-      controller.getNumOfPlayers() should be(3)
+      controller.getNumOfPlayers should be(3)
     }
     /* Geht nicht mehr, da sonst Tests beendet werden.
     "Do nothing on input 'q" in{
@@ -31,7 +31,7 @@ class TuiSpec extends AnyWordSpec with Matchers {
     }
     "Create a test Game on input 't'" in {
       tui.processInputLine("t")
-      controller.getNumOfPlayers() should be(4)
+      controller.getNumOfPlayers should be(4)
     }
     "Not do anything on input d if it's your turn" in {
       tui.processInputLine("d")

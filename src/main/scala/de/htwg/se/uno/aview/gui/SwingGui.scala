@@ -274,13 +274,13 @@ class SwingGui(controller: ControllerInterface) extends Frame {
     }
     contents += new Menu("Edit") {
       mnemonic = Key.E
-      contents += new MenuItem(Action("Undo") {controller.undo})
-      contents += new MenuItem(Action("Redo") {controller.redo})
+      contents += new MenuItem(Action("Undo") {controller.undo()})
+      contents += new MenuItem(Action("Redo") {controller.redo()})
     }
     contents += new Menu("Game") {
       mnemonic = Key.G
-      contents += new MenuItem(Action("Save") {controller.save})
-      contents += new MenuItem(Action("Load") {controller.load})
+      contents += new MenuItem(Action("Save") {controller.save()})
+      contents += new MenuItem(Action("Load") {controller.load()})
     }
   }
 
@@ -303,7 +303,7 @@ class SwingGui(controller: ControllerInterface) extends Frame {
       add(gamePanel, BorderPanel.Position.Center)
       add(statusline, BorderPanel.Position.South)
     }
-    repaint
+    repaint()
   }
 
   def special : Unit = {

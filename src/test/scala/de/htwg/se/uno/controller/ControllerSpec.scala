@@ -15,24 +15,24 @@ class ControllerSpec extends AnyWordSpec with Matchers {
       val controller = new Controller(game)
       "Be able to create a game with 2 Players" in {
         controller.createGame(2)
-        controller.getNumOfPlayers() should be(2)
+        controller.getNumOfPlayers should be(2)
       }
       "Be able to create a new Game with 4 Players" in{
         controller.createGame(4)
-        controller.getNumOfPlayers() should be(4)
+        controller.getNumOfPlayers should be(4)
       }
       "Be able to create a new Game with 3 Players" in{
         controller.createGame(3)
-        controller.getNumOfPlayers() should be(3)
+        controller.getNumOfPlayers should be(3)
       }
       "Be able to create a new Test Game" in{
         controller.createTestGame()
-        controller.getNumOfPlayers() should be(4)
+        controller.getNumOfPlayers should be(4)
       }
 
       "Not Push a Special card without a color" in {
         controller.set(controller.getCardText(4, 1))
-        controller.getHs2() should be(controller.getCardText(4, 1))
+        controller.getHs2 should be(controller.getCardText(4, 1))
       }
       "not push a Card if the Card is not pushable" in {
         val old = controller.gameToString
@@ -56,7 +56,7 @@ class ControllerSpec extends AnyWordSpec with Matchers {
 
 
       "Should be able to undo a Step" in {
-        controller.undo
+        controller.undo()
         controller.controllerEvent("idle") should be(controller.controllerEvent("undo"))
       }
 
@@ -76,7 +76,7 @@ class ControllerSpec extends AnyWordSpec with Matchers {
         controller.controllerEvent("idle") should be(controller.controllerEvent("yourTurn"))
       }
       "Should be able to undo a second Step" in {
-        controller.undo
+        controller.undo()
         controller.controllerEvent("idle") should be(controller.controllerEvent("undo"))
       }
       "Do the enemy's run so that the enemy pulls and then can't do anything" in {
@@ -97,7 +97,7 @@ class ControllerSpec extends AnyWordSpec with Matchers {
         controller.enemy()
       }
       "Should be able to undo a third step" in {
-        controller.undo
+        controller.undo()
         controller.controllerEvent("idle") should be(controller.controllerEvent("undo"))
       }
       "Not Pull a Card if the player has to suspend" in {
@@ -106,38 +106,38 @@ class ControllerSpec extends AnyWordSpec with Matchers {
         controller.controllerEvent("idle") should be(controller.controllerEvent("pullCardNotAllowed"))
       }
       "Should be able to undo a fourth step" in {
-        controller.undo
+        controller.undo()
         controller.controllerEvent("idle") should be(controller.controllerEvent("undo"))
       }
 
       "Should be able to redo a Step" in{
-        controller.redo
+        controller.redo()
         controller.controllerEvent("idle") should be(controller.controllerEvent("redo"))
       }
       "Should be able to check if nobody has won" in {
-        controller.won
+        controller.won()
         controller.controllerEvent("idle") should be(controller.controllerEvent("redo"))
       }
 
       "Should be able to check if the enemy 1 has won" in {
         controller.game.setLength(1)
-        controller.won
+        controller.won()
         controller.controllerEvent("idle") should be(controller.controllerEvent("lost"))
       }
       "Should be able to check if the player has won" in {
         controller.game.setLength(4)
-        controller.won
+        controller.won()
         controller.controllerEvent("idle") should be(controller.controllerEvent("won"))
       }
       "Should be able to check if the enemy 2 has won" in {
         controller.game.setLength(2)
-        controller.won
+        controller.won()
         controller.controllerEvent("idle") should be(controller.controllerEvent("lost"))
       }
       "Should be able to check if the enemy 3 has won" in {
         controller.game.setLength(3)
         controller.controllerEvent("yourTurn")
-        controller.won
+        controller.won()
         controller.controllerEvent("idle") should be(controller.controllerEvent("lost"))
       }
 
@@ -155,29 +155,29 @@ class ControllerSpec extends AnyWordSpec with Matchers {
         controller.getLength(1) should be(6)
       }
       "Should be able to get the number of Players" in {
-        controller.getNumOfPlayers() should be(4)
+        controller.getNumOfPlayers should be(4)
       }
       "Should be able to check if it's the players turn" in {
         controller.nextTurn() should be(false)
       }
       "Should be able to return the Help String 2 of the controller" in {
-        controller.getHs2() should be("S C")
+        controller.getHs2 should be("S C")
       }
       "Should be able to get the next Enemy" in {
         controller.nextEnemy() should be(1)
       }
 
       "Should be able to save the game" in {
-        controller.save
+        controller.save()
         controller.controllerEvent("idle") should be(controller.controllerEvent("save"))
       }
       "Should be able to load the game" in {
-        controller.load
+        controller.load()
         controller.controllerEvent("idle") should be(controller.controllerEvent("load"))
       }
       "Should be able to shuffle the covered cards" in {
         controller.game.setLength(5)
-        controller.shuffle
+        controller.shuffle()
         controller.controllerEvent("idle") should be(controller.controllerEvent("shuffled"))
       }
 
